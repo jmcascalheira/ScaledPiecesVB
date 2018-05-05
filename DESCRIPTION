@@ -1,9 +1,11 @@
 Package: ScaledPiecesVB
 Version: 0.0.0.9000
-Title: What the Package Does (One Line, Title Case)
-Description: What the package does (one paragraph).
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
+Title: Research compendium for 'The role of lithic bipolar technology in Western Iberia’s Upper Paleolithic: the case of Vale Boi (southern Portugal)'
+Description: R code and data associated with 'The role of lithic bipolar technology in Western Iberia’s Upper Paleolithic: the case of Vale Boi (southern Portugal)'.
+Authors@R: person("João", "Cascalheira", email = "jmcascalheira@ualg.pt", role = c("aut", "cre"))
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
+URL: https://github.com/jmcascalheira/ScaledPiecesVB
+BugReports: https://github.com/jmcascalheira/ScaledPiecesVB/issues
