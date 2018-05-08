@@ -9,7 +9,7 @@ output:
     bookdown::word_document2: #subsistute by pdf_document2 or hmtl_document2 as necessary
       fig_caption: yes
       reference_docx: "../templates/template2.docx" 
-bibliography: ScaledPiecesVB.bib
+bibliography: ShortTermOccupations.bib
 csl: "../templates/springer-humanities-author-date.csl"
 abstract: |
   
@@ -28,6 +28,8 @@ knitr::opts_chunk$set(
   fig.width = 9,
   fig.path = "../figures/")
 
+source('~/R_DATA/compendiums/ScaledPiecesVB/R/scaled_pieces_functions.R')
+
 #library(ScaledPiecesVB) # Or use devtools::load_all('.', quiet = T) if your code is in script files, rather than as functions in the `/R` diretory
 ```
 
@@ -44,6 +46,10 @@ library(ggmap)
 library(devtools)
 library(legendMap)
 library(tab)
+
+all_data <- read_data()
+techno_data <- all_data$techno_data
+morpho_data <- all_data$morpho_data
 
 ```
 
@@ -78,7 +84,9 @@ The Rockshelter area is a collapsed rock shelter located in the upper part of th
 Finally, the Slope section, from where the assemblage here presented is coming from, is composed of a series of excavation areas opened across the mid-hill sector of the site. These areas exhibit heterogeneous conditions in terms of site formation processes and archaeological preservation (Manne et al., 2012), but all revealed the presence of occupations attributed to the Gravettian, Proto-Solutrean, Solutrean and Magdalenian. Like in the previous areas, remains are well preserved, and high frequencies of lithic artifacts, malacological and mammalogical fauna and bone tools were recovered. No habitation features were identified in this area and based on the conditions and type of artifacts found, it has been suggested that this area would have functioned as a midden deposit (Bicho et al., 2010, 2012a).
 
 
-```{r VBLocation, fig.cap=""}
+```{r VBLocation, echo = FALSE, fig.cap="Location of the site of Vale Boi"}
+
+source('~/R_DATA/compendiums/ScaledPiecesVB/R/scaled_pieces_functions.R')
 
 Map()
 
@@ -123,7 +131,7 @@ For the second group of variables a macroscopic approach, building upon the work
 
 \newline
 
-```{r tech_attributes}
+```{r tech_attributes, echo = FALSE}
 
 
 
@@ -131,19 +139,27 @@ For the second group of variables a macroscopic approach, building upon the work
 
 \newline
 
-```{r morph_attributes}
+```{r morph_attributes, echo = FALSE}
 
 
 
 ```
+
+\newline
 
 Macroscopic morpho-functional attributes were separately analyzed for each damaged platform, aiming to detect patterns of morphological change that occurred in artifacts during use. Following the work of de la Peña (2011, 2015) and Gonzalez-Urquijo & Ibanez-Estévez (1994), we expected that these attributes would be indicative of which function the artifacts had. For instance, according to de la Peña (2011, 2015), for pieces used as wedges, the shape of the passive platform remains the same and the other varies according to the type of material worked on the active platform. Furthermore, these pieces would have irregular shapes, variable scar size, and irregular scar distribution. On the other hand, pieces used as bipolar cores would have squared or rectangular shapes, symmetric straight platforms, and a higher frequency of scars on the striking edge than on the active edge. The addition of other attributes expanding on the work by Gonzalez-Urquijo & Ibanez-Estévez (1994) was made following the same reasoning. We expected, thus, to be able to differentiate pieces used as wedges from pieces used as cores, as both groups would show distinct combinations of attributes. To assist us with this differentiation we tested the presence of the referred patterns within our assemblage using descriptive and multivariate statistical analysis and comparing it with the data described by the referred authors.
 
 \newline
 
+## Reproducibility and open source materials
+
+All analyses and data processing were accomplished in R (version `r getRversion()`) [@r_core_team_r:_2013]. Following recent concerns on the reproducibility of archaeological analysis we include the entire R code used for all the analysis and visualizations contained in this paper in our supplemental online material (SOM) at https://dx.doi.org/… To produce those files we followed the procedures described by Marwick et al. [-@marwick_packaging_2017] for the creation of research compendiums to enhance the reproducibility of research. The files provided contain all the raw data used in our analysis as well as a custom R package [@wickham_r_2015] holding the code use for all analysis and to produce all tables and figures. To enable maximum re-use, our code is released under the MIT license, our data as CC-0, and our figures as CC-BY, [for more information see @marwick_computational_2016].
+
+\newline
+
 # Results
 
-A total of 139 scaled pieces were analyzed, of which 42.4% come from Gravettian, and 45.3% from Solutrean levels, as shown in (Table(@ref(tab:assemblage)).The assemblage was divided into 4 main chronological groups: Magdalenian, Solutrean, Proto-Solutrean, and Gravettian.
+A total of `r summarise(techno_data, n())` scaled pieces were analyzed, of which `r round(techno_data %>% filter(Chronology == "Gravettian") %>% summarise(n = n()) %>% mutate(n = (n / 139)*100), digits = 2)`% come from Gravettian, and `r round(techno_data %>% filter(Chronology == "Solutrean") %>% summarise(n = n()) %>% mutate(n = (n / 139)*100), digits = 2)`% from Solutrean levels, as shown in (Table \@ref(tab:assemblage)).The assemblage was divided into 4 main chronological groups: Magdalenian, Solutrean, Proto-Solutrean, and Gravettian.
 
 As previously mentioned, as far as the technological data is concerned, one of our main objectives was to characterize and understand the choice of blanks involved in bipolar technology. We did not include the metric data, as most of the data from the original blank are mostly gone due to reduction and use. Overall, the technological analysis revealed some trends that lasted throughout the Upper Paleolithic, in agreement with the general patterns of lithic technology in the site (see above).
 
@@ -153,11 +169,7 @@ As previously mentioned, as far as the technological data is concerned, one of o
 
 var_list <- c("Chronology")
 
-assemb <- cross_tb(dataset, "RawMaterial", var_list)
-
-assemb <- assemb %>%
-  as.tibble() %>% 
-  dplyr::select(" " = Variable, Chert, Quartz, Chalcedony, Total = Overall)
+assemb <- cross_tb(techno_data, "RawMaterial", var_list)
 
 knitr::kable(assemb, caption= "")
 
@@ -165,32 +177,28 @@ knitr::kable(assemb, caption= "")
 
 \newline
 
-Across all techno-complexes, blanks used were either flakes or unclassifiable fragments, but the choice seems to be different for each raw material. For quartz, in the Gravettian assemblage, the blank types are almost equally split between flakes and unclassifiable fragments (Table(@ref(tab:technogravettian)). In other periods, flakes were the preferred type of blank (Tables(@ref(tab:technosolutrean)(@ref(tab:technoproto)(@ref(tab:technomagdalenian)). Regarding chert, in every occupation flakes dominate the assemblages, followed by a reduced number (4) of unclassifiable fragments. Chalcedony blanks were exclusively flakes.
+Across all techno-complexes, blanks used were either flakes or unclassifiable fragments, but the choice seems to be different for each raw material. For quartz, in the Gravettian assemblage, the blank types are almost equally split between flakes and unclassifiable pieces (Table \@ref(tab:technogravettian)). In other periods, flakes were the preferred type of blank (Tables \@ref(tab:technosolutrean), \@ref(tab:technoproto) and \@ref(tab:technomagdalenian)). Regarding chert, in every occupation flakes dominate the assemblages, followed by a reduced number (n = `r techno_data %>% filter(RawMaterial == "Chert" & Blank == "Non_identifiable") %>% summarise(n())`) of unclassifiable blanks. Chalcedony blanks are exclusively flakes.
 
 \newline
 
-```{r technology, echo=FALSE}
-
-# Pull dataset
-techno_data <- read_data()
+```{r technology, include = FALSE, echo=FALSE}
 
 # Set variables
-var_list <- c("Blank","CrossSection","Profile","Blankshape","X.Cortex","ButtType","Profile")
+var_list <- c("Blank","CrossSection","Profile","Blankshape","Cortex","ButtType","Profile")
 
 # Filter by chronology
 filter <- split(techno_data, techno_data$Chronology)
 
 # Get cross-tables by chronology using cross_tb() function
 Gravettian <- cross_tb(filter$Gravettian, "RawMaterial", var_list) 
-Gravettian <- select(Gravettian, " ", Chert, Quartz, Total)
+Gravettian <- select(Gravettian, " ", Chert, Quartz, Total) #to remove chalcedony
 
 Solutrean <- cross_tb(filter$Solutrean, "RawMaterial", var_list)
 
 `Proto-Solutrean` <- cross_tb(filter$`Proto-Solutrean`, "RawMaterial", var_list)
 
 Magdalenian <- cross_tb(filter$Magdalenian, "RawMaterial", var_list)
-Magdanelian <- select(Magdalenian, " ", Chert, Quartz, Total)
-
+Magdalenian <- select(Magdalenian, " ", Chert, Quartz, Total) #to remove chalcedony
 
 ```
 
@@ -198,7 +206,7 @@ Magdanelian <- select(Magdalenian, " ", Chert, Quartz, Total)
 
 ```{r technogravettian, echo=FALSE}
 
-knitr::kable(Gravettian, caption= "")
+knitr::kable(Gravettian, caption= "Technological attribute frequencies by raw materials for the Gravettian sample")
 
 ```
 
@@ -206,15 +214,15 @@ knitr::kable(Gravettian, caption= "")
 
 ```{r technoproto, echo=FALSE}
 
-knitr::kable(`Proto-Solutrean`, caption= "")
+knitr::kable(`Proto-Solutrean`, caption= "Technological attribute frequencies by raw materials for the Proto-Solutrean sample")
 
 ```
 
 \newline
 
-```{r technoSolutrean, echo=FALSE}
+```{r technosolutrean, echo=FALSE}
 
-knitr::kable(Solutrean, caption= "")
+knitr::kable(Solutrean, caption= "Technological attribute frequencies by raw materials for the Solutrean sample")
 
 ```
 
@@ -222,23 +230,41 @@ knitr::kable(Solutrean, caption= "")
 
 ```{r technomagdalenian, echo=FALSE}
 
-knitr::kable(Magdalenian, caption= "")
+knitr::kable(Magdalenian, caption= "Technological attribute frequencies by raw materials for the Magdalenian sample")
 
 ```
 
 \newline
 
-Technological and morphological characteristics of the flake blanks present very similar patterns across time and amongst raw materials. The blanks sought after would have the following characteristics: straight profile, parallel edges, no-cortex and trapezoidal or triangular shaped transversal sections.
+Technological and morphological characteristics of the flake blanks present very similar patterns across time and amongst raw materials. The blanks sought after would have the following characteristics: straight profile, parallel edges, no cortical surfacem and trapezoidal or triangular shaped cross-sections.
 
-Other characteristics of the assemblage are the small frequency of retouched pieces, fire alterations, and of the original striking platforms. Still, when present, retouch was located in the lateral part of the artifacts, similar to what would define a side-scraper. In a very small number of cases, striking platforms were detected, mostly with a flat morphology. The absence of the original blank platforms is to be expected in this type of artifact, mostly due to the functional use of the pieces, and consequent removal of the platform, rather than an actual choice.
+Other characteristics of the assemblage are the low frequency of retouch (n = `r techno_data %>% filter(RetouchedBlank == "Yes") %>% summarise(n())`), fire alterations (n = `r techno_data %>% filter(Fire != "No_Traces") %>% summarise(n())`), and of the original striking platforms (n = `r techno_data %>% filter(ButtType != "Absent") %>% summarise(n())`). Still, when present, retouch was located in the lateral part of the artifacts, similar to what would define a side-scraper. In a very small number of cases when striking platforms were detected, these were mostly flat. The absence of the original blank platforms is to be expected in this type of artifact, mostly due to the functional use of the pieces, and consequent removal of the platform, rather than an actual choice. The large absence of platforms may, on the other hand, be the result of the use of the technological axis as the main functional axis. In fact, when identifiable, technological and typological axes coincide in `r inline_perc(techno_data, AxisCoincident, "Yes")`% of the cases. The longitudinal section shows a large variability of shapes, independent of raw material or chronology. Similarly, the dorsal pattern of previous removals was rarely identified, although this, like with the case of the platform absence, might occur due to the functional stigmas and be dependent on the the intensity of use for each artifact.
 
-When identifiable, the technological and typological axes tend to coincide, although in many cases the technological axis could not be identified, especially in quartz pieces. The longitudinal section shows a large variability of shapes, independent of raw material or chronology. Similarly, the dorsal pattern of previous removals was rarely identified, although this, like with the case of the butt absence, might occur due to the functional stigmas.
+The patterns of use and rotation of damaged platforms seem to be the same across all chronologies. In every assemblage quartz pieces were exclusively used in one single axis, exhibiting only two damaged platforms. On the other end, some (3,38%) chert and chalcedony artifacts exhibit multiple functional axis, with three or four damaged platforms (Figure \@ref(fig:nplatforms)). This seems to indicate different strategies of curation for coarse and fine grain raw materials.
 
-The patterns of use and rotation of damaged platforms seem to be the same across all chronologies. In every assemblage quartz pieces were exclusively used in one single axis, exhibiting only two damaged platforms. On the other end, some (3,38%) chert and chalcedony artifacts exhibit multiple functional axis, with three or four damaged platforms. This seems to indicate different strategies of curation for coarse and fine grain raw materials.
+```{r nplatforms, fig.cap=""}
 
-In scaled pieces, metrics are a difficult set of variables to clearly show as results. These attributes are impacted by both the initial blank size as well as by the functional use and reduction. The pieces showed lengths ranging from 10 mm to 45 mm, widths ranging from 8 mm to 35 mm and thicknesses ranging from 3 mm to 20 mm. In general, quartz scaled pieces tend to be larger and thicker than chert and chalcedony pieces. On the other hand, chert pieces tend to be wider than the rest.
+n_axis <- morpho_data %>% 
+  group_by(Chronology,RawMaterial,DamagedPlatforms) %>% 
+  summarise(count=n()) %>% 
+  mutate(perc=100*(count/sum(count)))
+n_axis
 
-```{r meanplots, echo = FALSE, fig.cap=""}
+ggplot(n_axis, aes(x = factor(RawMaterial), y = perc, fill = factor(DamagedPlatforms))) +
+  geom_bar(stat="identity", width = 0.7) +
+  labs(x = "RawMaterial", y = "%", fill = "Number of Damaged Platforms") +
+  facet_wrap(~Chronology) +
+  theme_bw() +
+  theme(strip.text.x = element_text(size = 14), text = element_text(size=14))
+
+
+
+```
+
+
+In scaled pieces, metrics are a difficult set of variables to clearly show as results. These attributes are impacted by both the initial blank size as well as by the functional use and reduction. Consideranging the typological axes (see Table \@ref(tab:tech_attributes)) for definition) length ranging from `r min(techno_data$AxisLength, na.rm = TRUE)` mm to `r max(techno_data$AxisLength, na.rm = TRUE)` mm, width ranging from `r min(techno_data$AxisWidth, na.rm = TRUE)` mm to `r max(techno_data$AxisWidth, na.rm = TRUE)` mm and thickness ranging from `r min(techno_data$Thickness, na.rm = TRUE)` mm to `r max(techno_data$Thickness, na.rm = TRUE)` mm. In general, mean values tend to be similiar between raw materials, with some differences occuring within the Proto-Solutrean and Magdalenian assemblages, most certainly as a result of the small samples analysed for each of these periods (Figure \@ref(fig:meanplots)).
+
+```{r meanplots, echo = FALSE, fig.cap="Barplots of means for Length, Width and Thickness of scaled pieces by raw material and across the four chronological phases. Error bars represent standard deviations."}
 
 
 length <- mean_plot(techno_data, "Chronology", "AxisLength", "RawMaterial")
@@ -251,6 +277,8 @@ meanplots <- ggarrange(length, width, thickness, ncol = 1, nrow = 3, labels = c(
 meanplots
 
 ```
+
+
 
 
 #Discussion

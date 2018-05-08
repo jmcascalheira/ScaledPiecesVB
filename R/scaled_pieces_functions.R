@@ -3,7 +3,13 @@
 # READ DATA ----------------------------------------------------------------
 
 read_data <- function(){
-  tech_data <- read.csv("../data/raw_data/technology_dataset.csv")
+  #tech_attributes <- read.csv("../data/raw_data/technology_attributes.csv")
+  #morpho_attributes <- read.csv("../data/raw_data/morpho_attributes.csv")
+  techno_data <- read.csv("../data/raw_data/technology_dataset.csv")
+  morpho_data <- read.csv("../data/raw_data/morpho_dataset.csv")
+
+  return(list(morpho_data = morpho_data,
+              techno_data = techno_data))
 
 }
 
@@ -11,13 +17,13 @@ read_data <- function(){
 ###########################################################################
 # MAPS --------------------------------------------------------------------
 
-require(maptools)
-require(ggplot2)
-require(ggmap)
-require(devtools)
-require(legendMap)
-
 Map <- function(){
+
+  require(maptools)
+  require(ggplot2)
+  require(ggmap)
+  require(devtools)
+  require(legendMap)
 
   VBLocation <- c(lon = -8.808621, lat = 37.089902)
 
@@ -50,7 +56,7 @@ Map <- function(){
                          arrow_distance = 50,
                          arrow_north_size = 3)
 
-  ggsave("VBMap.png")
+  ggsave("../figures/VBMap.png")
 
 }
 
@@ -79,6 +85,10 @@ require(tidyverse)
 }
 
 
+###########################################################################
+# MEAN TABLE --------------------------------------------------------------
+
+
 mean_tb <- function(dataset,x,y) {
 
   require(tab)
@@ -99,10 +109,16 @@ mean_tb <- function(dataset,x,y) {
 }
 
 
+
+###########################################################################
+# MEAN PLOTS --------------------------------------------------------------
+
 mean_plot <- function(dataset, x, y, z){
 
+require(ggpubr)
+
   ggbarplot(techno_data, x = x, y = y,
-            add = c("mean_se", "jitter"), size = 1,
+            add = c("mean_sd", "jitter"), size = 1,
             color = z, palette = c("#00AFBB", "#E7B800", "#FC4E07"),
             position = position_dodge(0.8)) +
   theme_gray()
@@ -110,3 +126,21 @@ mean_plot <- function(dataset, x, y, z){
 }
 
 
+
+
+
+inline_perc <- function(dataset, x, y){
+
+  x <- enquo(x)
+
+    perc <- dataset %>%
+      group_by(!!x) %>%
+      tally() %>%
+      na.omit()
+    perc <- mutate(perc, n = (n/sum(n))*100)
+    perc <- filter(perc, !!x == y)
+    perc <- as.data.frame(perc)
+
+    round(perc[1,2], digits = 1)
+
+}
