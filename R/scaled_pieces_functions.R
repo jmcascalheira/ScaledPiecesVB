@@ -3,10 +3,10 @@
 # READ DATA ----------------------------------------------------------------
 
 read_data <- function(){
-  #tech_attributes <- read.csv("../data/raw_data/technology_attributes.csv")
+  #tech_attributes <- readcsv("../data/raw_data/technology_attributes.csv")
   #morpho_attributes <- read.csv("../data/raw_data/morpho_attributes.csv")
-  techno_data <- read.csv("../data/raw_data/technology_dataset.csv")
-  morpho_data <- read.csv("../data/raw_data/morpho_dataset.csv")
+  techno_data <- read_csv("../data/raw_data/technology_dataset.csv")
+  morpho_data <- read_csv("../data/raw_data/morpho_dataset.csv")
 
   return(list(morpho_data = morpho_data,
               techno_data = techno_data))
@@ -78,9 +78,9 @@ require(tidyverse)
                   n.headings = FALSE,
                   freq.text.label = "none")
 
-  ct <- ct %>%
-    as.tibble() %>%
-    dplyr::select(" " = Variable, Chert, Quartz, Chalcedony, Total = Overall)
+  #ct <- ct %>%
+   # as.tibble() %>%
+    #dplyr::select(" " = Variable, Chert, Quartz, Chalcedony, Total = Overall)
 
 }
 
@@ -97,14 +97,14 @@ mean_tb <- function(dataset,x,y) {
   mt <- tabmulti(dataset, x, y,
                  cell = "n",
                  parenth = "col.percent",
-                 p.include = FALSE,
+                 p.include = TRUE,
                  n.headings = FALSE,
                  freq.text.label = "none",
                  means.text.label = "none")
 
-  mt <- mt %>%
-    as.tibble() %>%
-    dplyr::select(" " = Variable, Chert, Quartz, Chalcedony, Overall)
+ # mt <- mt %>%
+  #  as.tibble() %>%
+   # dplyr::select(" " = Variable, Chert, Quartz, Chalcedony, Overall)
 
 }
 
@@ -117,16 +117,18 @@ mean_plot <- function(dataset, x, y, z){
 
 require(ggpubr)
 
-  ggbarplot(techno_data, x = x, y = y,
+  ggbarplot(dataset, x = x, y = y,
             add = c("mean_sd", "jitter"), size = 1,
             color = z, palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-            position = position_dodge(0.8)) +
+            position = position_dodge(0.8),
+            xlab = "") +
+  scale_x_discrete(limits=c("Gravettian", "Proto-Solutrean","Solutrean", "Magdalenian")) +
   theme_gray()
 
 }
 
-
-
+###########################################################################
+# INLINE PERCENTAGE -------------------------------------------------------
 
 
 inline_perc <- function(dataset, x, y){
@@ -144,3 +146,68 @@ inline_perc <- function(dataset, x, y){
     round(perc[1,2], digits = 1)
 
 }
+
+
+###########################################################################
+# LIST OF VARIABLES TO COMPARE WITH STAT_COMPARE_MEANS --------------------
+
+compare_list <- function(dataset,x){
+
+  my_comparisons <- vector("list")
+  un_values <- unique(dataset[[x]])
+  un_values <- as.data.frame(combn(un_values,2))
+  var_names <- colnames(un_values)
+
+  for(i in var_names) {
+    g <- assign(i, un_values[[i]])
+
+    my_comparisons[[i]] <- g
+    names(my_comparisons[i]) <- paste("ct", i, sep = "_")
+
+  }
+
+  list2env(my_comparisons, envir = .GlobalEnv)
+}
+
+
+
+###########################################################################
+# MEAN PLOTS WITH STAT RESULTS ---------------------------------------------
+
+mean_plot_stat_results <- function(dataset, x, y, z){
+
+  compare_list(dataset, x)
+
+  thickness_plot <- ggbarplot(techno_data, x = x, y = y,
+                              add = c("mean_sd", "jitter"), size = 1,
+                              color = z, palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+                              position = position_dodge(0.8),
+                              xlab = "") +
+    stat_compare_means(comparisons = my_comparisons) +
+    #scale_x_discrete(limits=c("Gravettian", "Proto-Solutrean","Solutrean", "Magdalenian")) +
+    theme_gray()
+}
+
+
+
+####################################################################################
+# RECODE TO OTHER BASED ON 10% FREQUENCY -----------------------------------------------
+
+condense <- function(df, x){
+
+  m <- df %>%
+    filter(DamagedPlatforms == "2") %>%
+    count_(x) %>%
+    mutate(perc = n/sum(n)) %>%
+    filter(perc < 0.10)
+
+  z <- as.character(t(m[1]))
+
+  for(i in z){
+
+    df[[x]] <- ifelse(df[[x]] == i , "Other", df[[x]])
+
+  }
+  return(df)
+}
+

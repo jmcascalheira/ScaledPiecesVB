@@ -161,7 +161,7 @@ All analyses and data processing were accomplished in R (version `r getRversion(
 
 A total of `r summarise(techno_data, n())` scaled pieces were analyzed, of which `r round(techno_data %>% filter(Chronology == "Gravettian") %>% summarise(n = n()) %>% mutate(n = (n / 139)*100), digits = 2)`% come from Gravettian, and `r round(techno_data %>% filter(Chronology == "Solutrean") %>% summarise(n = n()) %>% mutate(n = (n / 139)*100), digits = 2)`% from Solutrean levels, as shown in (Table \@ref(tab:assemblage)).The assemblage was divided into 4 main chronological groups: Magdalenian, Solutrean, Proto-Solutrean, and Gravettian.
 
-As previously mentioned, as far as the technological data is concerned, one of our main objectives was to characterize and understand the choice of blanks involved in bipolar technology. We did not include the metric data, as most of the data from the original blank are mostly gone due to reduction and use. Overall, the technological analysis revealed some trends that lasted throughout the Upper Paleolithic, in agreement with the general patterns of lithic technology in the site (see above).
+As previously mentioned, as far as the technological data is concerned, one of our main objectives was to characterize and understand the choice of blanks involved in bipolar technology. We did not include the metric data, as most of the data from the original blanks are mostly gone due to reduction and use. Overall, the technological analysis revealed some trends that lasted throughout the Upper Paleolithic, in agreement with the general patterns of lithic technology in the site (see above).
 
 \newline
 
@@ -242,6 +242,8 @@ Other characteristics of the assemblage are the low frequency of retouch (n = `r
 
 The patterns of use and rotation of damaged platforms seem to be the same across all chronologies. In every assemblage quartz pieces were exclusively used in one single axis, exhibiting only two damaged platforms. On the other end, some (3,38%) chert and chalcedony artifacts exhibit multiple functional axis, with three or four damaged platforms (Figure \@ref(fig:nplatforms)). This seems to indicate different strategies of curation for coarse and fine grain raw materials.
 
+\newline
+
 ```{r nplatforms, fig.cap=""}
 
 n_axis <- morpho_data %>% 
@@ -261,24 +263,65 @@ ggplot(n_axis, aes(x = factor(RawMaterial), y = perc, fill = factor(DamagedPlatf
 
 ```
 
+\newline
 
-In scaled pieces, metrics are a difficult set of variables to clearly show as results. These attributes are impacted by both the initial blank size as well as by the functional use and reduction. Consideranging the typological axes (see Table \@ref(tab:tech_attributes)) for definition) length ranging from `r min(techno_data$AxisLength, na.rm = TRUE)` mm to `r max(techno_data$AxisLength, na.rm = TRUE)` mm, width ranging from `r min(techno_data$AxisWidth, na.rm = TRUE)` mm to `r max(techno_data$AxisWidth, na.rm = TRUE)` mm and thickness ranging from `r min(techno_data$Thickness, na.rm = TRUE)` mm to `r max(techno_data$Thickness, na.rm = TRUE)` mm. In general, mean values tend to be similiar between raw materials, with some differences occuring within the Proto-Solutrean and Magdalenian assemblages, most certainly as a result of the small samples analysed for each of these periods (Figure \@ref(fig:meanplots)).
+As in other classes of tools, scaled pieces' metric attributes are impacted by both the initial blank size as well as by the intensity of their use. Further, because some pieces were used in multiple axes, direct comparisons for length and width of the typological axes (see Table \@ref(tab:tech_attributes)) for definition) cannot be straighforwardly performed. Since the majority of the analyzed pieces presents a rectangular edge delineation, we use an approximation of the area (i.e. Length x Width), and thickness, to characterize size variability across chronologies and raw materials. 
 
-```{r meanplots, echo = FALSE, fig.cap="Barplots of means for Length, Width and Thickness of scaled pieces by raw material and across the four chronological phases. Error bars represent standard deviations."}
+Area calculations revealed a maximum size of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm and a minimum value of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm. For thickness the maximum is `r round(max(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm and the minimum is `r round(min(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm. In general, mean values tend to be similiar between raw materials, with some differences occuring within the Proto-Solutrean and Magdalenian assemblages, most certainly as a result of the small samples analysed for each of these periods (Figure \@ref(fig:meanplots)). Across techno-complexes, however, no significant statistical differences were detected when using an ANOVA test for both Area (`r anova_apa(aov(Area~Chronology, techno_data), "Chronology")` and  Thickness (`r anova_apa(aov(Thickness~Chronology, techno_data), "Chronology")`).
+
+\newline
+
+```{r meanplots, echo = FALSE, fig.cap="Barplots of means for Area (Length x Width) and Thickness of scaled pieces by raw material and across the four chronological phases. Error bars represent standard deviations."}
 
 
-length <- mean_plot(techno_data, "Chronology", "AxisLength", "RawMaterial")
-width <- mean_plot(techno_data, "Chronology", "AxisWidth", "RawMaterial")
+techno_data <- techno_data %>% 
+  mutate(Area = AxisWidth*AxisLength)
+
+area <- mean_plot(techno_data, "Chronology", "Area", "RawMaterial")
 thickness <- mean_plot(techno_data, "Chronology", "Thickness", "RawMaterial")
 
-
-meanplots <- ggarrange(length, width, thickness, ncol = 1, nrow = 3, labels = c("A", "B", "C"), common.legend = TRUE, legend = "right")
+meanplots <- ggarrange(area, thickness, ncol = 1, nrow = 2, common.legend = TRUE, legend = "right")
 
 meanplots
 
 ```
 
+\newline
 
+With few exceptions (platform angle and facial scar distribution), most of the morpho-functional attributes show a higher degree of variability than technological attributes, and no significant patterns could be clearly noticed. However, two attributes were relatively constant across all occupations: most damaged platforms present less than 45º angles; and, most pieces have bifacial scars on one damaged platform and unifacial on the other. On a closer inspection, we find that most of the differences within the morpho-functional variables occur between raw materials rather than between chronologies.
+
+
+```{r }
+
+# Filter attributes
+morpho_data <- all_data$morpho_data
+morpho_data <- morpho_data %>% 
+  filter(DamagedPlatforms == 2) %>% 
+  select(RawMaterial,
+         ScarDistribution_PlatformA, ScarDistribution_PlatformB,
+         ScarArrangement_PlatformA,ScarArrangement_PlatformB,
+         ScarExtention_PlatformA,ScarExtention_PlatformB,
+         ScarFacialDistribution_PlatformA, ScarFacialDistribution_PlatformB,
+         ScarEdgeDelineation_PlatformA, ScarEdgeDelineation_PlatformB,
+         Angle_PlatformA, Angle_PlatformB)
+
+
+# Recode based on 10% frequency rule
+condense()
+
+
+# Join attributes
+m2 <- m2 %>% 
+  mutate(Damage_Degree = str_c(Damage_Degree_PlatformA,Damage_Degree_PlatformB, sep = "/")) %>% 
+  mutate(Scar_Shape = str_c(ScarShape_PlatformA,ScarShape_PlatformB, sep = "/")) %>%
+  mutate(Scar_Distribution = str_c(ScarDistribution_PlatformA,ScarDistribution_PlatformA, sep = "/")) %>%
+  mutate(Scar_Arrangement = str_c(ScarArrangement_PlatformA,ScarArrangement_PlatformB, sep = "/")) %>%
+  mutate(Scar_Extension = str_c(ScarExtention_PlatformA,ScarExtention_PlatformB, sep = "/")) %>%
+  mutate(Scar_FacialDistribution = str_c(ScarFacialDistribution_PlatformA,ScarFacialDistribution_PlatformB, sep = "/")) %>%
+  mutate(Scar_EdgeDelineation = str_c(ScarEdgeDelineation_PlatformA,ScarEdgeDelineation_PlatformB, sep = "/")) %>%
+  mutate(Angle = str_c(Angle_PlatformA,Angle_PlatformB, sep = "/"))
+
+```
 
 
 #Discussion
