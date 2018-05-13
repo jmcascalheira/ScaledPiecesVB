@@ -71,16 +71,19 @@ cross_tb <- function(dataset,x,y) {
 require(tab)
 require(tidyverse)
 
+dataset <- as.data.frame(dataset)
+
   ct <- tabmulti(dataset, x, y,
                   cell = "n",
                   parenth = "col.percent",
                   p.include = FALSE,
+                  listwise.deletion = TRUE,
                   n.headings = FALSE,
                   freq.text.label = "none")
 
-  #ct <- ct %>%
-   # as.tibble() %>%
-    #dplyr::select(" " = Variable, Chert, Quartz, Chalcedony, Total = Overall)
+  ct <- ct %>%
+   as.tibble() %>%
+   dplyr::select(" " = Variable, Chert, Quartz, Chalcedony, Total = Overall)
 
 }
 
@@ -122,10 +125,28 @@ require(ggpubr)
             color = z, palette = c("#00AFBB", "#E7B800", "#FC4E07"),
             position = position_dodge(0.8),
             xlab = "") +
-  scale_x_discrete(limits=c("Gravettian", "Proto-Solutrean","Solutrean", "Magdalenian")) +
-  theme_gray()
+  scale_x_discrete(limits=c("Gravettian", "Proto-Solutrean","Solutrean", "Magdalenian"))
 
 }
+
+
+###########################################################################
+# BOXPLOT WITH JITTER -----------------------------------------------------
+
+box_plot <- function(df, x_var, y_var, x_label, y_label){
+  b_plot<-ggplot(df,aes_string(x= x_var, y=y_var)) +
+    geom_boxplot(outlier.shape = NA, fill = "gray")
+
+  b_plot <- b_plot +
+    geom_jitter(position=position_jitter(width=.2, height=0), aes(color = RawMaterial), size = 4) +
+    scale_color_manual(values = c("#00AFBB", "#E7B800", "#FC4E07"), name = "Raw Material") +
+    labs(x = x_label, y = y_label)+
+    scale_fill_discrete(guide=FALSE) +
+    theme(text = element_text(size = 20), axis.text = element_text(size = 20))
+
+  return(b_plot)
+}
+
 
 ###########################################################################
 # INLINE PERCENTAGE -------------------------------------------------------
@@ -170,7 +191,6 @@ compare_list <- function(dataset,x){
 }
 
 
-
 ###########################################################################
 # MEAN PLOTS WITH STAT RESULTS ---------------------------------------------
 
@@ -190,13 +210,12 @@ mean_plot_stat_results <- function(dataset, x, y, z){
 
 
 
-####################################################################################
+########################################################################################
 # RECODE TO OTHER BASED ON 10% FREQUENCY -----------------------------------------------
 
-condense <- function(df, x){
+condense_to_other <- function(df, x){
 
   m <- df %>%
-    filter(DamagedPlatforms == "2") %>%
     count_(x) %>%
     mutate(perc = n/sum(n)) %>%
     filter(perc < 0.10)
@@ -210,4 +229,38 @@ condense <- function(df, x){
   }
   return(df)
 }
+
+########################################################################################
+# RECODE TO NA BASED ON 10% FREQUENCY -----------------------------------------------
+
+condense_to_NA <- function(df, x){
+
+  m <- df %>%
+    count_(x) %>%
+    mutate(perc = n/sum(n)) %>%
+    filter(perc < 0.10)
+
+  z <- as.character(t(m[1]))
+
+  for(i in z){
+
+    df[[x]] <- ifelse(df[[x]] == i , NA, df[[x]])
+
+  }
+  return(df)
+}
+
+
+###########################################################################
+# CHI_SQUARE --------------------------------------------------------------
+
+CHI <- function(x, y) {
+
+  test <- chisq.test(table(x, y))
+  result <- c(test$p.value)
+
+  return(result)
+
+}
+
 

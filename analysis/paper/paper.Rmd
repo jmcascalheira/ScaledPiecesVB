@@ -265,9 +265,9 @@ ggplot(n_axis, aes(x = factor(RawMaterial), y = perc, fill = factor(DamagedPlatf
 
 \newline
 
-As in other classes of tools, scaled pieces' metric attributes are impacted by both the initial blank size as well as by the intensity of their use. Further, because some pieces were used in multiple axes, direct comparisons for length and width of the typological axes (see Table \@ref(tab:tech_attributes)) for definition) cannot be straighforwardly performed. Since the majority of the analyzed pieces presents a rectangular edge delineation, we use an approximation of the area (i.e. Length x Width), and thickness, to characterize size variability across chronologies and raw materials. 
+As in other classes of stone tools, scaled pieces' metric attributes are impacted by both the initial blank size as well as by the intensity of their use. Specifically, because some scaled pieces are used in multiple axes, direct comparisons for length and width of the typological axes (see Table \@ref(tab:tech_attributes)) for definition) cannot be straighforwardly performed. Since the majority of the analyzed pieces presented a rectangular outline, we use the area of a rectangle (i.e. Length x Width) as an approximation for the overall dimensions of the artifacts. Area calculations revealed a maximum of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm and a minimum of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm. For thickness the maximum is `r round(max(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm and the minimum is `r round(min(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm. In general, mean values tend to be similiar between raw materials, with some differences occuring within the Proto-Solutrean and Magdalenian assemblages, most certainly as a result of the small samples analysed for each of these periods (Figure \@ref(fig:meanplots)). Across techno-complexes, however, no significant statistical differences were detected when using an ANOVA test for both Area (`r anova_apa(aov(Area~Chronology, techno_data), "Chronology")` and  Thickness (`r anova_apa(aov(Thickness~Chronology, techno_data), "Chronology")`).
 
-Area calculations revealed a maximum size of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm and a minimum value of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm. For thickness the maximum is `r round(max(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm and the minimum is `r round(min(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm. In general, mean values tend to be similiar between raw materials, with some differences occuring within the Proto-Solutrean and Magdalenian assemblages, most certainly as a result of the small samples analysed for each of these periods (Figure \@ref(fig:meanplots)). Across techno-complexes, however, no significant statistical differences were detected when using an ANOVA test for both Area (`r anova_apa(aov(Area~Chronology, techno_data), "Chronology")` and  Thickness (`r anova_apa(aov(Thickness~Chronology, techno_data), "Chronology")`).
+When plotted against the number of damaged platforms, results for the Area variable reveal that pieces with four damaged platforms are amongst the largest, and that there is not a visible difference between the thickness of the pieces comprising each group.
 
 \newline
 
@@ -288,7 +288,23 @@ meanplots
 
 \newline
 
-With few exceptions (platform angle and facial scar distribution), most of the morpho-functional attributes show a higher degree of variability than technological attributes, and no significant patterns could be clearly noticed. However, two attributes were relatively constant across all occupations: most damaged platforms present less than 45º angles; and, most pieces have bifacial scars on one damaged platform and unifacial on the other. On a closer inspection, we find that most of the differences within the morpho-functional variables occur between raw materials rather than between chronologies.
+```{r plotbyplatforms, echo = FALSE, fig.caption = ""}
+
+area_by_platforms <- box_plot(techno_data, "DamagedPlatforms", "Area", "", "Area (Length * Width)")
+thickness_by_platforms <- box_plot(techno_data, "DamagedPlatforms", "Thickness", "Number of Damaged Platforms", "Thickness (mm)")
+
+boxplots <- ggarrange(area_by_platforms, thickness_by_platforms, ncol = 1, nrow = 2, common.legend = TRUE, legend = "right")
+
+boxplots
+
+```
+
+
+\newline
+
+With few exceptions, most of the morpho-functional attributes show a higher degree of variability than technological attributes, and no significant patterns could be clearly noticed. In fact, only two attributes were relatively constant across all occupations: most damaged platforms present less than 45º angles; and, a large percentage of pieces with two damaged platforms present bifacial scars on one of the platforms and unifacial scars on the opposite.
+
+On a closer inspection, we find that most of the differences within the morpho-functional variables occur between raw materials rather than between chronologies.
 
 
 ```{r }
@@ -296,8 +312,8 @@ With few exceptions (platform angle and facial scar distribution), most of the m
 # Filter attributes
 morpho_data <- all_data$morpho_data
 morpho_data <- morpho_data %>% 
-  filter(DamagedPlatforms == 2) %>% 
-  select(RawMaterial,
+  filter(DamagedPlatforms == 2)
+  select(RawMaterial, Chronology,
          ScarDistribution_PlatformA, ScarDistribution_PlatformB,
          ScarArrangement_PlatformA,ScarArrangement_PlatformB,
          ScarExtention_PlatformA,ScarExtention_PlatformB,
@@ -306,18 +322,28 @@ morpho_data <- morpho_data %>%
          Angle_PlatformA, Angle_PlatformB)
 
 
+var_list <- c("DamageDegree", "ScarShape", "ScarDistribution", "ScarArrangement", "ScarExtension", "ScarFacialDistribution")
+
+# Filter by chronology
+filter <- split(morpho_data_2plat, morpho_data$Chronology)
+
+# Get cross-tables by chronology using cross_tb() function
+Gravettian <- cross_tb(filter$Gravettian, "RawMaterial", var_list) 
+Gravettian <- select(Gravettian, " ", Chert, Quartz, Total) #to remove chalcedony
+
+
 # Recode based on 10% frequency rule
-condense()
+condense(morpho_data)
 
 
 # Join attributes
-m2 <- m2 %>% 
-  mutate(Damage_Degree = str_c(Damage_Degree_PlatformA,Damage_Degree_PlatformB, sep = "/")) %>% 
-  mutate(Scar_Shape = str_c(ScarShape_PlatformA,ScarShape_PlatformB, sep = "/")) %>%
-  mutate(Scar_Distribution = str_c(ScarDistribution_PlatformA,ScarDistribution_PlatformA, sep = "/")) %>%
-  mutate(Scar_Arrangement = str_c(ScarArrangement_PlatformA,ScarArrangement_PlatformB, sep = "/")) %>%
-  mutate(Scar_Extension = str_c(ScarExtention_PlatformA,ScarExtention_PlatformB, sep = "/")) %>%
-  mutate(Scar_FacialDistribution = str_c(ScarFacialDistribution_PlatformA,ScarFacialDistribution_PlatformB, sep = "/")) %>%
+morpho_data_2plat <- morpho_data %>% 
+  mutate(DamageDegree = str_c(DamageDegree_PlatformA,DamageDegree_PlatformB, sep = "/")) %>% 
+  mutate(ScarShape = str_c(ScarShape_PlatformA,ScarShape_PlatformB, sep = "/")) %>%
+  mutate(ScarDistribution = str_c(ScarDistribution_PlatformA,ScarDistribution_PlatformB, sep = "/")) %>%
+  mutate(ScarArrangement = str_c(ScarArrangement_PlatformA,ScarArrangement_PlatformB, sep = "/")) %>%
+  mutate(ScarExtension = str_c(ScarExtention_PlatformA,ScarExtention_PlatformB, sep = "/")) %>%
+  mutate(ScarFacialDistribution = str_c(ScarFacialDistribution_PlatformA,ScarFacialDistribution_PlatformB, sep = "/")) %>%
   mutate(Scar_EdgeDelineation = str_c(ScarEdgeDelineation_PlatformA,ScarEdgeDelineation_PlatformB, sep = "/")) %>%
   mutate(Angle = str_c(Angle_PlatformA,Angle_PlatformB, sep = "/"))
 
