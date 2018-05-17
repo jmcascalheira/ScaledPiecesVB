@@ -9,7 +9,7 @@ output:
     bookdown::word_document2: #subsistute by pdf_document2 or hmtl_document2 as necessary
       fig_caption: yes
       reference_docx: "../templates/template2.docx" 
-bibliography: ShortTermOccupations.bib
+bibliography: ScaledPiecesVB.bib
 csl: "../templates/springer-humanities-author-date.csl"
 abstract: |
   
@@ -18,6 +18,7 @@ abstract: |
 
 
 ```{r, setup, include = FALSE, echo = FALSE}
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   warning = FALSE,
@@ -27,6 +28,7 @@ knitr::opts_chunk$set(
   dpi = 300,
   fig.width = 9,
   fig.path = "../figures/")
+  cache = TRUE
 
 source('~/R_DATA/compendiums/ScaledPiecesVB/R/scaled_pieces_functions.R')
 
@@ -35,6 +37,7 @@ source('~/R_DATA/compendiums/ScaledPiecesVB/R/scaled_pieces_functions.R')
 
 ```{r load_libraries, echo = FALSE}
 
+library(knitr)
 library(tidyverse)
 library(FactoMineR)
 library(factoextra)
@@ -55,19 +58,19 @@ morpho_data <- all_data$morpho_data
 
 # Introduction
 
-Bipolar technology is generically classified into two types of lithic artifacts - bipolar cores and scaled pieces (also known as splintered pieces or pièce esquilée). Their distinction, however, has not always been consensual (Hayden, 1980). In fact, the definition of scaled piece has suffered significant changes ever since its initial identification in the early 20th century and, to this day, there still seems to be no clear definition for this type of artifact. The first definition of scaled pieces was proposed by Baron and Bouysonnie (1906), describing them as a result of bipolar knapping through direct percussion, with the “core” rested in a hard surface, originating splintering in both ends of the tool. Since then, several other definitions were adopted and adapted by researchers for a very diverse set of contexts across the world (see e.g. Octobon, 1938; Sonneville-Bordes and Perot, 1956: 552; MacDonald; 1968:88; Hayden, 1980; Shott, 1989; Knight 1991:61).
+Bipolar technology is generically classified into two types of lithic artifacts - bipolar cores and scaled pieces (also known as splintered pieces or *pièce esquilée*). Their distinction, however, has not always been consensual [@hayden_confusion_1980]. In fact, the definition of scaled piece has suffered significant changes ever since its initial identification in the early 20th century and, to this day, there still seems to be no clear definition for this type of artifact. The first definition of scaled pieces was proposed by Bardon and Bouyssonie [-@bardon_outils_1906], describing them as a result of bipolar knapping through direct percussion, with the “core” rested in a hard surface, originating splintering in both ends of the tool. Since then, several other definitions were adopted and adapted by researchers for a very diverse set of contexts across the world [e.g. @hayden_confusion_1980; @macdonald_debert:_1985; @octobon_contribution_1938; @shott_bipolar_1989; @sonneville-bordes_lexique_1956].
 
-Beyond the classification debate, the biggest issue with this type of tools comes from a functional standpoint, a problem that has also been quite debated (see e.g., Tixier, 1963; Binford and Quimby, 1963; Semenov, 1964; Flood, 1980:308; LeBlanc, 1992; Shott, 1999; Lucas and Hays, 2004; de la Peña, 2011; Igreja & Porraz, 2013). The issue surrounding this problem lies within the functional equifinality of these artifacts. Contrary to bipolar cores that are most of the times easily identified as cores, scaled pieces have been associated with two distinct types of activities: (1) as intermediate pieces or wedges for working hard raw materials (bone, ivory, antler, etc.); and (2) as cores for the extraction of chips and small bladelets (see e.g. Brantingham et al., 2004). Although largely debated, the ambiguity of this classification has, however, been ignored in some of the most recent literature, with some authors not acknowledging that bipolar evidence in stone tools might also result from other activities other than only reduction strategies (see e.g. Hiscock, 2015).
+Beyond the classification debate, the biggest issue with this type of tools comes from a functional standpoint, a problem that has also been quite debated [e.g. @binford_indian_1963; @de_la_pena_sobre_2011; @flood_moth_1980; @igreja_functional_2013; @leblanc_wedges_1992; @lucas_les_2004; @shott_bipolar_1999; @tixier_typologie_1963]. The issue surrounding this problem lies within the functional equifinality of these artifacts. Contrary to bipolar cores that are most of the times easily identified as cores, scaled pieces have been associated with two distinct types of activities: (1) as intermediate pieces or wedges for working hard raw materials (e.g. bone, ivory, antler); and (2) as cores for the extraction of chips and small bladelets [@brantingham_early_2004]. Although largely debated, the ambiguity of this classification has, however, been ignored in some of the most recent literature, with some authors not acknowledging that bipolar evidence in stone tools might also result from other activities other than only reduction strategies [see e.g. @hiscock_dynamics_2015].
 
-Most current studies on scaled pieces apply use-wear methods (e.g. Vaughan, 2002; Lucas & Hays, 2004; Bosinski, 2007; Gibaja et al. 2007; Sano, 2012; Igreja & Porraz, 2013, de la Peña, 2011; 2014; 2015a; 2015b, Bader et al., 2015), focusing on the identification of polishes and use-wear patterned stigmas, through both micro and macroscopic analysis of splintered surfaces and its comparison with experimental assemblages. Frequently, these studies coincide in interpreting scaled pieces as intermediate elements for the work of hard organic raw materials. The study by P. de la Peña (2011) is one of the most recent and relevant references in this regard. The author presents the results of an experimental program aiming to identify specific wear patterns in the use of bipolar techniques that allow the distinction between different types of activities/worked materials. Results indicate that while no visible differences can be identified in the percussion area, significant variation can be observed in the morphology of the areas in contact with the worked material.
+Most current studies on scaled pieces apply use-wear methods [e.g. @bader_lithic_2015; @de_la_pena_interpretation_2015; @de_la_pena_new_2014; @de_la_pena_qualitative_2015; @de_la_pena_sobre_2011; @gibaja_tecnologiy_2007; @igreja_functional_2013; @lucas_les_2004; @sano_functional_2012], focusing on the identification of polishes and use-wear patterned stigmas, through both micro and macroscopic analysis of splintered surfaces and its comparison with experimental assemblages. Frequently, these studies coincide in interpreting scaled pieces as intermediate elements for the work of hard organic raw materials. The study by P. de la Peña [-@de_la_pena_sobre_2011; -@de_la_pena_qualitative_2015] is one of the most recent and relevant references in this regard. The author presents the results of an experimental program aiming to identify specific wear patterns in the use of bipolar techniques that allow the distinction between different types of activities and worked materials. Results indicate that while no visible differences can be identified in the percussion area, significant variation can be observed in the morphology of the areas in contact with the worked material.  
 
-As in many other regions and stone age periods across the world (e.g., Diez et. al 2009; Igreja & Porraz, 2013; Langjans, 2012; Leakey, 1971: 221; Leblanc, 1992; Shott, 1989, 1999; White, 1968), evidence of bipolar technologies are quite ubiquitous in European Upper Paleolithic contexts. In many sites, bipolar elements are classified as scaled pieces, a morphotype that has been putatively considered as one the most common lithic tools in Upper Paleolithic assemblages (de la Peña, 2015). Different functional connotations for this type of artifacts have been presented in several western european Upper Paleolithic studies (e.g., Zilhão, 1997; Aubry et al. 1998; de la Peña 2011; Sano, 2012).
+As in many other regions and stone age periods across the world [e.g. @diez-martin_were_2009; @igreja_functional_2013; @langejans_middle_2012; @white_fabricators_1968], evidence of bipolar technologies are quite ubiquitous in European Upper Paleolithic contexts. In many sites, bipolar elements are classified as scaled pieces, a morphotype that has been putatively considered as one the most common lithic tools in Upper Paleolithic assemblages [@de_la_pena_qualitative_2015], but different functional connotations for this type of artifacts have been presented in several western european Upper Paleolithic studies [e.g. @de_la_pena_sobre_2011; @sano_functional_2012; @zilhao_o_1997].
 
-In the case of the westernmost regions of Iberia, scaled pieces are commonly found in archaeological contexts ranging from the Upper Paleolithic to the Neolithic (e.g. Aubry et al. 1998; Bicho 1992; Carvalho 1998; Zilhão 1997). While scarce, the majority of Portuguese paleolithic studies (e.g. Almeida 2000, Gameiro 2012) do not offer analytical interpretations for the presence of scaled pieces, simply using references that interpret them as bipolar cores for the extraction of small bladelets and chips to be supposedly used in composite tools (as argued by Zilhão, 1997) or as intermediate pieces for working hard materials (Gibaja et al., 2007; Marreiros, 2009). Zilhão (1997) for example argues that the presence of scaled pieces throughout the Upper Paleolithic sequence of central Portugal is inversely proportional to the presence of “carinated cores”, and thus it is likely that the former should have worked as a flexible substitute for the latter. Carvalho (1998) agrees with this interpretation and considers it also valid for the Portuguese Early Neolithic.
+In the case of the westernmost regions of Iberia, scaled pieces are commonly found in archaeological contexts ranging from the Upper Paleolithic to the Neolithic [e.g. @bicho_technological_2000; @carvalho_talhe_1998; @zilhao_o_1997]. While scarce, the majority of portuguese paleolithic studies [e.g. @almeida_terminal_2000; @goncalves_variabilite_2012] do not offer analytical interpretations for the presence of scaled pieces, simply using references that interpret them as bipolar cores for the extraction of small bladelets and chips to be supposedly used in composite tools [e.g. @zilhao_o_1997] or as intermediate pieces for working hard materials [@gibaja_tecnologiy_2007; @marreiros_as_2009]. Zilhão [-@zilhao_o_1997] for example argues that the presence of scaled pieces throughout the Upper Paleolithic sequence of central Portugal is inversely proportional to the presence of “carinated cores”, and thus it is likely that the former should have worked as a flexible substitute for the latter. Carvalho [-@carvalho_talhe_1998] agrees with this interpretation and considers it also valid for the portuguese early Neolithic.
 
 While we agree that some of the elements might have been used as cores, these interpretations seem overly simplistic, and the authors seem to have little to no evidence to back their claims other than the inverse relationship mentioned above. This results in part from the lack of comprehensive studies regarding this type of artifacts at a regional scale. Additionally, the contexts from where most of these artifacts were recovered did not have good organic preservation and, thus, no direct association between these tools and the exploitation of hard-organic raw materials is possible, and, in face of the inexistence of any absolute dates, their precise chronological attribution is also, most of the times, unreliable.
 
-In this paper, we present a first approach to the characterization of the morpho-technological variability and consequent role of scaled pieces during the Upper Paleolithic of the westernmost regions of Iberia (c. 32 000 – 10 000 cal BP). Using data from the multi-component, thoroughly dated, site of Vale Boi, located in southern Portugal, we present the analysis of a series of technological and morpho-functional attributes of a relatively large set of scaled pieces coming from one of the areas of the site. Using these data as a starting point, we then explore the relationship between the variability detected in the production and use of these artifacts with inter-site lithic technological patterns, and with the striking evidence for an intensification and diversification of faunal resources exploitation during the time-span under consideration.
+In this paper, we present a first approach to the characterization of the morpho-technological variability and consequent role of scaled pieces during the Upper Paleolithic of the westernmost regions of Iberia (c. 32–10 ka cal BP). Using data from the multi-component, thoroughly dated, site of Vale Boi, located in southern Portugal, we present the analysis of a series of technological and morpho-functional attributes of a relatively large set of scaled pieces coming from one of the areas of the site. Using these data as a starting point, we then explore the relationship between the variability detected in the production and use of these artifacts with inter-site lithic technological patterns, and with the striking evidence for an intensification and diversification of faunal resources exploitation during the time-span under consideration.
 
 \newline
 
@@ -75,13 +78,13 @@ In this paper, we present a first approach to the characterization of the morpho
 
 The archaeological site of Vale Boi is located in the western edge of the Algarve region (southern Portugal) (Figure \@ref(fig:VBLocation)). The site can be found in a small valley following a river north-south for 2 km until it reaches the Atlantic Ocean. Archaeological deposits occupy an estimated area of over 10 000 sq. meters across a stepped slope marked at the top by a 10 meter-high limestone cliff face.
 
-A complete sequence of Upper Paleolithic has been identified at Vale Boi, with all the traditionally-defined techno-complexes (Gravettian, Proto-Solutrean, Solutrean and Magdalenian) being identified across the three main excavation areas: the Terrace, the Rockshelter, and the Slope.
+A rather complete Upper Paleolithic sequence has been identified at Vale Boi, with all the traditionally-defined techno-complexes (Gravettian, Proto-Solutrean, Solutrean and Magdalenian) being identified across the three main excavation areas: the Terrace, the Rockshelter, and the Slope.
 
-The Terrace area is located in the lower part of the hill. In this area, the longest archaeological sequence of the site can be found, including the complete Upper Paleolithic sequence but also three Holocene horizons, corresponding to Neolithic, Mesolithic and Epipaleolithic occupations (Bicho et al., 2012; Cascalheira et. al, 2017). From within the lower levels of this area, an Early Gravettian occupation was discovered, dated to c. 32 ka cal BP, being one of the earliest radiocarbon dates for anatomically modern humans in Southern Iberia (Bicho et al., 2016; Marreiros et al., 2015).
+The Terrace area is located in the lower part of the hill. In this area, the longest archaeological sequence of the site can be found, including the complete Upper Paleolithic sequence but also three Holocene horizons, corresponding to Neolithic, Mesolithic and Epipaleolithic occupations [@bicho_ledge:_2012; @cascalheira_cross-scale_2017]. From within the lower levels of this area, an Early Gravettian occupation was discovered, dated to c. 32 ka cal BP, being one of the earliest radiocarbon dates for anatomically modern humans in Southern Iberia [@bicho_ecodynamics_2013; @marreiros_lithic_2015].
 
-The Rockshelter area is a collapsed rock shelter located in the upper part of the slope, a couple of meters below the limestone cliff. This collapse would have occurred after the Last Glacial Maximum, since below the collapsed debris, several Solutrean occupations can be found, overlaying a sequence of very ephemeral Gravettian horizons (Marreiros, 2009; Cascalheira, 2009; Manne et al., 2012). The Solutrean is dated to between c. 20 ka and 25 ka cal BP (Cascalheira et al., 2012), while the Gravettian is dated between 26 ka and 32 ka cal BP (Marreiros et al., 2015).
+The Rockshelter area is a collapsed rock shelter located in the upper part of the slope, a couple of meters below the limestone cliff. This collapse would have occurred after the Last Glacial Maximum, since below the collapsed debris, several Solutrean occupations can be found, overlaying a sequence of very ephemeral Gravettian horizons [@cascalheira_vale_2012; @manne_intensive_2012; @marreiros_as_2009]. The Solutrean is dated to between c. 20 ka and 25 ka cal BP [@cascalheira_chronological_2015], while the Gravettian is dated between 26 ka and 32 ka cal BP [@marreiros_lithic_2015].
 
-Finally, the Slope section, from where the assemblage here presented is coming from, is composed of a series of excavation areas opened across the mid-hill sector of the site. These areas exhibit heterogeneous conditions in terms of site formation processes and archaeological preservation (Manne et al., 2012), but all revealed the presence of occupations attributed to the Gravettian, Proto-Solutrean, Solutrean and Magdalenian. Like in the previous areas, remains are well preserved, and high frequencies of lithic artifacts, malacological and mammalogical fauna and bone tools were recovered. No habitation features were identified in this area and based on the conditions and type of artifacts found, it has been suggested that this area would have functioned as a midden deposit (Bicho et al., 2010, 2012a).
+Finally, the Slope section, from where the assemblage here presented is coming from, is composed of a series of excavation areas opened across the mid-hill sector of the site. These areas exhibit heterogeneous conditions in terms of site formation processes and archaeological preservation [@manne_intensive_2012], but all revealed the presence of occupations attributed to the Gravettian, Proto-Solutrean, Solutrean and Magdalenian. Like in the previous areas, remains are well preserved, and high frequencies of lithic artifacts, malacological and mammalogical fauna and bone tools were recovered. No habitation features were identified in this area and based on the conditions and type of artifacts found, it has been suggested that this area would have mostly functioned as a midden deposit [@bicho_ledge:_2012; @bicho_paleolithique_2010].
 
 
 ```{r VBLocation, echo = FALSE, fig.cap="Location of the site of Vale Boi"}
@@ -98,24 +101,24 @@ knitr::include_graphics("../figures/VBMap.png")
 
 ## Lithic technology
 
-Vale Boi’s lithic studies have revealed a general tendency for stable technological and functional patterns throughout the Upper Paleolithic (see e.g. Bicho et al., 2012; Gibaja and Bicho, 2006; Bradtmöller et. al, 2015; Marreiros, 2009, 2013, 2015; Cascalheira, 2009, 2013). This can be explained, partially, by raw material availability. Most raw materials were procured locally or regionally from deposits located at no more than 20 km away from the site (Bicho et al., 2010a). 
-Chert was the most used rock type for more complex retouched tools production, while quartz and greywacke were mostly used for flake extraction and simple retouched tools production. Other raw materials can be found at the site, but much more restricted, both diachronically and functionally within each techno-complex and each archaeological horizon. Schist, for instance, shows up in some occupations almost exclusively connected to mobile art. Dolerite can only be found in the Proto-Solutrean levels, while chalcedony is mostly limited to the Proto-Solutrean and Solutrean levels.
+Vale Boi’s lithic studies have revealed a general tendency for stable technological and functional patterns throughout the Upper Paleolithic [e.g. @bicho_ledge:_2012; @bradtmoller_lithic_2016; @cascalheira_cross-scale_2017; @cascalheira_influencia_2013; @cascalheira_vale_2012; @gibaja_funcion_2011; @marreiros_as_2009; @marreiros_lithic_2013; @marreiros_lithic_2015]. This can be explained, partially, by raw material availability. Most raw materials were procured locally, or regionally from deposits located at no more than 20 km away from the site [@bicho_paleolithique_2010]. 
+Chert was the most used rock type for more complex retouched tools production, while quartz and greywacke were mostly used for flake extraction and simple retouched tools production. Other raw materials can be found at the site, but much more restricted, both diachronically and functionally, within each techno-complex. Schist, for instance, shows up in some occupations almost exclusively connected to mobile art. Dolerite was only  found in the Proto-Solutrean levels [@belmiro_o_2017], while chalcedony is mostly limited to the Proto-Solutrean and Solutrean levels [@cascalheira_vale_2012].
 
-Chert is the most abundant knapped rock type in Vale Boi. Throughout the several occupations, chert was considered the best rock type for knapping, which is evident by the way it was explored with much more complex strategies than either greywacke or quartz. While it can be said that chert exploration strategies were more elaborate, with exception of the bifacial technology during the Solutrean, they were still simple unidirectional reduction sequences producing mostly small debitage. Elongated products are found at very low frequencies across all chronologies. When present, retouched tools are mostly notches, denticulates, end-scrapers and, if considered, scaled pieces. One possible reason for these simplistic strategies seems to be an overall low knapping quality, since nodules are quite small, and frequently show a high degree of tectonically derived fractures (Pereira et al. 2016).
+Chert is the most abundant knapped rock type in Vale Boi. Throughout the several occupations, chert was considered the best rock type for knapping, which is evident by the way it was explored with much more complex strategies than either greywacke or quartz. While it can be said that chert exploration strategies were more elaborate, the most common strategies were still simple unidirectional or bidirectional reduction sequences, producing mostly flakes [@marreiros_flake_2012]. Elongated products are found at low frequencies across all chronologies. When present, retouched tools are mostly notches, denticulates, end-scrapers, and scaled pieces. One possible reason for these simplistic strategies seems to be an overall low knapping quality, since nodules are quite small, and frequently show a high degree of tectonically derived fractures [@pereira_territory_2016].
 
-Two distinct types of quartz were identified at the site. The first is a thick grain, low-quality type, mostly inadequate for knapping. Still, this kind of quartz is present in large quantities and is most likely associated with stone boiling and grease rendering activities (Manne & Bicho, 2009; Manne, 2010; Bicho et al, 2012; Manne et al. 2012, 2014). The second type of quartz is characterized by finer-grain small pebbles with yellowish cortex. This type of quartz was knapped using rather simple strategies, mostly for small flake production, which in turn were used to produce simple and versatile tools (e.g. scaled pieces).
+Two distinct types of quartz were identified at the site. The first is a thick grain, low-quality type, mostly inadequate for knapping. Still, this kind of quartz is present in large quantities and is most likely associated with stone boiling and grease rendering activities [@bicho_ledge:_2012; @manne_early_2014; @manne_intensive_2012; @manne_upper_2010; @manne_vale_2009]. The second type of quartz is characterized by finer-grain small pebbles with yellowish cortex. This type of quartz was knapped using rather simple strategies, mostly for small flake production, which in turn were used to produce simple and versatile tools.
 
-Greywacke was used for the rare production of flakes and choppers but shows up in the site mostly in the form of large slabs in which the identification of concavely shaped impact marks is thought to result from their use as anvils (Manne et. al, 2012, Manne & Bicho, 2009). The importance of greywacke anvils is indicated by its high frequency, with hundreds of slabs found in many levels throughout all occupations (Bicho et al, 2012; Manne et al. 2012). Greywacke was also knapped for flake extraction, using expedient unidirectional reduction strategies.
+Greywacke is the third most frequent raw material at Vale Boi, showing up in the site mostly in the form of large slabs, in which the identification of concavely shaped impact marks is thought to result from their use as anvils. The importance of greywacke anvils is indicated by its high frequency, with hundreds of slabs found in many levels throughout all occupations [@bicho_ledge:_2012; @manne_intensive_2012]. Greywacke was also knapped for flake extraction, using expedient unidirectional reduction strategies [@cascalheira_influencia_2013; @marreiros_as_2009].
 
 \newline
 
 ## Subsistence patterns
 
-Organic preservation is good at Vale Boi. Faunal remains can be frequently found in every occupation, from both terrestrial and marine sources. Marine fauna at the site is marked by the presence of mollusks, crustaceans, some fish vertebrae and, in rare occasions, marine mammal remains (Manne, 2010). Regarding terrestrial fauna, three species dominate the vertebrate group: rabbit (Oryctolagus cuniculus), red deer (Cervus elaphus) and horse (Equus caballus). Smaller amounts of wild ass (Equus hydruntinus), aurochs (Bos primigenius), ibex (Capra pyrenaica) and wild boar (Sus scrofa) are also present (Manne, 2010, 2012, 2014). One of the most interesting patterns within the faunal assemblages is that a large portion of ungulate remains present specific types of fracture that have been associated with bone marrow extraction activities. Red deer and horse remains frequently show evidence of opposed cone fractures, trituration and smashing (Manne & Bicho, 2009; Manne, 2010, 2012, 2014).
+Organic preservation is fairly good at Vale Boi. Faunal remains can be frequently found in all occupations, both of terrestrial and marine resources. Marine fauna at the site is marked by the presence of mollusks, crustaceans, some fish vertebrae and, in rare occasions, marine mammal remains [@manne_upper_2010]. Regarding terrestrial fauna, three species dominate the vertebrate group: rabbit (*Oryctolagus cuniculus*), red deer (*Cervus elaphus*) and horse (*Equus caballus*). Smaller amounts of wild ass (*Equus hydruntinus*), aurochs (*Bos primigenius*), ibex (Capra pyrenaica) and wild boar (Sus scrofa) are also present [@manne_early_2014; @manne_intensive_2012; @manne_upper_2010]. One of the most interesting patterns within the faunal assemblages is that a large portion of ungulate remains present specific types of fracture that have been associated with bone marrow extraction activities. Red deer and horse remains frequently show evidence of opposed cone fractures, trituration and smashing [@manne_early_2014; @manne_intensive_2012; @manne_upper_2010; @manne_vale_2009].
 
-Ungulates would have been hunted and processed in a similar fashion throughout the Upper Paleolithic. While there were conditions for the whole bones to be preserved, these bones are frequently anthropically broken. These fragmentation patterns seem to be linked to grease rendering activities (Manne, 2010, 2012, 2014). The main goal of grease rendering is to obtain grease, through heat exposure from animal bones, as it has a very high caloric value. Other than this, this grease could have many uses with the addition of being easily stored and transported (Manne, 2012). The spongeous bone parts would be fragmented and deposited in a hole, covered with animal pelts full of water, after which, pre-heated rock fragments were added. The high temperature of the rocks would make the water boil and therefore separate the grease from the spongeous bones creating a highly nutritional stew (Manne, 2014). After being cooled the grease would accumulate at the top where it could be easily removed, transported and stored. Unlike simple bone marrow extraction, this method involved large preparation, including water transport, fire, and heat production, rock heating, and finally the storing of the grease (Manne, 2014).
+Ungulates would have been hunted and processed in a similar fashion throughout the Upper Paleolithic. While there were conditions for the whole bones to be preserved, these bones are frequently anthropically broken. These fragmentation patterns seem to be linked to grease rendering activities [@manne_early_2014; @manne_intensive_2012; @manne_upper_2010]. The main goal of grease rendering is to obtain grease, through heat exposure from animal bones, as it has a very high caloric value. Other than this, this grease could have many uses with the addition of being easily stored and transported [@manne_intensive_2012]. The spongeous bone parts would be fragmented and deposited in a hole, covered with animal pelts full of water, after which, pre-heated rock fragments were added. The high temperature of the rocks would make the water boil and therefore separate the grease from the spongeous bones creating a highly nutritional stew. After being cooled the grease would accumulate at the top where it could be easily removed, transported and stored. Unlike simple bone marrow extraction, this method involved large preparation, including water transport, fire, and heat production, rock heating, and finally the storing of the grease [@manne_early_2014].
 
-These grease rendering techniques are thought to be quite common at the site since the parts of the bones with higher amounts of fat are missing despite the good preservation of the rest of the remains (Manne et al. 2012). Fragmented ungulate remains show up in the site connected to large amounts of thermo-altered quartz, anvils, hard hammers and scaled pieces. This suggests that red deer and horse bones were processed and afterward intensively grease rendered (Manne & Bicho, 2009; Manne, 2010, 2012, 2014). To confirm this, a single scaled piece was found stuck to a cracked phalanx in a Gravettian horizon (Manne, 2012).
+These grease rendering techniques are thought to be quite common at the site since the parts of the bones with higher amounts of fat are missing despite the good preservation of the rest of the remains. Fragmented ungulate remains show up in the site connected to large amounts of thermo-altered quartz, anvils, hard hammers and scaled pieces. This suggests that red deer and horse bones were processed and afterward intensively grease rendered. To confirm this, a single scaled piece was found stuck to a cracked phalanx in a Gravettian horizon [@manne_early_2014; @manne_intensive_2012; @manne_upper_2010; @manne_vale_2009].
 
 \newline
 
@@ -123,11 +126,11 @@ These grease rendering techniques are thought to be quite common at the site sin
 
 ## Scaled pieces attribute analysis
 
-Attribute analysis was split into two main groups, each corresponding to two distinct types of features: (1) technological attributes and (2) morpho-functional attributes.
+Attribute analysis was split into two main groups, each corresponding to two distinct types of features: (1) technological attributes and (2) morpho-functional attributes. In the first group, a series of variables traditionally used in lithic studies [e.g. @andrefsky_jr_lithics:_2005; @inizan_technology_1999] were recorded (Table \@ref(tab:tech_attributes)), aiming to characterize patterns of blank choice for the application of bipolar technology. For the second group of variables, a macroscopic approach building upon the work of de la Peña [-@de_la_pena_sobre_2011] and Fischer et. al [-@fischer_macro_1984] was adopted (Table \@ref(tab:morph_attributes)). Studies by Sano [-@sano_functional_2012], and Gibaja et al. [-@gibaja_tecnologiy_2007] indicate that since use-wear traces are formed before the splintering, the removal of small chips removes most of the polishes and use-wear traces left by the contact with the static element (either a stone anvil or a hard-organic materials). This, together with the large presence of quartz artifacts in our sample, prevented us to pursue a microscopic use-wear approach for this study in particular.
 
-In the first group, a series of variables traditionally used in lithic studies (e.g. Andrefsky, 2005; Inizan et. al, 1999) were recorded (Table \@ref(tab:tech_attributes)), aiming to characterize patterns of blank choice for the application of bipolar technology.
+\newline
 
-For the second group of variables a macroscopic approach, building upon the work of de la Peña (2011) and Fischer et. al (1984) was adopted (Table \@ref(tab:morph_attributes)). Studies by Vaughan (2002), Sano (2012), and Gibaja et al. (2007) indicate that since use-wear traces are formed before the splintering, the removal of small chips removes most of the polishes and use-wear traces left by the contact with the static element (either a stone anvil or a hard-organic materials). This prevented us to pursue a microscopic use-wear approach in this study.
+Macroscopic morpho-functional attributes were separately analyzed for each damaged platform, aiming to detect patterns of morphological change that occurred in artifacts during use. Following the work of de la Peña [-@de_la_pena_qualitative_2015; -@de_la_pena_sobre_2011] and Gonzalez-Urquijo & Ibanez-Estévez [-@gonzalez-urquijo_metodologialisis_1994], we expected that these attributes would be indicative of which function the artifacts had. For instance, according to de la Peña [-@de_la_pena_qualitative_2015; -@de_la_pena_sobre_2011], for pieces used as wedges the delineation of the damaged platforms are constantly asymetrical and only the hammered edge clearly shows the typical *écaille* retouch. Furthermore, these pieces would have irregular shapes, variable scar size, and irregular scar distribution. On the other hand, pieces used as bipolar cores would have squared or rectangular shapes, symmetric straight damaged platforms, and a higher frequency of scars on the hammered edge than on the opposed edge. The addition of other attributes expanding on the work by Gonzalez-Urquijo & Ibanez-Estévez [-@gonzalez-urquijo_metodologialisis_1994] was made following the same reasoning. We expected, thus, to be able to differentiate pieces used as wedges from pieces used as cores, as both groups would show distinct combinations of attributes. To assist us with this differentiation we tested the presence of the referred patterns within our assemblage using descriptive and multivariate statistical analysis and comparing it with the data described by the referred authors.
 
 \newline
 
@@ -147,10 +150,6 @@ For the second group of variables a macroscopic approach, building upon the work
 
 \newline
 
-Macroscopic morpho-functional attributes were separately analyzed for each damaged platform, aiming to detect patterns of morphological change that occurred in artifacts during use. Following the work of de la Peña (2011, 2015) and Gonzalez-Urquijo & Ibanez-Estévez (1994), we expected that these attributes would be indicative of which function the artifacts had. For instance, according to de la Peña (2011, 2015), for pieces used as wedges, the shape of the passive platform remains the same and the other varies according to the type of material worked on the active platform. Furthermore, these pieces would have irregular shapes, variable scar size, and irregular scar distribution. On the other hand, pieces used as bipolar cores would have squared or rectangular shapes, symmetric straight platforms, and a higher frequency of scars on the striking edge than on the active edge. The addition of other attributes expanding on the work by Gonzalez-Urquijo & Ibanez-Estévez (1994) was made following the same reasoning. We expected, thus, to be able to differentiate pieces used as wedges from pieces used as cores, as both groups would show distinct combinations of attributes. To assist us with this differentiation we tested the presence of the referred patterns within our assemblage using descriptive and multivariate statistical analysis and comparing it with the data described by the referred authors.
-
-\newline
-
 ## Reproducibility and open source materials
 
 All analyses and data processing were accomplished in R (version `r getRversion()`) [@r_core_team_r:_2013]. Following recent concerns on the reproducibility of archaeological analysis we include the entire R code used for all the analysis and visualizations contained in this paper in our supplemental online material (SOM) at https://dx.doi.org/… To produce those files we followed the procedures described by Marwick et al. [-@marwick_packaging_2017] for the creation of research compendiums to enhance the reproducibility of research. The files provided contain all the raw data used in our analysis as well as a custom R package [@wickham_r_2015] holding the code use for all analysis and to produce all tables and figures. To enable maximum re-use, our code is released under the MIT license, our data as CC-0, and our figures as CC-BY, [for more information see @marwick_computational_2016].
@@ -159,9 +158,7 @@ All analyses and data processing were accomplished in R (version `r getRversion(
 
 # Results
 
-A total of `r summarise(techno_data, n())` scaled pieces were analyzed, of which `r round(techno_data %>% filter(Chronology == "Gravettian") %>% summarise(n = n()) %>% mutate(n = (n / 139)*100), digits = 2)`% come from Gravettian, and `r round(techno_data %>% filter(Chronology == "Solutrean") %>% summarise(n = n()) %>% mutate(n = (n / 139)*100), digits = 2)`% from Solutrean levels, as shown in (Table \@ref(tab:assemblage)).The assemblage was divided into 4 main chronological groups: Magdalenian, Solutrean, Proto-Solutrean, and Gravettian.
-
-As previously mentioned, as far as the technological data is concerned, one of our main objectives was to characterize and understand the choice of blanks involved in bipolar technology. We did not include the metric data, as most of the data from the original blanks are mostly gone due to reduction and use. Overall, the technological analysis revealed some trends that lasted throughout the Upper Paleolithic, in agreement with the general patterns of lithic technology in the site (see above).
+A total of `r summarise(techno_data, n())` scaled pieces were analyzed, of which `r round(techno_data %>% filter(Chronology == "Gravettian") %>% summarise(n = n()) %>% mutate(n = (n / 139)*100), 2)`% come from Gravettian, and `r round(techno_data %>% filter(Chronology == "Solutrean") %>% summarise(n = n()) %>% mutate(n = (n / 139)*100), 2)`% from Solutrean levels, as shown in (Table \@ref(tab:assemblage)). In terms of raw materials, the great majority of pieces were either made on quartz or chert, with chalcedony being represented only by `r round(techno_data %>% filter(RawMaterial == "Chalcedony") %>% summarise(n = n()), 2)` artifacts.
 
 \newline
 
@@ -171,13 +168,16 @@ var_list <- c("Chronology")
 
 assemb <- cross_tb(techno_data, "RawMaterial", var_list)
 
-knitr::kable(assemb, caption= "")
+knitr::kable(assemb, caption= "Frequencies of scaled pieces by raw material and chronology")
 
 ```
 
 \newline
+As previously mentioned, as far as the technological data is concerned, one of our main objectives was to characterize the choice of blanks involved in bipolar technology. Overall, the technological analysis revealed some trends that lasted throughout the Upper Paleolithic, in agreement with the general patterns of lithic technology recorded for the site. Across all techno-complexes, blanks used were either flakes or unclassifiable fragments, but the choice seems to be different for each raw material. For quartz, in the Gravettian assemblage, the blank types are almost equally split between flakes and unclassifiable pieces (Table \@ref(tab:technogravettian)). In other periods, flakes were the preferred type of blank (Tables \@ref(tab:technosolutrean), \@ref(tab:technoproto) and \@ref(tab:technomagdalenian)). Regarding chert, in every occupation flakes dominate the assemblages, followed by a reduced number (n = `r techno_data %>% filter(RawMaterial == "Chert" & Blank == "Non_identifiable") %>% summarise(n())`) of unclassifiable blanks. The small sample of Chalcedony blanks is exclusively represented by flakes.
 
-Across all techno-complexes, blanks used were either flakes or unclassifiable fragments, but the choice seems to be different for each raw material. For quartz, in the Gravettian assemblage, the blank types are almost equally split between flakes and unclassifiable pieces (Table \@ref(tab:technogravettian)). In other periods, flakes were the preferred type of blank (Tables \@ref(tab:technosolutrean), \@ref(tab:technoproto) and \@ref(tab:technomagdalenian)). Regarding chert, in every occupation flakes dominate the assemblages, followed by a reduced number (n = `r techno_data %>% filter(RawMaterial == "Chert" & Blank == "Non_identifiable") %>% summarise(n())`) of unclassifiable blanks. Chalcedony blanks are exclusively flakes.
+Technological and morphological characteristics of the flake blanks present very similar patterns across time and amongst raw materials. The blanks sought after would have straight profiles, parallel edges, no cortical surfaces and trapezoidal or triangular shaped cross-sections.
+
+Other characteristics of the assemblage are the low frequency of retouch (n = `r techno_data %>% filter(RetouchedBlank == "Yes") %>% summarise(n())`), of fire alterations (n = `r techno_data %>% filter(Fire != "No_Traces") %>% summarise(n())`), and of the presence of original striking platforms (n = `r techno_data %>% filter(ButtType != "Absent") %>% summarise(n())`). Still, when present, retouch was located in the lateral part of the artifacts, similar to what would define a side-scraper. In a very small number of cases, when striking platforms were detected, these were mostly flat. The absence of the original blank platforms is to be expected in this type of artifact, mostly due to the functional use of the pieces, and consequent removal of the platform, rather than an actual choice. The large absence of platforms may, on the other hand, be the result of the use of the technological axis as the main functional axis. In fact, when identifiable, technological and typological axes coincide in `r inline_perc(techno_data, AxisCoincident, "Yes")`% of the cases. The longitudinal section shows a large variability of shapes, independent of raw material or chronology. Similarly, the dorsal pattern of previous removals was rarely identified, although this, like with the case of platform absence, might occur due to the functional stigmas and be dependent on the intensity of use for each artifact.
 
 \newline
 
@@ -191,14 +191,24 @@ filter <- split(techno_data, techno_data$Chronology)
 
 # Get cross-tables by chronology using cross_tb() function
 Gravettian <- cross_tb(filter$Gravettian, "RawMaterial", var_list) 
-Gravettian <- select(Gravettian, " ", Chert, Quartz, Total) #to remove chalcedony
+Gravettian <- Gravettian %>% 
+  as.tibble() %>% 
+  select(" " = Variable, Chert, Quartz, Total = Overall)
 
 Solutrean <- cross_tb(filter$Solutrean, "RawMaterial", var_list)
+Solutrean <- Solutrean %>% 
+  as.tibble() %>% 
+  select(" " = Variable, Chert, Quartz, Chalcedony, Total = Overall)
 
 `Proto-Solutrean` <- cross_tb(filter$`Proto-Solutrean`, "RawMaterial", var_list)
+`Proto-Solutrean` <- `Proto-Solutrean` %>% 
+  as.tibble() %>% 
+  select(" " = Variable, Chert, Quartz, Chalcedony, Total = Overall)
 
 Magdalenian <- cross_tb(filter$Magdalenian, "RawMaterial", var_list)
-Magdalenian <- select(Magdalenian, " ", Chert, Quartz, Total) #to remove chalcedony
+Magdalenian <- Magdalenian %>% 
+  as.tibble() %>% 
+  select(" " = Variable, Chert, Quartz, Total = Overall)
 
 ```
 
@@ -234,17 +244,43 @@ knitr::kable(Magdalenian, caption= "Technological attribute frequencies by raw m
 
 ```
 
+```{r mestric_statistics, echo = FALSE}
+
+techno_data <- techno_data %>% 
+  mutate(Area = AxisWidth*AxisLength)
+
+anova.test.area <- anova.test(Area ~ Chronology, techno_data)
+
+anova.test.thickness <- anova.test(Thickness ~ Chronology, techno_data)
+
+```
+
 \newline
 
-Technological and morphological characteristics of the flake blanks present very similar patterns across time and amongst raw materials. The blanks sought after would have the following characteristics: straight profile, parallel edges, no cortical surfacem and trapezoidal or triangular shaped cross-sections.
-
-Other characteristics of the assemblage are the low frequency of retouch (n = `r techno_data %>% filter(RetouchedBlank == "Yes") %>% summarise(n())`), fire alterations (n = `r techno_data %>% filter(Fire != "No_Traces") %>% summarise(n())`), and of the original striking platforms (n = `r techno_data %>% filter(ButtType != "Absent") %>% summarise(n())`). Still, when present, retouch was located in the lateral part of the artifacts, similar to what would define a side-scraper. In a very small number of cases when striking platforms were detected, these were mostly flat. The absence of the original blank platforms is to be expected in this type of artifact, mostly due to the functional use of the pieces, and consequent removal of the platform, rather than an actual choice. The large absence of platforms may, on the other hand, be the result of the use of the technological axis as the main functional axis. In fact, when identifiable, technological and typological axes coincide in `r inline_perc(techno_data, AxisCoincident, "Yes")`% of the cases. The longitudinal section shows a large variability of shapes, independent of raw material or chronology. Similarly, the dorsal pattern of previous removals was rarely identified, although this, like with the case of the platform absence, might occur due to the functional stigmas and be dependent on the the intensity of use for each artifact.
-
-The patterns of use and rotation of damaged platforms seem to be the same across all chronologies. In every assemblage quartz pieces were exclusively used in one single axis, exhibiting only two damaged platforms. On the other end, some (3,38%) chert and chalcedony artifacts exhibit multiple functional axis, with three or four damaged platforms (Figure \@ref(fig:nplatforms)). This seems to indicate different strategies of curation for coarse and fine grain raw materials.
+As in other classes of stone tools, scaled pieces' metric attributes are impacted by both the initial blank size as well as by the intensity of their use. Specifically, because some scaled pieces are used in multiple axes, direct comparisons for length and width of the typological axes (see Table \@ref(tab:tech_attributes)) for definition) cannot be straighforwardly performed. Since the majority of the analyzed pieces presented a rectangular outline, we use the area of a rectangle (i.e. Length x Width) as an approximation for the overall dimensions of the artifacts. Area calculations revealed a maximum of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm and a minimum of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm. For thickness the maximum is `r round(max(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm and the minimum is `r round(min(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm. In general, mean values tend to be similiar between raw materials, with some differences occuring within the Proto-Solutrean and Magdalenian assemblages, most certainly as a result of the small samples analysed for each of these periods (Figure \@ref(fig:meanplots)). Across techno-complexes, however, no significant statistical differences were detected when using an ANOVA test for both the Area ($F (`r anova.test.area[1]`, `r anova.test.area[2]`) = `r anova.test.area[3]`$, $p = `r anova.test.area[4]`)$ and Thickness ($F (`r anova.test.thickness[1]`, `r anova.test.thickness[2]`) = `r anova.test.thickness[3]`$, $p = `r anova.test.thickness[4]`)$ variables.
 
 \newline
 
-```{r nplatforms, fig.cap=""}
+```{r meanplots, echo = FALSE, fig.cap="Barplots of means for Area (Length x Width) and Thickness of scaled pieces by raw material and across the four chronological phases. Error bars represent standard deviations."}
+
+
+area <- mean_plot(techno_data, "Chronology", "Area", "RawMaterial")
+thickness <- mean_plot(techno_data, "Chronology", "Thickness", "RawMaterial")
+
+meanplots <- ggarrange(area, thickness, ncol = 1, nrow = 2, common.legend = TRUE, legend = "right")
+
+meanplots
+
+```
+
+
+\newline 
+
+The patterns of use and rotation of damaged platforms seem to be the same across all chronologies. In every assemblage quartz pieces were exclusively used in one single axis, exhibiting only two damaged platforms. On the other end, some chert and chalcedony artifacts exhibit multiple functional axis, with three or four damaged platforms (Figure \@ref(fig:nplatforms)). This seems to indicate different strategies of curation for coarse and fine grain raw materials. However, when plotted against metric data, results for the Area variable, on the one hand, reveal that pieces with four damaged platforms are amongst the largest, and, on the other, there is not a visible difference between the thickness of the pieces comprising each group. <!-- why is this relevant? --> 
+
+\newline
+
+```{r nplatforms, echo=FALSE, fig.cap=""}
 
 n_axis <- morpho_data %>% 
   group_by(Chronology,RawMaterial,DamagedPlatforms) %>% 
@@ -265,29 +301,6 @@ ggplot(n_axis, aes(x = factor(RawMaterial), y = perc, fill = factor(DamagedPlatf
 
 \newline
 
-As in other classes of stone tools, scaled pieces' metric attributes are impacted by both the initial blank size as well as by the intensity of their use. Specifically, because some scaled pieces are used in multiple axes, direct comparisons for length and width of the typological axes (see Table \@ref(tab:tech_attributes)) for definition) cannot be straighforwardly performed. Since the majority of the analyzed pieces presented a rectangular outline, we use the area of a rectangle (i.e. Length x Width) as an approximation for the overall dimensions of the artifacts. Area calculations revealed a maximum of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm and a minimum of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm. For thickness the maximum is `r round(max(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm and the minimum is `r round(min(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm. In general, mean values tend to be similiar between raw materials, with some differences occuring within the Proto-Solutrean and Magdalenian assemblages, most certainly as a result of the small samples analysed for each of these periods (Figure \@ref(fig:meanplots)). Across techno-complexes, however, no significant statistical differences were detected when using an ANOVA test for both Area (`r anova_apa(aov(Area~Chronology, techno_data), "Chronology")` and  Thickness (`r anova_apa(aov(Thickness~Chronology, techno_data), "Chronology")`).
-
-When plotted against the number of damaged platforms, results for the Area variable reveal that pieces with four damaged platforms are amongst the largest, and that there is not a visible difference between the thickness of the pieces comprising each group.
-
-\newline
-
-```{r meanplots, echo = FALSE, fig.cap="Barplots of means for Area (Length x Width) and Thickness of scaled pieces by raw material and across the four chronological phases. Error bars represent standard deviations."}
-
-
-techno_data <- techno_data %>% 
-  mutate(Area = AxisWidth*AxisLength)
-
-area <- mean_plot(techno_data, "Chronology", "Area", "RawMaterial")
-thickness <- mean_plot(techno_data, "Chronology", "Thickness", "RawMaterial")
-
-meanplots <- ggarrange(area, thickness, ncol = 1, nrow = 2, common.legend = TRUE, legend = "right")
-
-meanplots
-
-```
-
-\newline
-
 ```{r plotbyplatforms, echo = FALSE, fig.caption = ""}
 
 area_by_platforms <- box_plot(techno_data, "DamagedPlatforms", "Area", "", "Area (Length * Width)")
@@ -299,55 +312,23 @@ boxplots
 
 ```
 
-
 \newline
 
-With few exceptions, most of the morpho-functional attributes show a higher degree of variability than technological attributes, and no significant patterns could be clearly noticed. In fact, only two attributes were relatively constant across all occupations: most damaged platforms present less than 45º angles; and, a large percentage of pieces with two damaged platforms present bifacial scars on one of the platforms and unifacial scars on the opposite.
+With few exceptions, most of the morpho-functional attributes show a higher degree of variability than technological attributes. In fact, only two attributes were relatively constant across all occupations: most damaged platforms present less than 45º angles; and, a large percentage of pieces with two damaged platforms present bifacial scars on one of the platforms and unifacial scars on the opposite.
 
 On a closer inspection, we find that most of the differences within the morpho-functional variables occur between raw materials rather than between chronologies.
 
+\newline
 
-```{r }
+```{r morphoattributes, echo = FALSE}
 
-# Filter attributes
-morpho_data <- all_data$morpho_data
-morpho_data <- morpho_data %>% 
-  filter(DamagedPlatforms == 2)
-  select(RawMaterial, Chronology,
-         ScarDistribution_PlatformA, ScarDistribution_PlatformB,
-         ScarArrangement_PlatformA,ScarArrangement_PlatformB,
-         ScarExtention_PlatformA,ScarExtention_PlatformB,
-         ScarFacialDistribution_PlatformA, ScarFacialDistribution_PlatformB,
-         ScarEdgeDelineation_PlatformA, ScarEdgeDelineation_PlatformB,
-         Angle_PlatformA, Angle_PlatformB)
+opposed_plat_morpho()
 
-
-var_list <- c("DamageDegree", "ScarShape", "ScarDistribution", "ScarArrangement", "ScarExtension", "ScarFacialDistribution")
-
-# Filter by chronology
-filter <- split(morpho_data_2plat, morpho_data$Chronology)
-
-# Get cross-tables by chronology using cross_tb() function
-Gravettian <- cross_tb(filter$Gravettian, "RawMaterial", var_list) 
-Gravettian <- select(Gravettian, " ", Chert, Quartz, Total) #to remove chalcedony
-
-
-# Recode based on 10% frequency rule
-condense(morpho_data)
-
-
-# Join attributes
-morpho_data_2plat <- morpho_data %>% 
-  mutate(DamageDegree = str_c(DamageDegree_PlatformA,DamageDegree_PlatformB, sep = "/")) %>% 
-  mutate(ScarShape = str_c(ScarShape_PlatformA,ScarShape_PlatformB, sep = "/")) %>%
-  mutate(ScarDistribution = str_c(ScarDistribution_PlatformA,ScarDistribution_PlatformB, sep = "/")) %>%
-  mutate(ScarArrangement = str_c(ScarArrangement_PlatformA,ScarArrangement_PlatformB, sep = "/")) %>%
-  mutate(ScarExtension = str_c(ScarExtention_PlatformA,ScarExtention_PlatformB, sep = "/")) %>%
-  mutate(ScarFacialDistribution = str_c(ScarFacialDistribution_PlatformA,ScarFacialDistribution_PlatformB, sep = "/")) %>%
-  mutate(Scar_EdgeDelineation = str_c(ScarEdgeDelineation_PlatformA,ScarEdgeDelineation_PlatformB, sep = "/")) %>%
-  mutate(Angle = str_c(Angle_PlatformA,Angle_PlatformB, sep = "/"))
 
 ```
+
+
+\newline
 
 
 #Discussion
