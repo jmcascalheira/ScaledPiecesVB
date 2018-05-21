@@ -138,11 +138,11 @@ box_plot <- function(df, x_var, y_var, x_label, y_label){
     geom_boxplot(outlier.shape = NA, fill = "gray")
 
   b_plot <- b_plot +
-    geom_jitter(position=position_jitter(width=.2, height=0), aes(color = RawMaterial), size = 4) +
+    geom_jitter(position=position_jitter(width=.2, height=0), aes(color = RawMaterial), size = 2) +
     scale_color_manual(values = c("#00AFBB", "#E7B800", "#FC4E07"), name = "Raw Material") +
     labs(x = x_label, y = y_label)+
     scale_fill_discrete(guide=FALSE) +
-    theme(text = element_text(size = 20), axis.text = element_text(size = 20))
+    the
 
   return(b_plot)
 }
@@ -504,44 +504,99 @@ opposed_plat_morpho <- function(){
   morpho_data_opposed_platforms <- condense_to_other_2(morpho_data_opposed_platforms)
   morpho_data_opposed_platforms <- condense_to_NA_2(morpho_data_opposed_platforms)
 
+
   # Plot all variables
 
-  Dist <- count(morpho_data_opposed_platforms, RawMaterial, ScarDistribution)
-  Dist <- ggbarplot(Dist, "ScarDistribution", "n",
+  dist_perc <- morpho_data_opposed_platforms %>%
+    group_by(RawMaterial, ScarDistribution) %>%
+    tally() %>%
+    group_by(RawMaterial) %>%
+    mutate(pct = (n / sum(n))*100)
+
+  dist <- ggbarplot(dist_perc, x = "ScarDistribution", y = "pct",
+                    position = position_dodge(0.9),
                     fill = "RawMaterial", color = "RawMaterial",
-                    palette = c("#00AFBB", "#E7B800"), orientation = "horiz")
+                    palette = c("#00AFBB", "#E7B800"),
+                    orientation = "horiz",
+                    xlab = FALSE,
+                    ylab = FALSE)
 
 
-  Arr <- count(morpho_data_opposed_platforms, RawMaterial, ScarArrangement)
-  Arr <- ggbarplot(Arr, "ScarArrangement", "n",
-                   fill = "RawMaterial", color = "RawMaterial",
-                   palette = c("#00AFBB", "#E7B800"), orientation = "horiz")
 
+  arr_perc <- morpho_data_opposed_platforms %>%
+    group_by(RawMaterial, ScarArrangement) %>%
+    tally() %>%
+    group_by(RawMaterial) %>%
+    mutate(pct = (n / sum(n))*100)
 
-  Ext <- count(morpho_data_opposed_platforms, RawMaterial, ScarExtension)
-  Ext <- ggbarplot(Ext, "ScarExtension", "n",
-                   fill = "RawMaterial", color = "RawMaterial",
-                   palette = c("#00AFBB", "#E7B800"), orientation = "horiz")
-
-
-  Deli <- count(morpho_data_opposed_platforms, RawMaterial, ScarEdgeDelineation)
-  Deli <- ggbarplot(Deli, "ScarEdgeDelineation", "n",
+  arr <- ggbarplot(arr_perc, x = "ScarArrangement", y = "pct",
+                    position = position_dodge(0.9),
                     fill = "RawMaterial", color = "RawMaterial",
-                    palette = c("#00AFBB", "#E7B800"), orientation = "horiz")
+                    palette = c("#00AFBB", "#E7B800"),
+                    orientation = "horiz",
+                    xlab = FALSE,
+                   ylab = FALSE)
 
 
-  Facial <- count(morpho_data_opposed_platforms, RawMaterial, ScarFaciality)
-  Facial <- ggbarplot(Facial, "ScarFaciality", "n",
-                      fill = "RawMaterial", color = "RawMaterial",
-                      palette = c("#00AFBB", "#E7B800"), orientation = "horiz")
+  ext_perc <- morpho_data_opposed_platforms %>%
+    group_by(RawMaterial, ScarExtension) %>%
+    tally() %>%
+    group_by(RawMaterial) %>%
+    mutate(pct = (n / sum(n))*100)
 
-  Angle <- count(morpho_data_opposed_platforms, RawMaterial, Angle)
-  Angle <- ggbarplot(Angle, "Angle", "n",
-                      fill = "RawMaterial", color = "RawMaterial",
-                      palette = c("#00AFBB", "#E7B800"), orientation = "horiz")
+  ext <- ggbarplot(ext_perc, x = "ScarExtension", y = "pct",
+                    position = position_dodge(0.9),
+                    fill = "RawMaterial", color = "RawMaterial",
+                    palette = c("#00AFBB", "#E7B800"),
+                    orientation = "horiz",
+                    xlab = FALSE,
+                   ylab = FALSE)
 
 
-  return(ggarrange(Dist, Arr, Ext, Deli, Facial, Angle, ncol = 2, nrow = 3, common.legend = TRUE, legend = "bottom", align = "hv"))
+  deli_perc <- morpho_data_opposed_platforms %>%
+    group_by(RawMaterial, ScarEdgeDelineation) %>%
+    tally() %>%
+    group_by(RawMaterial) %>%
+    mutate(pct = (n / sum(n))*100)
+
+  deli <- ggbarplot(deli_perc, x = "ScarEdgeDelineation", y = "pct",
+                    position = position_dodge(0.9),
+                    fill = "RawMaterial", color = "RawMaterial",
+                    palette = c("#00AFBB", "#E7B800"),
+                    orientation = "horiz",
+                    xlab = FALSE,
+                    ylab = FALSE)
+
+
+  facial_perc <- morpho_data_opposed_platforms %>%
+    group_by(RawMaterial, ScarFaciality) %>%
+    tally() %>%
+    group_by(RawMaterial) %>%
+    mutate(pct = (n / sum(n))*100)
+
+  facial <- ggbarplot(facial_perc, x = "ScarFaciality", y = "pct",
+                    position = position_dodge(0.9),
+                    fill = "RawMaterial", color = "RawMaterial",
+                    palette = c("#00AFBB", "#E7B800"),
+                    orientation = "horiz",
+                    xlab = FALSE,
+                    ylab = FALSE)
+
+  angle_perc <- morpho_data_opposed_platforms %>%
+    group_by(RawMaterial, Angle) %>%
+    tally() %>%
+    group_by(RawMaterial) %>%
+    mutate(pct = (n / sum(n))*100)
+
+  angle <- ggbarplot(angle_perc, x = "Angle", y = "pct",
+                    position = position_dodge(0.9),
+                    fill = "RawMaterial", color = "RawMaterial",
+                    palette = c("#00AFBB", "#E7B800"),
+                    orientation = "horiz",
+                    xlab = FALSE,
+                    ylab = FALSE)
+
+  return(ggarrange(dist, arr, ext, deli, facial, angle, ncol = 2, nrow = 3, common.legend = TRUE, legend = "bottom", align = "hv", labels="AUTO"))
 
 }
 
