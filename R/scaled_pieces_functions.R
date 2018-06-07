@@ -118,8 +118,6 @@ mean_tb <- function(dataset,x,y) {
 
 mean_plot <- function(dataset, x, y, z){
 
-require(ggpubr)
-
   ggbarplot(dataset, x = x, y = y,
             add = c("mean_sd", "jitter"), size = 1,
             color = z, palette = c("#00AFBB", "#E7B800", "#FC4E07"),
@@ -135,14 +133,14 @@ require(ggpubr)
 
 box_plot <- function(df, x_var, y_var, x_label, y_label){
   b_plot<-ggplot(df,aes_string(x= x_var, y=y_var)) +
-    geom_boxplot(outlier.shape = NA, fill = "gray")
+    geom_boxplot(outlier.shape = NA)
 
   b_plot <- b_plot +
     geom_jitter(position=position_jitter(width=.2, height=0), aes(color = RawMaterial), size = 2) +
     scale_color_manual(values = c("#00AFBB", "#E7B800", "#FC4E07"), name = "Raw Material") +
     labs(x = x_label, y = y_label)+
-    scale_fill_discrete(guide=FALSE) +
-    the
+    scale_fill_discrete(guide=FALSE)+
+    theme_classic()
 
   return(b_plot)
 }
@@ -232,7 +230,7 @@ condense_to_other <- function(df, x){
 
 ####### Alternative to all columns:
 
-condense_to_other_2 <- function(df){
+condense_to_other_all <- function(df){
 
   nm <- colnames(df)
 
@@ -277,7 +275,7 @@ condense_to_NA <- function(df, x){
 
 ####### Alternative to all columns:
 
-condense_to_NA_2 <- function(df){
+condense_to_NA_all <- function(df){
 
   nm <- colnames(df)
 
@@ -300,133 +298,43 @@ condense_to_NA_2 <- function(df){
 
 
 ###########################################################################
-# CHI_SQUARE --------------------------------------------------------------
+# CHI_SQUARE, EFFECT SIZE AND RATIO----------------------------------------
+
 
 CHI <- function(x, y) {
 
-  test <- chisq.test(table(x, y))
-  result <- c(test$p.value)
+  chi_test <- chisq.test(table(x, y))
+  chi_size_effect <- ES.chisq.assoc(ct=table(x, y))
 
-  return(result)
-
-}
-
-###########################################################################
-# ANOVA FOR INLINE --------------------------------------------------------
-
-anova.test <- function(formula, dataset){
-
-  a.test <- aov(formula, dataset)
-  sum.test <- unlist(summary(a.test))
-
-  df <- unname(round(sum.test["Df1"], 0))
-  df.res <- round(a.test$df.residual, 0)
-  fstat <- unname(round(sum.test["F value1"], 2))
-  p.val <- ifelse(unname(round(sum.test["Pr(>F)1"], 3))==0, "<.001", unname(round(sum.test["Pr(>F)1"], 3)))
-
-return(list(df, df.res, fstat,p.val))
+  return(list(chi_test=chi_test,
+        chi_size_effect=chi_size_effect))
 
 }
 
 
 ###########################################################################
-# RUN CHI FUNCTION --------------------------------------------------------
+# ANOVA AND COHENS TESTS --------------------------------------------------------
 
-run_chi_for_morpho <- function(){
+# ANOVA test
 
-  morpho_data_platA <- morpho_data %>%
-    filter(DamagedPlatforms == "2" & RawMaterial != "Chalcedony") %>%
-    select(RawMaterial:Angle_PlatformA)
-
-  cnames <- colnames(morpho_data_platA)
-  cnames <- cnames %>%
-    str_replace("_PlatformA", "")
-  names(morpho_data_platA) <- cnames
+run_Anova<-function(df, y_var){
+  frm<-as.formula(sprintf("%s~%s", y_var, "RawMaterial"))
+  compare_aov<-aov(frm, data=df)
+  return(compare_aov)
+}
 
 
-  morpho_data_platB <- morpho_data %>%
-    filter(DamagedPlatforms == "2" & RawMaterial != "Chalcedony") %>%
-    select(RawMaterial,Width_PlatformB:Angle_PlatformB)
-
-  cnames <- colnames(morpho_data_platB)
-  cnames <- cnames %>%
-    str_replace("_PlatformB", "")
-  names(morpho_data_platB) <- cnames
+anova.test <- function(df, y_var){
+  compare_aov = run_Anova(df, y_var)
+  return(compare_aov)
+}
 
 
-  # Bind both platforms into one df
+# COHENS test
 
-  morpho_data_2plat <- bind_rows(morpho_data_platA, morpho_data_platB)
-  morpho_data_2plat <- select_if(morpho_data_2plat, is.character)
-
-  morpho_data_2plat_RM <- split(morpho_data_2plat, morpho_data_2plat$RawMaterial)
-  morpho_data_2plat_RM_Chert <- morpho_data_2plat_RM$Chert %>%
-    select(-RawMaterial)
-  morpho_data_2plat_RM_Quartz <- morpho_data_2plat_RM$Quartz %>%
-    select(-RawMaterial)
-
-
-  # Run condense() to combine all attributes with presence lower than 10% into "Other" (need function!)
-
-  morpho_data_2plat_RM_Chert <- condense_to_other(morpho_data_2plat_RM_Chert, "DamageDegree")
-  morpho_data_2plat_RM_Chert <- condense_to_other(morpho_data_2plat_RM_Chert, "ScarShape")
-  morpho_data_2plat_RM_Chert <- condense_to_other(morpho_data_2plat_RM_Chert, "ScarDistribution")
-  morpho_data_2plat_RM_Chert <- condense_to_other(morpho_data_2plat_RM_Chert, "ScarArrangement")
-  morpho_data_2plat_RM_Chert <- condense_to_other(morpho_data_2plat_RM_Chert, "ScarExtention")
-  morpho_data_2plat_RM_Chert <- condense_to_other(morpho_data_2plat_RM_Chert, "ScarFacialDistribution")
-  morpho_data_2plat_RM_Chert <- condense_to_other(morpho_data_2plat_RM_Chert, "ScarEdgeDelineation")
-  morpho_data_2plat_RM_Chert <- condense_to_other(morpho_data_2plat_RM_Chert, "Angle")
-
-  # Run condense() to remove all attributes with presence lower than 10% (need function!)
-
-  morpho_data_2plat_RM_Quartz <- condense_to_NA(morpho_data_2plat_RM_Quartz, "DamageDegree")
-  morpho_data_2plat_RM_Quartz <- condense_to_NA(morpho_data_2plat_RM_Quartz, "ScarShape")
-  morpho_data_2plat_RM_Quartz <- condense_to_NA(morpho_data_2plat_RM_Quartz, "ScarDistribution")
-  morpho_data_2plat_RM_Quartz <- condense_to_NA(morpho_data_2plat_RM_Quartz, "ScarArrangement")
-  morpho_data_2plat_RM_Quartz <- condense_to_NA(morpho_data_2plat_RM_Quartz, "ScarExtention")
-  morpho_data_2plat_RM_Quartz <- condense_to_NA(morpho_data_2plat_RM_Quartz, "ScarFacialDistribution")
-  morpho_data_2plat_RM_Quartz <- condense_to_NA(morpho_data_2plat_RM_Quartz, "ScarEdgeDelineation")
-  morpho_data_2plat_RM_Quartz <- condense_to_NA(morpho_data_2plat_RM_Quartz, "Angle")
-
-
-  # Application of CHI-SQUARE to all variables across data.frame
-
-  morpho_data_2plat_RM_Chert <- as.data.frame(morpho_data_2plat_RM_Chert)
-  morpho_data_2plat_RM_Quartz <- as.data.frame(morpho_data_2plat_RM_Quartz) # needed to use lapply()
-
-
-
-  # Identify all possible combination of variables in the data.frame
-  ind<-combn(NCOL(morpho_data_2plat_RM_Chert),2)
-
-  # Run CHI() function
-  CHIresults_Chert <- lapply(1:NCOL(ind), function (i) CHI(morpho_data_2plat_RM_Chert[,ind[1,i]],morpho_data_2plat_RM_Chert[,ind[2,i]]))
-  CHIresults_Quartz <- lapply(1:NCOL(ind), function (i) CHI(morpho_data_2plat_RM_Quartz[,ind[1,i]],morpho_data_2plat_RM_Quartz[,ind[2,i]]))
-
-  CHIresults_Chert <- data.frame(sapply(CHIresults_Chert,c)) # convert to data.frame
-  CHIresults_Quartz <- data.frame(sapply(CHIresults_Quartz,c)) # convert to data.frame
-
-    # Join p-values with var names
-
-  ind2<-combn(colnames(morpho_data_2plat_RM_Chert),2)
-  CHIresults_Chert <- cbind(t(ind2),CHIresults_Chert)
-  CHIresults_Quartz <- cbind(t(ind2),CHIresults_Quartz)
-
-  # Filter only p-values < 0.05
-  CHIresults_Chert <- CHIresults_Chert %>%
-    as.tibble() %>%
-    filter(sapply.CHIresults_Chert..c. < 0.05) %>%
-    rename("Var1" = "1", "Var2" = "2", "p.value" = sapply.CHIresults_Chert..c.)
-
-  CHIresults_Quartz <- CHIresults_Quartz %>%
-    as.tibble() %>%
-    filter(sapply.CHIresults_Quartz..c. < 0.05) %>%
-    rename("Var1" = "1", "Var2" = "2", "p.value" = sapply.CHIresults_Quartz..c.)
-
-  #Print results
-  knitr::kable(CHIresults_Chert, caption= "")
-  knitr::kable(CHIresults_Quartz, caption= "")
-
+cohens.test <- function(df){
+  compare_cohens <- cohens_f(df)
+  return(compare_cohens)
 }
 
 
@@ -501,13 +409,18 @@ opposed_plat_morpho <- function(){
 
   # Condense
 
-  morpho_data_opposed_platforms <- condense_to_other_2(morpho_data_opposed_platforms)
-  morpho_data_opposed_platforms <- condense_to_NA_2(morpho_data_opposed_platforms)
+  morpho_data_opposed_platforms <- condense_to_other_all(morpho_data_opposed_platforms)
+  morpho_data_opposed_platforms <- condense_to_NA_all(morpho_data_opposed_platforms)
 
+  return(morpho_data_opposed_platforms)
+
+}
+
+plot_morpho_var <- function(x){
 
   # Plot all variables
 
-  dist_perc <- morpho_data_opposed_platforms %>%
+  dist_perc <- x %>%
     group_by(RawMaterial, ScarDistribution) %>%
     tally() %>%
     group_by(RawMaterial) %>%
@@ -523,7 +436,7 @@ opposed_plat_morpho <- function(){
 
 
 
-  arr_perc <- morpho_data_opposed_platforms %>%
+  arr_perc <- x %>%
     group_by(RawMaterial, ScarArrangement) %>%
     tally() %>%
     group_by(RawMaterial) %>%
@@ -538,7 +451,7 @@ opposed_plat_morpho <- function(){
                    ylab = FALSE)
 
 
-  ext_perc <- morpho_data_opposed_platforms %>%
+  ext_perc <- x %>%
     group_by(RawMaterial, ScarExtension) %>%
     tally() %>%
     group_by(RawMaterial) %>%
@@ -553,7 +466,7 @@ opposed_plat_morpho <- function(){
                    ylab = FALSE)
 
 
-  deli_perc <- morpho_data_opposed_platforms %>%
+  deli_perc <- x %>%
     group_by(RawMaterial, ScarEdgeDelineation) %>%
     tally() %>%
     group_by(RawMaterial) %>%
@@ -568,7 +481,7 @@ opposed_plat_morpho <- function(){
                     ylab = FALSE)
 
 
-  facial_perc <- morpho_data_opposed_platforms %>%
+  facial_perc <- x %>%
     group_by(RawMaterial, ScarFaciality) %>%
     tally() %>%
     group_by(RawMaterial) %>%
@@ -582,7 +495,7 @@ opposed_plat_morpho <- function(){
                     xlab = FALSE,
                     ylab = FALSE)
 
-  angle_perc <- morpho_data_opposed_platforms %>%
+  angle_perc <- x %>%
     group_by(RawMaterial, Angle) %>%
     tally() %>%
     group_by(RawMaterial) %>%
@@ -605,17 +518,8 @@ opposed_plat_morpho <- function(){
 
 mca.rawmaterial <- function(x){
 
-  morpho_data_mca <- morpho_data %>%
-    filter(RawMaterial == x & DamagedPlatforms == "2") %>%
-    select("DistA" = ScarDistribution_PlatformA, "ArrA" = ScarArrangement_PlatformA, "ExtA" = ScarExtention_PlatformA, "DeliA" = ScarEdgeDelineation_PlatformA, "FacialA" = ScarFacialDistribution_PlatformA,
-           "DistB" = ScarDistribution_PlatformB, "ArrB" = ScarArrangement_PlatformB,  "ExtB" = ScarExtention_PlatformB, "DeliB" = ScarEdgeDelineation_PlatformB, "FacialB" = ScarFacialDistribution_PlatformB)
 
-  morpho_data_mca <- condense_to_other_2(morpho_data_mca)
-  morpho_data_mca <- condense_to_NA_2(morpho_data_mca)
-  morpho_data_mca <-  morpho_data_mca %>%
-    filter(complete.cases(.))
-
-  morpho_data_mca <- MCA(morpho_data_mca)
+  morpho_data_mca <- MCA(morpho_data_opposed_platforms, quali.sup = "RawMaterial")
 
   return(morpho_data_mca)
 

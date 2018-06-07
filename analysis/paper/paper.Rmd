@@ -32,13 +32,13 @@ knitr::opts_chunk$set(
 
 source('~/R_DATA/compendiums/ScaledPiecesVB/R/scaled_pieces_functions.R')
 
-#library(ScaledPiecesVB) # Or use devtools::load_all('.', quiet = T) if your code is in script files, rather than as functions in the `/R` diretory
 ```
 
 ```{r load_libraries, echo = FALSE}
 
 library(knitr)
 library(tidyverse)
+library(broom)
 library(FactoMineR)
 library(factoextra)
 library(ggpubr)
@@ -49,6 +49,10 @@ library(ggmap)
 library(devtools)
 library(legendMap)
 library(tab)
+library(sjstats)
+library(powerAnalysis)
+library(epitools)
+#library(ScaledPiecesVB)
 
 all_data <- read_data()
 techno_data <- all_data$techno_data
@@ -60,15 +64,15 @@ morpho_data <- all_data$morpho_data
 
 Bipolar technology is generically classified into two types of lithic artifacts - bipolar cores and scaled pieces (also known as splintered pieces or *pièce esquilée*). Their distinction, however, has not always been consensual [@hayden_confusion_1980]. In fact, the definition of scaled piece has suffered significant changes ever since its initial identification in the early 20th century and, to this day, there still seems to be no clear definition for this type of artifact. The first definition of scaled pieces was proposed by Bardon and Bouyssonie [-@bardon_outils_1906], describing them as a result of bipolar knapping through direct percussion, with the “core” rested in a hard surface, originating splintering in both ends of the tool. Since then, several other definitions were adopted and adapted by researchers for a very diverse set of contexts across the world [e.g. @hayden_confusion_1980; @macdonald_debert:_1985; @octobon_contribution_1938; @shott_bipolar_1989; @sonneville-bordes_lexique_1956].
 
-Beyond the classification debate, the biggest issue with this type of tools comes from a functional standpoint, a problem that has also been quite debated [e.g. @binford_indian_1963; @de_la_pena_sobre_2011; @flood_moth_1980; @igreja_functional_2013; @leblanc_wedges_1992; @lucas_les_2004; @shott_bipolar_1999; @tixier_typologie_1963]. The issue surrounding this problem lies within the functional equifinality of these artifacts. Contrary to bipolar cores that are most of the times easily identified as cores, scaled pieces have been associated with two distinct types of activities: (1) as intermediate pieces or wedges for working hard raw materials (e.g. bone, ivory, antler); and (2) as cores for the extraction of chips and small bladelets [@brantingham_early_2004]. Although largely debated, the ambiguity of this classification has, however, been ignored in some of the most recent literature, with some authors not acknowledging that bipolar evidence in stone tools might also result from other activities other than only reduction strategies [see e.g. @hiscock_dynamics_2015].
+Beyond the classification debate, the biggest issue with this type of tools comes from a functional standpoint, a problem that has also been largely debated [e.g. @binford_indian_1963; @de_la_pena_sobre_2011; @flood_moth_1980; @igreja_functional_2013; @leblanc_wedges_1992; @lucas_les_2004; @shott_bipolar_1999; @tixier_typologie_1963]. The issue surrounding this problem lies within the functional equifinality of these artifacts. Contrary to bipolar cores that are most of the times easily identified as cores, scaled pieces have been associated with two distinct types of activities: (1) as intermediate pieces or wedges for working hard raw materials (e.g. bone, ivory, antler); and (2) as cores for the extraction of chips and small bladelets [@brantingham_early_2004]. Although largely debated, the ambiguity of this classification has, however, been ignored in some of the most recent literature, with some authors not acknowledging that bipolar evidence in stone tools might also result from other activities other than only reduction strategies [see e.g. @hiscock_dynamics_2015].
 
 Most current studies on scaled pieces apply use-wear methods [e.g. @bader_lithic_2015; @de_la_pena_interpretation_2015; @de_la_pena_new_2014; @de_la_pena_qualitative_2015; @de_la_pena_sobre_2011; @gibaja_tecnologiy_2007; @igreja_functional_2013; @lucas_les_2004; @sano_functional_2012], focusing on the identification of polishes and use-wear patterned stigmas, through both micro and macroscopic analysis of splintered surfaces and its comparison with experimental assemblages. Frequently, these studies coincide in interpreting scaled pieces as intermediate elements for the work of hard organic raw materials. The study by P. de la Peña [-@de_la_pena_sobre_2011; -@de_la_pena_qualitative_2015] is one of the most recent and relevant references in this regard. The author presents the results of an experimental program aiming to identify specific wear patterns in the use of bipolar techniques that allow the distinction between different types of activities and worked materials. Results indicate that while no visible differences can be identified in the percussion area, significant variation can be observed in the morphology of the areas in contact with the worked material.  
 
 As in many other regions and stone age periods across the world [e.g. @diez-martin_were_2009; @igreja_functional_2013; @langejans_middle_2012; @white_fabricators_1968], evidence of bipolar technologies are quite ubiquitous in European Upper Paleolithic contexts. In many sites, bipolar elements are classified as scaled pieces, a morphotype that has been putatively considered as one the most common lithic tools in Upper Paleolithic assemblages [@de_la_pena_qualitative_2015], but different functional connotations for this type of artifacts have been presented in several western european Upper Paleolithic studies [e.g. @de_la_pena_sobre_2011; @sano_functional_2012; @zilhao_o_1997].
 
-In the case of the westernmost regions of Iberia, scaled pieces are commonly found in archaeological contexts ranging from the Upper Paleolithic to the Neolithic [e.g. @bicho_technological_2000; @carvalho_talhe_1998; @zilhao_o_1997]. While scarce, the majority of portuguese paleolithic studies [e.g. @almeida_terminal_2000; @goncalves_variabilite_2012] do not offer analytic interpretations for the presence of scaled pieces, simply using references that interpret them as bipolar cores for the extraction of small bladelets and chips to be supposedly used in composite tools [e.g. @zilhao_o_1997] or as intermediate pieces for working hard materials [@gibaja_tecnologiy_2007; @marreiros_as_2009]. Zilhão [-@zilhao_o_1997] for example argues that the presence of scaled pieces throughout the Upper Paleolithic sequence of central Portugal is inversely proportional to the presence of “carinated cores”, and thus it is likely that the former should have worked as a flexible substitute for the latter. Carvalho [-@carvalho_talhe_1998] agrees with this interpretation and considers it also valid for the portuguese early Neolithic.
+In the case of the westernmost regions of Iberia, scaled pieces are commonly found in archaeological contexts ranging from the Upper Paleolithic to the Neolithic [e.g. @bicho_technological_2000; @carvalho_talhe_1998; @zilhao_o_1997]. While scarce, the majority of portuguese paleolithic studies [e.g. @almeida_terminal_2000; @goncalves_variabilite_2012] have not presented, so far, any context-specific interpretations for the presence of scaled pieces. Most references broadly interpret these as bipolar cores for the extraction of small bladelets and chips to be  used in composite tools [e.g. @zilhao_o_1997] or as intermediate pieces for working hard materials [@gibaja_tecnologiy_2007; @marreiros_as_2009]. Zilhão [-@zilhao_o_1997] for example argues that the presence of scaled pieces throughout the Upper Paleolithic sequence of central Portugal is inversely proportional to the presence of “carinated cores”, and thus it is likely that the former should have worked as a flexible substitute for the latter. Carvalho [-@carvalho_talhe_1998] agrees with this interpretation and considers it also valid for the portuguese early Neolithic.
 
-While we agree that some of the elements might have been used as cores, these interpretations seem overly simplistic, and the authors seem to have little to no evidence to back their claims other than the inverse relationship mentioned above. This results in part from the lack of comprehensive studies regarding this type of artifacts at a regional scale. Additionally, the contexts from where most of these artifacts were recovered did not have good organic preservation and, thus, no direct association between these tools and the exploitation of hard-organic raw materials is possible, and, in face of the nonexistence of any absolute dates, their precise chronological attribution is also, most of the times, unreliable.
+While we agree that some of the elements might have been used as cores, these interpretations seem overly simplistic, and the authors seem to have little to no evidence to back their claims other than the inverse relationship mentioned above. This results, in part, from the lack of comprehensive studies regarding this type of artifacts at a regional scale. Additionally, the contexts from where most of these artifacts were recovered did not have good organic preservation and, thus, no direct association between these tools and the exploitation of hard-organic raw materials is possible, and, in face of the nonexistence of any absolute dates, their precise chronological attribution is also, most of the times, unreliable.
 
 In this paper, we present a first approach to the characterization of the morpho-technological variability and consequent role of scaled pieces during the Upper Paleolithic of the westernmost regions of Iberia (c. 32–10 ka cal BP). Using data from the multi-component, thoroughly dated, site of Vale Boi, located in southern Portugal, we present the analysis of a series of technological and morpho-functional attributes of a relatively large set of scaled pieces coming from one of the areas of the site. Using these data as a starting point, we then explore the relationship between the variability detected in the production and use of these artifacts with inter-site lithic technological patterns, and with the striking evidence for an intensification and diversification of faunal resources exploitation during the time-span under consideration.
 
@@ -76,7 +80,7 @@ In this paper, we present a first approach to the characterization of the morpho
 
 # Vale Boi
 
-The archaeological site of Vale Boi is located in the western edge of the Algarve region (southern Portugal) (Figure \@ref(fig:VBLocation)). The site can be found in a small valley following a river north-south for 2 km until it reaches the Atlantic Ocean. Archaeological deposits occupy an estimated area of over 10 000 sq. meters across a stepped slope marked at the top by a 10 meter-high limestone cliff face.
+The archaeological site of Vale Boi is located in the western edge of the Algarve region (southern Portugal) (Figure \@ref(fig:VBLocation)). The site can be found in a small valley following a river north-south for 2 km until it reaches the Atlantic Ocean. Archaeological deposits occupy an estimated area of over 10 000 sq. meters across a stepped slope marked at the top by a 10 meter-high limestone cliff face [@bicho_ledge:_2012; @bicho_paleolithique_2010].
 
 A rather complete Upper Paleolithic sequence has been identified at Vale Boi, with all the traditionally-defined techno-complexes (Gravettian, Proto-Solutrean, Solutrean and Magdalenian) being identified across the three main excavation areas: the Terrace, the Rockshelter, and the Slope.
 
@@ -89,8 +93,6 @@ Finally, the Slope section, from where the assemblage here presented is coming f
 
 ```{r VBLocation, echo = FALSE, fig.cap="Location of the site of Vale Boi"}
 
-source('~/R_DATA/compendiums/ScaledPiecesVB/R/scaled_pieces_functions.R')
-
 Map()
 
 knitr::include_graphics("../figures/VBMap.png")
@@ -101,7 +103,7 @@ knitr::include_graphics("../figures/VBMap.png")
 
 ## Lithic technology
 
-Vale Boi’s lithic studies have revealed a general tendency for stable technological and functional patterns throughout the Upper Paleolithic [e.g. @bicho_ledge:_2012; @bradtmoller_lithic_2016; @cascalheira_cross-scale_2017; @cascalheira_influencia_2013; @cascalheira_vale_2012; @gibaja_funcion_2011; @marreiros_as_2009; @marreiros_lithic_2013; @marreiros_lithic_2015]. This can be explained, partially, by raw material availability. Most raw materials were procured locally, or regionally from deposits located at no more than 20 km away from the site [@bicho_paleolithique_2010]. 
+Vale Boi’s lithic studies have revealed a general tendency for stable technological and functional patterns throughout the Upper Paleolithic [e.g. @bicho_ledge:_2012; @bradtmoller_lithic_2016; @cascalheira_cross-scale_2017; @cascalheira_influencia_2013; @cascalheira_vale_2012; @gibaja_funcion_2011; @marreiros_as_2009; @marreiros_lithic_2013; @marreiros_lithic_2015; @marreiros_lithic_2018]. This can be explained, partially, by raw material availability. Most raw materials were procured locally, or regionally from deposits located at no more than 20 km away from the site [@bicho_paleolithique_2010]. 
 Chert was the most used rock type for more complex retouched tools production, while quartz and greywacke were mostly used for flake extraction and simple retouched tools production. Other raw materials can be found at the site, but much more restricted, both diachronically and functionally, within each techno-complex. Schist, for instance, shows up in some occupations almost exclusively connected to mobile art. Dolerite was only  found in the Proto-Solutrean levels [@belmiro_o_2017], while chalcedony is mostly limited to the Proto-Solutrean and Solutrean levels [@cascalheira_vale_2012].
 
 Chert is the most abundant knapped rock type in Vale Boi. Throughout the several occupations, chert was considered the best rock type for knapping, which is evident by the way it was explored with much more complex strategies than either greywacke or quartz. While it can be said that chert exploration strategies were more elaborate, the most common strategies were still simple unidirectional or bidirectional reduction sequences, producing mostly flakes [@marreiros_flake_2012]. Elongated products are found at low frequencies across all chronologies. When present, retouched tools are mostly notches, denticulates, end-scrapers, and scaled pieces. One possible reason for these simplistic strategies seems to be an overall low knapping quality, since nodules are quite small, and frequently show a high degree of tectonically derived fractures [@pereira_territory_2016].
@@ -150,7 +152,7 @@ Macroscopic morpho-functional attributes were separately analyzed for each damag
 
 \newline
 
-## Reproducibility and open source materials
+## Analysis, reproducibility and open source materials
 
 All analyses and data processing were accomplished in R (version `r getRversion()`) [@r_core_team_r:_2013]. Following recent concerns on the reproducibility of archaeological analysis we include the entire R code used for all the analysis and visualizations contained in this paper in our supplemental online material (SOM) at https://dx.doi.org/… To produce those files we followed the procedures described by Marwick et al. [-@marwick_packaging_2017] for the creation of research compendiums to enhance the reproducibility of research. The files provided contain all the raw data used in our analysis as well as a custom R package [@wickham_r_2015] holding the code use for all analysis and to produce all tables and figures. To enable maximum re-use, our code is released under the MIT license, our data as CC-0, and our figures as CC-BY, [for more information see @marwick_computational_2016].
 
@@ -178,7 +180,7 @@ As previously mentioned, concerning technological data, one of our main objectiv
 
 Technological and morphological characteristics of the flake blanks present very similar patterns across time and among raw materials. The blanks sought after would have straight profiles, parallel edges, no cortical surfaces and trapezoidal or triangular shaped cross-sections.
 
-Other characteristics of the assemblage are the low frequency of retouch (n = `r techno_data %>% filter(RetouchedBlank == "Yes") %>% summarise(n())`), of fire alterations (n = `r techno_data %>% filter(Fire != "No_Traces") %>% summarise(n())`), and of the presence of original striking platforms (n = `r techno_data %>% filter(ButtType != "Absent") %>% summarise(n())`). Still, when present, retouch is located in the lateral part of the artifacts, similar to what would define a side-scraper. In a very small number of cases, when striking platforms were detected, these are mostly flat. The absence of the original blank platforms is to be expected in this type of artifact, mostly due to the functional use of the pieces, and consequent removal of the platform, rather than an actual choice. The large absence of platforms may, also, be the result of the use of the technological axis as the main functional axis. In fact, when identifiable, technological and typological axes coincide in `r inline_perc(techno_data, AxisCoincident, "Yes")`% of the cases. The longitudinal section shows a large variability of shapes, independent of raw material or chronology. Similarly, the dorsal pattern of previous removals was rarely identified, although this, like with the case of platform absence, might occur due to the functional stigmas and be dependent on the intensity of use for each artifact.
+Other characteristics of the assemblage are the low frequency of retouch (n = `r techno_data %>% filter(RetouchedBlank == "Yes") %>% summarise(n())`), of fire alterations (n = `r techno_data %>% filter(Fire != "No_Traces") %>% summarise(n())`), and of the presence of original striking platforms (n = `r techno_data %>% filter(ButtType != "Absent") %>% summarise(n())`). Still, when present, retouch is located in the lateral part of the artifacts, similar to what would define a side-scraper. In a very small number of cases, when striking platforms are present, these are mostly flat. The absence of the original blank platforms is to be expected in this type of artifact, mostly due to the functional use of the pieces, and consequent removal of the platform, rather than an actual choice. The large absence of platforms may, also, be the result of the use of the technological axis as main functional axis. In fact, when identifiable, technological and typological axes coincide in `r inline_perc(techno_data, AxisCoincident, "Yes")`% of the cases. The longitudinal sections show a large variability of shapes, independent of raw materials or chronologies. Similarly, the dorsal pattern of previous removals was rarely identified, although this, like with the case of platform absence, might occur due to the functional stigmas and be dependent on the intensity of use for each artifact.
 
 \newline
 
@@ -245,20 +247,24 @@ knitr::kable(Magdalenian, caption= "Technological attribute frequencies by raw m
 
 ```
 
-```{r mestric_statistics, echo = FALSE}
+```{r metric_statistics, echo = FALSE}
 
 techno_data <- techno_data %>% 
   mutate(Area = AxisWidth*AxisLength)
 
-anova.test.area <- anova.test(Area ~ Chronology, techno_data)
+aov_area <- anova.test(techno_data, "Area")
+cohens_area <- cohens.test(aov_area)
+aov_area <- tidy(aov_area)
 
-anova.test.thickness <- anova.test(Thickness ~ Chronology, techno_data)
+aov_thickness <- anova.test(techno_data, "Thickness")
+cohens_thickness <- cohens.test(aov_thickness)
+aov_thickness <-  tidy(aov_thickness)
 
 ```
 
 \newline
 
-As in other classes of stone tools, scaled pieces' metric attributes are impacted by both the initial blank size as well as by the intensity of their use. Specifically, because some scaled pieces are used in multiple axes, direct comparisons for length and width of the typological axes (see Table \@ref(tab:tech_attributes)) for definition) cannot be straightforwardly performed. Since the majority of the analyzed pieces presented a rectangular outline, we use the area of a rectangle (i.e. Length x Width) as an approximation for the overall dimensions of the artifacts. Area calculations revealed a maximum of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm and a minimum of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm. For thickness the maximum is `r round(max(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm and the minimum is `r round(min(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm. In general, mean values tend to be similar between raw materials, with some differences occurring within the Proto-Solutrean and Magdalenian assemblages, most certainly as a result of the small samples analysed for each of these periods (Figure \@ref(fig:meanplots)). Across techno-complexes, however, no significant statistical differences were detected when using an ANOVA test for both Area ($F (`r anova.test.area[1]`, `r anova.test.area[2]`) = `r anova.test.area[3]`$, $p = `r anova.test.area[4]`)$ and Thickness ($F (`r anova.test.thickness[1]`, `r anova.test.thickness[2]`) = `r anova.test.thickness[3]`$, $p = `r anova.test.thickness[4]`)$.
+As in other classes of stone tools, scaled pieces' metric attributes are impacted by both the initial blank size as well as by the intensity of their use. Specifically, because some scaled pieces are used in multiple axes, direct comparisons for length and width of the typological axes (see Table \@ref(tab:tech_attributes)) for definition) cannot be straightforwardly performed. Since the majority of the analyzed pieces presented a rectangular outline, we use the area of a rectangle (i.e. Length x Width) as an approximation for the overall dimensions of the artifacts. Area calculations revealed a maximum of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm and a minimum of `r round(max(techno_data$Area, na.rm = TRUE), digits = 2)` mm. For thickness the maximum is `r round(max(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm and the minimum is `r round(min(techno_data$Thickness, na.rm = TRUE), digits = 2)` mm. In general, mean values tend to be similar between raw materials, with some differences occurring within the Proto-Solutrean and Magdalenian assemblages, most certainly as a result of the small samples analysed for each of these periods (Figure \@ref(fig:meanplots)). Across techno-complexes, however, no significant statistical differences were detected when using an ANOVA test for both Area (*F* (`r aov_area$df[1]`, `r aov_area$df[2]`) = `r aov_area$statistic[1]`, *p* = `r aov_area$p.value[1]`, *d* = `r cohens_area$cohens.f`), and Thickness (*F* (`r aov_thickness$df[1]`, `r aov_thickness$df[2]`) = `r aov_thickness$statistic[1]`, *p* = `r aov_thickness$p.value[1]`, *d* = `r cohens_thickness$cohens.f`).
 
 \newline
 
@@ -277,7 +283,7 @@ meanplots
 
 \newline 
 
-The patterns of use and rotation of damaged platforms seem to be the same across all chronologies. In every assemblage quartz pieces were exclusively used in one single axis, exhibiting only two damaged platforms. On the other end, a small number of chert and chalcedony artifacts (n= `r techno_data %>% filter(RawMaterial != "Quartz" & DamagedPlatforms == "3" & DamagedPlatforms == "4_or_more") %>% summarize(n())`) exhibit multiple functional axis, with three or four damaged platforms (Figure \@ref(fig:nplatforms)). This seems to indicate different strategies of curation for coarse and fine grain raw materials, with fine grain materials being rotated when the first used axis becomes too small and/or the edges get useless for that specific activity. However, when plotted against metric data, results for the Area variable reveal that pieces with four damaged platforms are among the largest in the whole assemblages, and that there is not a visible difference between the thickness of the pieces comprising each group. This seems to attest that the use of several axis in the same piece is not correlated with curation occuring in later phases of artifact use but instead to a probable difference in raw material performance.
+The patterns of use and rotation of damaged platforms seem to be the same across all chronologies. In every assemblage quartz pieces were exclusively used in one single axis, exhibiting only two damaged platforms. On the other end, a small number of chert and chalcedony artifacts (*N* = `r techno_data %>% filter(RawMaterial != "Quartz" & DamagedPlatforms == "3" | DamagedPlatforms == "4_or_more") %>% summarize(n())`) exhibit multiple functional axis, with three or four damaged platforms (Figure \@ref(fig:nplatforms)). This seems to indicate different strategies of curation for coarse and fine grain raw materials, with fine grain materials being rotated when the first used axis becomes too small and/or the edges get useless for that specific activity. However, when plotted against metric data, results for the Area variable reveal that pieces with four damaged platforms are among the largest in the whole assemblages, and that there is not a visible difference between the thickness of the pieces comprising each group. This seems to attest that the use of several axis in the same piece is not correlated with curation occuring in later phases of artifact use but instead to a probable difference in raw material performance.
 
 \newline
 
@@ -288,13 +294,12 @@ n_axis <- morpho_data %>%
   summarise(count=n()) %>% 
   mutate(perc=100*(count/sum(count)))
 
-ggplot(n_axis, aes(x = factor(RawMaterial), y = perc, fill = factor(DamagedPlatforms))) +
-  geom_bar(stat="identity", width = 0.7) +
-  labs(x = "RawMaterial", y = "%", fill = "Number of Damaged Platforms") +
-  facet_wrap(~Chronology) +
-  theme_bw() +
-  theme(strip.text.x = element_text(size = 12))+
-  scale_fill_manual(values=c("#00AFBB", "#E7B800", "#FC4E07", "#999999"))
+d_platforms <- ggbarplot(n_axis, x = "RawMaterial", y = "perc",
+          color = "DamagedPlatforms", fill = "DamagedPlatforms",
+          palette = c("#00AFBB", "#E7B800", "#FC4E07", "#999999"),
+          facet.by = "Chronology", xlab = "", ylab = "%")
+
+ggpar(d_platforms, legend = "right", legend.title = "Number of Damaged Platforms")
 
 ```
 
@@ -302,7 +307,7 @@ ggplot(n_axis, aes(x = factor(RawMaterial), y = perc, fill = factor(DamagedPlatf
 
 ```{r plotbyplatforms, echo = FALSE, fig.caption = ""}
 
-area_by_platforms <- box_plot(techno_data, "DamagedPlatforms", "Area", "", "Area (Length * Width)")
+area_by_platforms <- box_plot(techno_data, "DamagedPlatforms", "Area", "Number of Damaged Platforms", "Area (Length * Width)")
 thickness_by_platforms <- box_plot(techno_data, "DamagedPlatforms", "Thickness", "Number of Damaged Platforms", "Thickness (mm)")
 
 boxplots <- ggarrange(area_by_platforms, thickness_by_platforms, ncol = 1, nrow = 2, common.legend = TRUE, legend = "right")
@@ -312,39 +317,90 @@ boxplots
 ```
 
 \newline
+```{r chisquare, echo = FALSE}
 
-With few exceptions, most of the morpho-functional attributes show a fairly high degree of variability. Similarly to what was registered for the technological attributes most of the differences occur between raw materials rather than between chronologies. For this reason the results presented below focus only on the overall and between raw materials variability. Figure \@ref(fig:morphoattributes) shows the absolute frequencies of all qualitative variables recorded for each damaged platform. To simplify representation, and since we actually do not know which platform was the hammered one, opposed damage platforms are grouped into pairwise categories. When present, category 'Other' represents the cluster of attributes whose frequency was less than 10% within each variable. 
-
-In three (Scar Arrangement, Extension and Edge Delineation) of the six represented variables the category 'Other' is one of the most frequent (above 35%) for both quartz and chert, revealing a very high variability for the combination of attributes within each variable.
-
-For quartz artifacts the most common patterns are the combination of central/total scar distributions, both opposed platforms with angles wider than 45º, and a combination of either unifacial/unifacial or unifacial/bifacial scar distribution. Chert pieces, on the other hand, more typically present opposed platforms with damage occupying the whole platform width, and a weaker presence of unifacial/unifacial scar edge facial distribution. Still, with exception of Angle and Scar Facial Distribution, the overall trend for the morpho-functional variables is one of high variability, with a very large set of combinations appearing at very low frequencies.
-
-To identify possible patterns of association between each one of the qualitative variables used in our analysis \@ref(fig:morphoattributes), a Multiple Correspondence Analysis was run using the FactoMineR package. Results presented in Figure \@ref(fig:mca).
-
-The first two dimensions of the MCA express 21.35% of the total dataset inertia, meaning that 21.35% of the individuals (or variables) cloud total variability is explained by the plane combining the first two dimensions. This is a rather small percentage but it is greater than the reference value that equals 18.92%. The variability explained by this plane is thus significant. 
+#Select and arrange morpho-functional variables for each pair of opposed platforms
+morpho_data_opposed_platforms <- opposed_plat_morpho()
 
 
+#Run chi-square and effect size test for each variable
+chi_distribution <- CHI(morpho_data_opposed_platforms$ScarDistribution,morpho_data_opposed_platforms$RawMaterial)
 
+chi_arrangement <- CHI(morpho_data_opposed_platforms$ScarArrangement,morpho_data_opposed_platforms$RawMaterial)
 
+chi_extension <- CHI(morpho_data_opposed_platforms$ScarExtension,morpho_data_opposed_platforms$RawMaterial)
 
+chi_delineation <- CHI(morpho_data_opposed_platforms$ScarEdgeDelineation,morpho_data_opposed_platforms$RawMaterial)
 
+chi_faciality <- CHI(morpho_data_opposed_platforms$ScarFaciality,morpho_data_opposed_platforms$RawMaterial)
 
-\newline
-
-```{r morphoattributes, echo = FALSE}
-
-opposed_plat_morpho()
-
+chi_angle <- CHI(morpho_data_opposed_platforms$Angle,morpho_data_opposed_platforms$RawMaterial)
 
 ```
 
 
 \newline
 
+With few exceptions, most of the morpho-functional attributes show a fairly high degree of variability. Similarly to what was registered for the technological attributes, most of the differences occur between raw materials rather than between chronologies. For this reason the results presented below focus only on overall and between raw materials variability. Figure \@ref(fig:morphoattributes) shows the relative frequencies of all qualitative variables recorded for each damaged platform. To simplify representation, and to avoid wrong comparisons between hammered and active platforms, opposed damage platforms are grouped into pairwise categories. When present, category 'Other' represents the cluster of attributes which frequency was less than 10% within each variable.
+
+In three (Scar Arrangement, Extension and Edge Delineation) of the six represented variables the category 'Other' is one of the most frequent (above 35%) for both quartz and chert, revealing a very high variability for the combination of attributes within each variable. A chi-square test with modified alpha level (Bonferroni correction) to adjust for multiple testing and reduce type-I error, shows significant differences in the quartz and chert Scar Arrangement categories (*X^2^* [`r chi_arrangement$chi_test$parameter`, *N* = `r sum(chi_arrangement$chi_test$observed)`] = `r  round(chi_arrangement$chi_test$statistic, 2)`, *p* = `r round(chi_arrangement$chi_test$p.value, 3)`, *phi* = `r round(chi_arrangement$chi_size_effect$phi, 2)`), and in Scar Faciality categories (*X^2^* [`r chi_faciality$chi_test$parameter`, *N* = `r sum(chi_faciality$chi_test$observed)`] = `r  round(chi_faciality$chi_test$statistic,2)`, *p* = `r round(chi_faciality$chi_test$p.value, 3)`, *phi* = `r round(chi_faciality$chi_size_effect$phi, 2)`). The effect size statistic (Phi) suggests, however, a low practical significance for Scar Arrangement and a large pratical significance for Scar Faciality.
+
+For quartz artifacts the most common patterns are the combination of central/total scar distributions, both platforms with angles wider than 45º, and a combination of either unifacial/unifacial or unifacial/bifacial scar distribution. Chert pieces, on the other hand, more typically present opposed platforms with damage occupying the whole platform width, and a weaker presence of unifacial/unifacial scar edge facial distribution. Still, with exception of Angle and Scar Facial Distribution, the overall trend for the morpho-functional variables is one of high variability, with a very large set of combinations appearing at very low frequencies.
+
+
+\newline
+
+```{r morphoattributes, echo = FALSE}
+
+#PLot categorical morpho-function variables
+
+plot_morpho_var(morpho_data_opposed_platforms)
+
+```
+
+\newline
+
+To identify possible patterns of association among the qualitative variables used in our analysis \@ref(fig:morphoattributes), a Multiple Correspondence Analysis was performed. Results are presented in Figures \@ref(fig:mca). In this analysis raw material was used as a qualitative supplementary variable.
+
+The first two dimensions of the MCA express 20.92% of the total dataset inertia, meaning that only that percentage of the total variability is explained by the plane combining the first two dimensions. An inspection to the screeplot presented in Figure \@ref(fir:screeplot) suggests to restrict the analysis to the description of the first 4 dimensions. These dimensions present an amount of inertia slightly greater than that obtained by the 0.95-quantile of random distributions (37.74% against 34.37%). Still, it is a rather small percentage, somehow attesting the high variability suggested by our interpretation of Figure \@ref(fig:morphoattributes), and suggesting that patterns identified by previous studies [e.g. @de_la_pena_qualitative_2015; @de_la_pena_sobre_2011], in which certain combination of attributes were used to discriminate scaled pieces functionalities, are difficult to apply to the assemblage used in this study.
+
+The high variability of the assemblage is also well noticeable in the biplots presented in Figure \@ref(fig:biplot). 
 
 
 
+\newline
 
+
+```{r mca, echo = FALSE}
+
+# Multiple Correspondence Analysis
+
+mca.rawmaterial()
+
+```
+
+
+\newline
+
+```{r screeplot, echo = FALSE}
+
+# Screeplot
+fviz_screeplot(morpho_data_mca, addlabels = TRUE, ylim = c(0, 15), barfill = "#00AFBB", barcolor = "#00AFBB")
+
+```
+
+\newline
+
+```{r biplot, echo = FALSE}
+
+# Biplot for 4 main MCA dimensions
+
+fviz_screeplot(morpho_data_mca, addlabels = TRUE, ylim = c(0, 15), barfill = "#00AFBB", barcolor = "#00AFBB")
+
+```
+
+
+\newline
 
 #Discussion
 
