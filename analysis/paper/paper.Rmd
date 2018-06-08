@@ -30,7 +30,7 @@ knitr::opts_chunk$set(
   fig.path = "../figures/")
   cache = TRUE
 
-source('~/R_DATA/compendiums/ScaledPiecesVB/R/scaled_pieces_functions.R')
+source('~/R_DATA/compendiums/ScaledPiecesVB/R/functions.R')
 
 ```
 
@@ -54,7 +54,7 @@ library(powerAnalysis)
 library(epitools)
 #library(ScaledPiecesVB)
 
-all_data <- read_data()
+all_data <- read.data()
 techno_data <- all_data$techno_data
 morpho_data <- all_data$morpho_data
 
@@ -168,7 +168,7 @@ A total of `r summarise(techno_data, n())` scaled pieces were analyzed, of which
 
 var_list <- c("Chronology")
 
-assemb <- cross_tb(techno_data, "RawMaterial", var_list)
+assemb <- cross.tb(techno_data, "RawMaterial", var_list)
 
 knitr::kable(assemb, caption= "Frequencies of scaled pieces by raw material and chronology")
 
@@ -180,7 +180,7 @@ As previously mentioned, concerning technological data, one of our main objectiv
 
 Technological and morphological characteristics of the flake blanks present very similar patterns across time and among raw materials. The blanks sought after would have straight profiles, parallel edges, no cortical surfaces and trapezoidal or triangular shaped cross-sections.
 
-Other characteristics of the assemblage are the low frequency of retouch (n = `r techno_data %>% filter(RetouchedBlank == "Yes") %>% summarise(n())`), of fire alterations (n = `r techno_data %>% filter(Fire != "No_Traces") %>% summarise(n())`), and of the presence of original striking platforms (n = `r techno_data %>% filter(ButtType != "Absent") %>% summarise(n())`). Still, when present, retouch is located in the lateral part of the artifacts, similar to what would define a side-scraper. In a very small number of cases, when striking platforms are present, these are mostly flat. The absence of the original blank platforms is to be expected in this type of artifact, mostly due to the functional use of the pieces, and consequent removal of the platform, rather than an actual choice. The large absence of platforms may, also, be the result of the use of the technological axis as main functional axis. In fact, when identifiable, technological and typological axes coincide in `r inline_perc(techno_data, AxisCoincident, "Yes")`% of the cases. The longitudinal sections show a large variability of shapes, independent of raw materials or chronologies. Similarly, the dorsal pattern of previous removals was rarely identified, although this, like with the case of platform absence, might occur due to the functional stigmas and be dependent on the intensity of use for each artifact.
+Other characteristics of the assemblage are the low frequency of retouch (n = `r techno_data %>% filter(RetouchedBlank == "Yes") %>% summarise(n())`), of fire alterations (n = `r techno_data %>% filter(Fire != "No_Traces") %>% summarise(n())`), and of the presence of original striking platforms (n = `r techno_data %>% filter(ButtType != "Absent") %>% summarise(n())`). Still, when present, retouch is located in the lateral part of the artifacts, similar to what would define a side-scraper. In a very small number of cases, when striking platforms are present, these are mostly flat. The absence of the original blank platforms is to be expected in this type of artifact, mostly due to the functional use of the pieces, and consequent removal of the platform, rather than an actual choice. The large absence of platforms may, also, be the result of the use of the technological axis as main functional axis. In fact, when identifiable, technological and typological axes coincide in `r inline.perc(techno_data, AxisCoincident, "Yes")`% of the cases. The longitudinal sections show a large variability of shapes, independent of raw materials or chronologies. Similarly, the dorsal pattern of previous removals was rarely identified, although this, like with the case of platform absence, might occur due to the functional stigmas and be dependent on the intensity of use for each artifact.
 
 \newline
 
@@ -193,22 +193,22 @@ var_list <- c("Blank","CrossSection","Profile","Blankshape","Cortex","ButtType",
 filter <- split(techno_data, techno_data$Chronology)
 
 # Get cross-tables by chronology using cross_tb() function
-Gravettian <- cross_tb(filter$Gravettian, "RawMaterial", var_list) 
+Gravettian <- cross.tb(filter$Gravettian, "RawMaterial", var_list) 
 Gravettian <- Gravettian %>% 
   as.tibble() %>% 
   select(" " = Variable, Chert, Quartz, Total = Overall)
 
-Solutrean <- cross_tb(filter$Solutrean, "RawMaterial", var_list)
+Solutrean <- cross.tb(filter$Solutrean, "RawMaterial", var_list)
 Solutrean <- Solutrean %>% 
   as.tibble() %>% 
   select(" " = Variable, Chert, Quartz, Chalcedony, Total = Overall)
 
-`Proto-Solutrean` <- cross_tb(filter$`Proto-Solutrean`, "RawMaterial", var_list)
+`Proto-Solutrean` <- cross.tb(filter$`Proto-Solutrean`, "RawMaterial", var_list)
 `Proto-Solutrean` <- `Proto-Solutrean` %>% 
   as.tibble() %>% 
   select(" " = Variable, Chert, Quartz, Chalcedony, Total = Overall)
 
-Magdalenian <- cross_tb(filter$Magdalenian, "RawMaterial", var_list)
+Magdalenian <- cross.tb(filter$Magdalenian, "RawMaterial", var_list)
 Magdalenian <- Magdalenian %>% 
   as.tibble() %>% 
   select(" " = Variable, Chert, Quartz, Total = Overall)
@@ -271,8 +271,8 @@ As in other classes of stone tools, scaled pieces' metric attributes are impacte
 ```{r meanplots, echo = FALSE, fig.cap="Barplots of means for Area (Length x Width) and Thickness of scaled pieces by raw material and across the four chronological phases. Error bars represent standard deviations."}
 
 
-area <- mean_plot(techno_data, "Chronology", "Area", "RawMaterial")
-thickness <- mean_plot(techno_data, "Chronology", "Thickness", "RawMaterial")
+area <- mean.plot(techno_data, "Chronology", "Area", "RawMaterial")
+thickness <- mean.plot(techno_data, "Chronology", "Thickness", "RawMaterial")
 
 meanplots <- ggarrange(area, thickness, ncol = 1, nrow = 2, common.legend = TRUE, legend = "right")
 
@@ -307,8 +307,8 @@ ggpar(d_platforms, legend = "right", legend.title = "Number of Damaged Platforms
 
 ```{r plotbyplatforms, echo = FALSE, fig.caption = ""}
 
-area_by_platforms <- box_plot(techno_data, "DamagedPlatforms", "Area", "Number of Damaged Platforms", "Area (Length * Width)")
-thickness_by_platforms <- box_plot(techno_data, "DamagedPlatforms", "Thickness", "Number of Damaged Platforms", "Thickness (mm)")
+area_by_platforms <- box.plot(techno_data, "DamagedPlatforms", "Area", "Number of Damaged Platforms", "Area (Length * Width)")
+thickness_by_platforms <- box.plot(techno_data, "DamagedPlatforms", "Thickness", "Number of Damaged Platforms", "Thickness (mm)")
 
 boxplots <- ggarrange(area_by_platforms, thickness_by_platforms, ncol = 1, nrow = 2, common.legend = TRUE, legend = "right")
 
@@ -320,7 +320,7 @@ boxplots
 ```{r chisquare, echo = FALSE}
 
 #Select and arrange morpho-functional variables for each pair of opposed platforms
-morpho_data_opposed_platforms <- opposed_plat_morpho()
+morpho_data_opposed_platforms <- opposed.plat.morpho()
 
 
 #Run chi-square and effect size test for each variable
@@ -354,13 +354,13 @@ For quartz artifacts the most common patterns are the combination of central/tot
 
 #PLot categorical morpho-function variables
 
-plot_morpho_var(morpho_data_opposed_platforms)
+plot.morpho.var(morpho_data_opposed_platforms)
 
 ```
 
 \newline
 
-To identify possible patterns of association among the qualitative variables used in our analysis \@ref(fig:morphoattributes), a Multiple Correspondence Analysis was performed. Results are presented in Figures \@ref(fig:mca). In this analysis raw material was used as a qualitative supplementary variable.
+To identify possible patterns of association among the qualitative variables used in our analysis \@ref(fig:morphoattributes), a Multiple Correspondence Analysis (MCA) was performed. Results are presented in Figures \@ref(fig:mca). In this analysis, raw material was used as a qualitative supplementary variable.
 
 The first two dimensions of the MCA express 20.92% of the total dataset inertia, meaning that only that percentage of the total variability is explained by the plane combining the first two dimensions. An inspection to the screeplot presented in Figure \@ref(fir:screeplot) suggests to restrict the analysis to the description of the first 4 dimensions. These dimensions present an amount of inertia slightly greater than that obtained by the 0.95-quantile of random distributions (37.74% against 34.37%). Still, it is a rather small percentage, somehow attesting the high variability suggested by our interpretation of Figure \@ref(fig:morphoattributes), and suggesting that patterns identified by previous studies [e.g. @de_la_pena_qualitative_2015; @de_la_pena_sobre_2011], in which certain combination of attributes were used to discriminate scaled pieces functionalities, are difficult to apply to the assemblage used in this study.
 
@@ -375,7 +375,7 @@ The high variability of the assemblage is also well noticeable in the biplots pr
 
 # Multiple Correspondence Analysis
 
-mca.rawmaterial()
+morpho_data_mca <- mca.scaled.pieces()
 
 ```
 

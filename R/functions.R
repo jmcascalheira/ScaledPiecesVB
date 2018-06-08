@@ -2,7 +2,7 @@
 ###########################################################################
 # READ DATA ----------------------------------------------------------------
 
-read_data <- function(){
+read.data <- function(){
   #tech_attributes <- readcsv("../data/raw_data/technology_attributes.csv")
   #morpho_attributes <- read.csv("../data/raw_data/morpho_attributes.csv")
   techno_data <- read_csv("../data/raw_data/technology_dataset.csv")
@@ -12,7 +12,6 @@ read_data <- function(){
               techno_data = techno_data))
 
 }
-
 
 ###########################################################################
 # MAPS --------------------------------------------------------------------
@@ -64,9 +63,7 @@ Map <- function(){
 ###########################################################################
 # CROSS TABLES ------------------------------------------------------------
 
-
-
-cross_tb <- function(dataset,x,y) {
+cross.tb <- function(dataset,x,y) {
 
 require(tab)
 require(tidyverse)
@@ -87,36 +84,10 @@ dataset <- as.data.frame(dataset)
 
 }
 
-
-###########################################################################
-# MEAN TABLE --------------------------------------------------------------
-
-
-mean_tb <- function(dataset,x,y) {
-
-  require(tab)
-  require(tidyverse)
-
-  mt <- tabmulti(dataset, x, y,
-                 cell = "n",
-                 parenth = "col.percent",
-                 p.include = TRUE,
-                 n.headings = FALSE,
-                 freq.text.label = "none",
-                 means.text.label = "none")
-
- # mt <- mt %>%
-  #  as.tibble() %>%
-   # dplyr::select(" " = Variable, Chert, Quartz, Chalcedony, Overall)
-
-}
-
-
-
 ###########################################################################
 # MEAN PLOTS --------------------------------------------------------------
 
-mean_plot <- function(dataset, x, y, z){
+mean.plot <- function(dataset, x, y, z){
 
   ggbarplot(dataset, x = x, y = y,
             add = c("mean_sd", "jitter"), size = 1,
@@ -131,7 +102,7 @@ mean_plot <- function(dataset, x, y, z){
 ###########################################################################
 # BOXPLOT WITH JITTER -----------------------------------------------------
 
-box_plot <- function(df, x_var, y_var, x_label, y_label){
+box.plot <- function(df, x_var, y_var, x_label, y_label){
   b_plot<-ggplot(df,aes_string(x= x_var, y=y_var)) +
     geom_boxplot(outlier.shape = NA)
 
@@ -150,7 +121,7 @@ box_plot <- function(df, x_var, y_var, x_label, y_label){
 # INLINE PERCENTAGE -------------------------------------------------------
 
 
-inline_perc <- function(dataset, x, y){
+inline.perc <- function(dataset, x, y){
 
   x <- enquo(x)
 
@@ -166,52 +137,10 @@ inline_perc <- function(dataset, x, y){
 
 }
 
-
-###########################################################################
-# LIST OF VARIABLES TO COMPARE WITH STAT_COMPARE_MEANS --------------------
-
-compare_list <- function(dataset,x){
-
-  my_comparisons <- vector("list")
-  un_values <- unique(dataset[[x]])
-  un_values <- as.data.frame(combn(un_values,2))
-  var_names <- colnames(un_values)
-
-  for(i in var_names) {
-    g <- assign(i, un_values[[i]])
-
-    my_comparisons[[i]] <- g
-    names(my_comparisons[i]) <- paste("ct", i, sep = "_")
-
-  }
-
-  list2env(my_comparisons, envir = .GlobalEnv)
-}
-
-
-###########################################################################
-# MEAN PLOTS WITH STAT RESULTS ---------------------------------------------
-
-mean_plot_stat_results <- function(dataset, x, y, z){
-
-  compare_list(dataset, x)
-
-  thickness_plot <- ggbarplot(techno_data, x = x, y = y,
-                              add = c("mean_sd", "jitter"), size = 1,
-                              color = z, palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-                              position = position_dodge(0.8),
-                              xlab = "") +
-    stat_compare_means(comparisons = my_comparisons) +
-    #scale_x_discrete(limits=c("Gravettian", "Proto-Solutrean","Solutrean", "Magdalenian")) +
-    theme_gray()
-}
-
-
-
 ########################################################################################
 # RECODE TO OTHER BASED ON 10% FREQUENCY -----------------------------------------------
 
-condense_to_other <- function(df, x){
+condense.to.other <- function(df, x){
 
   m <- df %>%
     count_(x) %>%
@@ -230,7 +159,7 @@ condense_to_other <- function(df, x){
 
 ####### Alternative to all columns:
 
-condense_to_other_all <- function(df){
+condense.to.other.all <- function(df){
 
   nm <- colnames(df)
 
@@ -255,7 +184,7 @@ condense_to_other_all <- function(df){
 ########################################################################################
 # RECODE TO NA BASED ON 10% FREQUENCY -----------------------------------------------
 
-condense_to_NA <- function(df, x){
+condense.to.NA <- function(df, x){
 
   m <- df %>%
     count_(x) %>%
@@ -275,7 +204,7 @@ condense_to_NA <- function(df, x){
 
 ####### Alternative to all columns:
 
-condense_to_NA_all <- function(df){
+condense.to.NA.all <- function(df){
 
   nm <- colnames(df)
 
@@ -317,7 +246,7 @@ CHI <- function(x, y) {
 
 # ANOVA test
 
-run_Anova<-function(df, y_var){
+run.Anova<-function(df, y_var){
   frm<-as.formula(sprintf("%s~%s", y_var, "RawMaterial"))
   compare_aov<-aov(frm, data=df)
   return(compare_aov)
@@ -325,7 +254,7 @@ run_Anova<-function(df, y_var){
 
 
 anova.test <- function(df, y_var){
-  compare_aov = run_Anova(df, y_var)
+  compare_aov = run.Anova(df, y_var)
   return(compare_aov)
 }
 
@@ -341,7 +270,7 @@ cohens.test <- function(df){
 ###########################################################################
 # JOIN AND RECODE OPPOSED PLATFORMS ---------------------------------------
 
-opposed_plat_morpho <- function(){
+opposed.plat.morpho <- function(){
 
 
   # Select Platforms A and B
@@ -409,16 +338,16 @@ opposed_plat_morpho <- function(){
 
   # Condense
 
-  morpho_data_opposed_platforms <- condense_to_other_all(morpho_data_opposed_platforms)
-  morpho_data_opposed_platforms <- condense_to_NA_all(morpho_data_opposed_platforms)
+  morpho_data_opposed_platforms <- condense.to.other.all(morpho_data_opposed_platforms)
+  morpho_data_opposed_platforms <- condense.to.NA.all(morpho_data_opposed_platforms)
 
   return(morpho_data_opposed_platforms)
 
 }
 
-plot_morpho_var <- function(x){
+ # Plot all variables
 
-  # Plot all variables
+plot.morpho.var <- function(x){
 
   dist_perc <- x %>%
     group_by(RawMaterial, ScarDistribution) %>%
@@ -516,10 +445,10 @@ plot_morpho_var <- function(x){
 ###########################################################################
 # MCA ---------------------------------------------------------------------
 
-mca.rawmaterial <- function(x){
+mca.scaled.pieces <- function(){
 
 
-  morpho_data_mca <- MCA(morpho_data_opposed_platforms, quali.sup = "RawMaterial")
+  morpho_data_mca <- MCA(morpho_data_opposed_platforms, quali.sup = 1, graph = FALSE)
 
   return(morpho_data_mca)
 
