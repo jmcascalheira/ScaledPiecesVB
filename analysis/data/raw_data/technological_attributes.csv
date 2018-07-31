@@ -1,0 +1,75 @@
+Variables,Attributes
+Raw Material,Quartz
+,Chert
+,Greywacke
+,Chalcedony
+,Others
+Blank,Blade
+,Blade Fragment
+,Bladelet 
+,Bladelet Fragment
+,Core
+,Flake
+,Fragment
+,Nodule
+Coinciding Axis,Coinciding
+,Non-Coinciding
+,Unidentifiable
+Retouch,Absent
+,Present
+Cortex % ,No Cortex
+,>25%
+,25-50%
+,50-95%
+,>95%
+Cortex Location,Distal
+,Lateral
+,Lateral Distal
+,Lateral Mesial
+,Lateral Proximal
+,Mesial
+,Proximal
+Butt,Absent
+,Cortical
+,Dihedral
+,Faceted
+,Pointed
+,Flat
+Profile,Straight
+,Curved
+,Irregular
+,Twisted
+Transversal Section Shape,Other 
+,Irregular
+,Rectangular 
+,Trapezoidal
+,Triangular
+Longitudinal Section Shape,Elliptical
+,Irregular
+,Other
+,Rectangular
+,Semicircular
+,Trapezoidal
+,Triangular
+Edge Shape,Biconvex
+,Circular
+,Converging
+,Diverging
+,Irregular
+,Others
+,Parallel
+Dorsal Pattern,Bidirectional Alternating
+,Bidirectional Parallel
+,Bidirectional Perpendicular
+,Unidentifiable
+,Parallel Distal
+,Parallel Proximal
+,Parallel one side
+,Radial
+Termination,Stepped
+,Natural
+,Hinged
+,Transversal
+Fire Traces,Burnt 
+,No traces
+,Thermal Treatment

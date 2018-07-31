@@ -1,0 +1,35 @@
+,Variables,Attributes
+Splintered edges,# of damaged platforms,N
+,Edge width,Width (mm)
+,# of Scars,N
+,Angle (between faces),<45º
+,,>45º
+,,Platform
+,Delineation*,Concave
+,,Convex
+,,Irregular
+,,Oblique
+,,Pointed
+,,Straight
+,Damage level*,High
+,,Low
+,,Medium
+Scars on splintered edge,Shape**,Half-Moon 
+,,Irregular
+,,Mixed
+,,Quadrangular
+,,Semicircular
+,,Trapezoidal
+,,Triangular
+,Distribution*,Central
+,,Lateral
+,,Total
+,Disposition*,Aligned
+,,Aligned/Overlapped
+,,Isolated
+,,Overlapped
+,Extension**,Invasive
+,,Marginal
+,,Mixed
+,Faciality**,Bifacial
+,,Unifacial
