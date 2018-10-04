@@ -91,10 +91,12 @@ mean.plot <- function(dataset, x, y, z){
 
   ggbarplot(dataset, x = x, y = y,
             add = c("mean_sd", "jitter"), size = 1,
-            color = z, palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+            color = z,
             position = position_dodge(0.8),
             xlab = "") +
-  scale_x_discrete(limits=c("Gravettian", "Proto-Solutrean","Solutrean", "Magdalenian"))
+  scale_x_discrete(limits=c("Gravettian", "Proto-Solutrean","Solutrean", "Magdalenian")) +
+  scale_fill_manual(values = wes_palette(name="Rushmore")[c(4,1,3)]) +
+  scale_color_manual(values=wes_palette(name="Rushmore")[c(4,1,3)])
 
 }
 
@@ -108,10 +110,11 @@ box.plot <- function(df, x_var, y_var, x_label, y_label){
 
   b_plot <- b_plot +
     geom_jitter(position=position_jitter(width=.2, height=0), aes(color = RawMaterial), size = 2) +
-    scale_color_manual(values = c("#00AFBB", "#E7B800", "#FC4E07"), name = "Raw Material") +
     labs(x = x_label, y = y_label)+
     scale_fill_discrete(guide=FALSE)+
-    theme_classic()
+    theme_classic() +
+    scale_fill_manual(values = wes_palette(name="Rushmore")[c(5,3,1)]) +
+    scale_color_manual(values=wes_palette(name="Rushmore")[c(5,3,1)])
 
   return(b_plot)
 }
@@ -358,10 +361,11 @@ plot.morpho.var <- function(x){
   dist <- ggbarplot(dist_perc, x = "ScarDistribution", y = "pct",
                     position = position_dodge(0.9),
                     fill = "RawMaterial", color = "RawMaterial",
-                    palette = c("#00AFBB", "#E7B800"),
                     orientation = "horiz",
                     xlab = FALSE,
-                    ylab = FALSE)
+                    ylab = FALSE) +
+    scale_fill_manual(values = wes_palette(name="Rushmore")[c(1,3)]) +
+    scale_color_manual(values=wes_palette(name="Rushmore")[c(1,3)])
 
 
 
@@ -374,10 +378,11 @@ plot.morpho.var <- function(x){
   arr <- ggbarplot(arr_perc, x = "ScarArrangement", y = "pct",
                     position = position_dodge(0.9),
                     fill = "RawMaterial", color = "RawMaterial",
-                    palette = c("#00AFBB", "#E7B800"),
                     orientation = "horiz",
                     xlab = FALSE,
-                   ylab = FALSE)
+                   ylab = FALSE) +
+    scale_fill_manual(values = wes_palette(name="Rushmore")[c(1,3)]) +
+    scale_color_manual(values=wes_palette(name="Rushmore")[c(1,3)])
 
 
   ext_perc <- x %>%
@@ -389,10 +394,11 @@ plot.morpho.var <- function(x){
   ext <- ggbarplot(ext_perc, x = "ScarExtension", y = "pct",
                     position = position_dodge(0.9),
                     fill = "RawMaterial", color = "RawMaterial",
-                    palette = c("#00AFBB", "#E7B800"),
                     orientation = "horiz",
                     xlab = FALSE,
-                   ylab = FALSE)
+                   ylab = FALSE) +
+    scale_fill_manual(values = wes_palette(name="Rushmore")[c(1,3)]) +
+    scale_color_manual(values=wes_palette(name="Rushmore")[c(1,3)])
 
 
   deli_perc <- x %>%
@@ -404,10 +410,11 @@ plot.morpho.var <- function(x){
   deli <- ggbarplot(deli_perc, x = "ScarEdgeDelineation", y = "pct",
                     position = position_dodge(0.9),
                     fill = "RawMaterial", color = "RawMaterial",
-                    palette = c("#00AFBB", "#E7B800"),
                     orientation = "horiz",
                     xlab = FALSE,
-                    ylab = FALSE)
+                    ylab = FALSE) +
+    scale_fill_manual(values = wes_palette(name="Rushmore")[c(1,3)]) +
+    scale_color_manual(values=wes_palette(name="Rushmore")[c(1,3)])
 
 
   facial_perc <- x %>%
@@ -419,10 +426,11 @@ plot.morpho.var <- function(x){
   facial <- ggbarplot(facial_perc, x = "ScarFaciality", y = "pct",
                     position = position_dodge(0.9),
                     fill = "RawMaterial", color = "RawMaterial",
-                    palette = c("#00AFBB", "#E7B800"),
                     orientation = "horiz",
                     xlab = FALSE,
-                    ylab = FALSE)
+                    ylab = FALSE) +
+    scale_fill_manual(values = wes_palette(name="Rushmore")[c(1,3)]) +
+    scale_color_manual(values=wes_palette(name="Rushmore")[c(1,3)])
 
   angle_perc <- x %>%
     group_by(RawMaterial, Angle) %>%
@@ -433,10 +441,11 @@ plot.morpho.var <- function(x){
   angle <- ggbarplot(angle_perc, x = "Angle", y = "pct",
                     position = position_dodge(0.9),
                     fill = "RawMaterial", color = "RawMaterial",
-                    palette = c("#00AFBB", "#E7B800"),
                     orientation = "horiz",
                     xlab = FALSE,
-                    ylab = FALSE)
+                    ylab = FALSE) +
+    scale_fill_manual(values = wes_palette(name="Rushmore")[c(1,3)]) +
+    scale_color_manual(values=wes_palette(name="Rushmore")[c(1,3)])
 
   return(ggarrange(dist, arr, ext, deli, facial, angle, ncol = 2, nrow = 3, common.legend = TRUE, legend = "bottom", align = "hv", labels="AUTO"))
 
