@@ -12,6 +12,11 @@ knitr::opts_chunk$set(
 )
 ```
 
+[![Last-changedate](https://img.shields.io/badge/last%20change-`r gsub('-', '--', Sys.Date())`-brightgreen.svg)](https://github.com/jmcascalheira/ScaledPiecesVB/commits/master)
+[![minimal R version](https://img.shields.io/badge/R%3E%3D-3.2.4-brightgreen.svg)](https://cran.r-project.org/) 
+[![Build Status](https://travis-ci.org/jmcascalheira/ScaledPiecesVB.svg?branch=master)](https://travis-ci.org/jmcascalheira/ScaledPiecesVB)
+[![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/)
+[![ORCiD](https://img.shields.io/badge/ORCiD-/0000--0003--0321--8892-green.svg)](http://orcid.org/0000-0003-0321-8892)
 
 # ScaledPiecesVB
 
@@ -28,7 +33,7 @@ Our pre-print is online here:
 
 Please cite this compendium as:
 
-> Cascalheira, J., Horta, P., Bicho, N. (`r format(Sys.Date(), "%Y")`). _Compendium of R code and data for 'The role of lithic bipolar technology in Western Iberia’s Upper Paleolithic: the case of Vale Boi (southern Portugal)'_. Accessed `r format(Sys.Date(), "%d %b %Y")`. Online at <https://doi.org/xxx/xxx>
+> Cascalheira, J., Horta, P., Bicho, N. (`r format(Sys.Date(), "%Y")`). _Compendium of R code and data for 'The role of lithic bipolar technology in Western Iberia’s Upper Paleolithic: the case of Vale Boi (southern Portugal)'_. Accessed `r format(Sys.Date(), "%d %b %Y")`. Online at <https://doi.org/10.17605/OSF.IO/WPXGH>
 
 ### How to download or install
 
@@ -38,11 +43,7 @@ You can download the compendium as a zip from from this URL:
 
 This repository is organized as an R package using rrtools by Ben Marwick which can be installed from github with:
 
-
-There are no actual R functions in this package - all the R code is in the Rmd file. I simply used the R package structure to help manage dependencies, to take advantage of continuous integration for automated code testing, and so I didn't have to think too much about how to organise the files.
-
 To download the package source as you see it on GitHub, for offline browsing, use this line at the shell prompt (assuming you have Git installed on your computer):
-
 
 
 ```{r eval=FALSE}
@@ -52,9 +53,9 @@ git clone https://github.com/jmcascalheira/ScaledPiecesVB.git
 ```
 
 
-Once the download is complete, open the ShortTermOccupations.Rproj in RStudio to begin working with the package and compendium files.
+Once the download is complete, open the ScaledPieces.Rproj in RStudio to begin working with the package and compendium files.
 
-The package has a number of dependencies on other R packages, and programs outside of R. Installing these can be time-consuming and complicated, so we've included a packrat directory, which contains the source code for all the packages we depend on. If all works well, these will be installed on your computer when you open ShortTermOccupations.Rproj in RStudio.
+The package has a number of dependencies on other R packages, and programs outside of R. Installing these can be time-consuming and complicated, so we've included a packrat directory, which contains the source code for all the packages we depend on. If all works well, these will be installed on your computer when you open ScaledPiecesVB.Rproj in RStudio.
 
 
 ### Licenses

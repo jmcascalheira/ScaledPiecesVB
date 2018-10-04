@@ -1,32 +1,28 @@
 ---
 title: "The role of lithic bipolar technology in Western Iberia’s Upper Paleolithic: the case of Vale Boi (southern Portugal)"
 author:
-  - Pedro Horta* (ICArEHB, University of Algarve, Faro, Portugal)
-  - João Cascalheira (ICArEHB, University of Algarve, Faro, Portugal)
-  - Nuno Bicho (ICArEHB, University of Algarve, Faro, Portugal)
-  - "*corresponding author | email: pedroehorta@gmail.com | phone: +351 911 005 506"
-
+  - Pedro Horta (ICArEHB, University of Algarve, Faro, Portugal) pedroehorta@gmail.com
+  - João Cascalheira (ICArEHB, University of Algarve, Faro, Portugal) jmcascalheira@ualg.pt
+  - Nuno Bicho (ICArEHB, University of Algarve, Faro, Portugal) nbicho@ualg.pt
+date: '`r Sys.Date()`'
 output: 
     bookdown::word_document2: #subsistute by pdf_document2 or hmtl_document2 as necessary
       fig_caption: yes
       reference_docx: "../templates/template2.docx" 
 bibliography: ScaledPiecesVB.bib
 csl: "../templates/springer-socpsych-author-date.csl"
----
-
-\newline
-
-# Abstract
-
-  Scaled or splintered pieces are one of the most common lithic artifacts type in Upper Paleolithic assemblages throughout Europe, especially in its westernmost regions. Despite this, and even after one century of being identified there is still no consensus on how to define, analyze or interpret these tools. In western Iberia there is a clear lack of comprehensive studies regarding this type of artifacts at a regional scale. In this paper we present a first techno-morphological analysis of a sample of scaled pieces from the Upper Paleolithic site of Vale Boi. Our first aim was to build upon existing analytical models in order to identify function and possible reduction strategies for these artifacts. Our second goal was to critically evaluate the role of these artifacts within western Iberia’s Upper Paleolithic.
+abstract: |
+  Scaled or splintered pieces are one of the most common lithic artifacts type in Upper Paleolithic assemblages throughout Europe, especially in its westernmost regions. Despite this, even after one century of being identified there is still no consensus on how to define, analyze or even interpret these tools. In western Iberia there is a clear lack of comprehensive studies regarding this type of artifacts at a regional scale. In this paper we present a first techno-morphological analysis of a sample of scaled pieces from the Upper Paleolithic site of Vale Boi. Our first aim was to build upon existing analytical models in order to identify function and possible reduction strategies for these artifacts. Our second goal was to critically evaluate the role of these artifacts within western Iberia’s Upper Paleolithic.
   Our results showed that functional identification of scaled pieces is still not clear. By comparing our data with other author’s we found that current models could not be applied to the archaeological record, as the attribute variability is too high. Furthermore, in this region we found that higher frequencies of bipolar technology can be found related to residential sites due to both functional and cultural patterns. While we still cannot define a specific function for these artifacts (intermediate pieces or wedges for working hard raw materials or cores for the extraction of chips and small bladelets), it is clear that they had a major role in the variability and intensification of resource exploitation during the Upper Paleolithic in western Iberia.
 
-\newline
+figsintext        : no
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+lineno            : no
+keywords          : ""
 
-# Keywords
-
-Lithic technology; Scaled Pieces; Upper Paleolithic; Western Europe
-
+---
 
 ```{r, setup, include = FALSE, echo = FALSE}
 
@@ -155,7 +151,7 @@ Macroscopic morpho-functional attributes were separately analyzed for each damag
 
 ## Analysis, reproducibility and open source materials
 
-All analyses and data processing were accomplished in R (version `r getRversion()`) [@r_core_team_r:_2013]. Following recent concerns on the reproducibility of archaeological analysis we include the entire R code used for all the analysis and visualizations contained in this paper in our supplemental online material (SOM) at https://dx.doi.org/10.17605/OSF.IO/WPXGH To produce those files we followed the procedures described by Marwick et al. [-@marwick_packaging_2017] for the creation of research compendiums to enhance the reproducibility of research. The files provided contain all the raw data used in our analysis as well as a custom R package [@wickham_r_2015] holding the code use for all analysis and to produce all tables and figures. To enable maximum re-use, our code is released under the MIT license, our data as CC-0, and our figures as CC-BY, [for more information see @marwick_computational_2016].
+All analyses and data processing were accomplished in R (version `r getRversion()`) [@r_core_team_r:_2013]. Following recent concerns on the reproducibility of archaeological analysis we include the entire R code used for all the analysis and visualizations contained in this paper in our supplemental online material (SOM) at https://dx.doi.org/… To produce those files we followed the procedures described by Marwick et al. [-@marwick_packaging_2017] for the creation of research compendiums to enhance the reproducibility of research. The files provided contain all the raw data used in our analysis as well as a custom R package [@wickham_r_2015] holding the code use for all analysis and to produce all tables and figures. To enable maximum re-use, our code is released under the MIT license, our data as CC-0, and our figures as CC-BY, [for more information see @marwick_computational_2016].
 
 \newline
 
@@ -450,3 +446,89 @@ The current Git commit details are:
 # if your Rmd is not in analysis/paper/
 git2r::repository("../..")
 ```
+
+<!--chapter:end:paper.Rmd-->
+
+---
+title: "SOM: The role of lithic bipolar technology in Western Iberia’s Upper Paleolithic: the case of Vale Boi (southern Portugal)"
+author: 
+  - Pedro Horta (ICArEHB, University of Algarve, Faro, Portugal) pedroehorta@gmail.com
+  - João Cascalheira (ICArEHB, University of Algarve, Faro, Portugal) jmcascalheira@ualg.pt
+  - Nuno Bicho (ICArEHB, University of Algarve, Faro, Portugal) nbicho@ualg.pt
+date: '`r Sys.Date()`'
+output:
+   bookdown::word_document2:
+    fig_caption: yes
+    reference_docx: templates/template2.docx
+bibliography: ScaledPiecesVB.bib
+csl: "../templates/springer-socpsych-author-date.csl"
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  comment = "#>",
+  dpi = 300,
+  fig.width = 9,
+  fig.path = "../figures/")
+  cache = TRUE
+
+library(knitr)
+library(readr)
+
+```
+
+## Technological attributes used in the analysis
+
+```{r techno_attributes, echo=FALSE}
+
+techno_attributes <- read_csv("../data/raw_data/technological_attributes.csv")
+
+techno_attributes[is.na(techno_attributes)] <- " "
+
+knitr::kable(techno_attributes, caption= "Technological attributes used in the analysis of scaled pieces included in the study.")
+
+```
+
+\newline
+
+## Morpho-functional attributes used in the analysis
+
+```{r morpho_attributes, echo=FALSE}
+
+morpho_attributes <- read_csv("../data/raw_data/functional_attributes.csv")
+
+morpho_attributes[is.na(morpho_attributes)] <- " "
+
+knitr::kable(morpho_attributes, caption= "Morpho-functional attributes used in the analysis of each platform of scaled pieces included in the study. *Adapted from Gonzalez-Urquijo and Ibanez-Estévez [-@gonzalez-urquijo_metodologialisis_1994]. **Adapted from de la Peña [-@de_la_pena_sobre_2011].")
+
+```
+
+\newline
+
+# References 
+<div id="refs"></div>
+
+# Colophon
+
+This report was generated on `r Sys.time()` using the following computational environment and dependencies: 
+
+```{r colophon, cache = FALSE}
+# which R packages and versions?
+devtools::session_info()
+```
+
+The current Git commit details are:
+
+```{r}
+# what commit is this file at? You may need to change the path value
+# if your Rmd is not in analysis/paper/
+git2r::repository("../..")
+```
+
+<!--chapter:end:SOM.Rmd-->
+
