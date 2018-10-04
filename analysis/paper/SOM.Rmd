@@ -28,7 +28,7 @@ library(readr)
 
 \newline
 
-### Table 1 - Technological attributes used in the analysis of scaled pieces included in this study
+### Table 1 - Technological attributes used for the analysis of scaled pieces included in this study
 
 ```{r techno_attributes, echo=FALSE}
 
