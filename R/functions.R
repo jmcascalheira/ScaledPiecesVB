@@ -21,43 +21,68 @@ Map <- function(){
   require(maptools)
   require(ggplot2)
   require(ggmap)
-  require(devtools)
   require(legendMap)
+  require(gridExtra)
 
-  VBLocation <- c(lon = -8.808621, lat = 37.089902)
+  VBLocation <-  c(lon = -8.808621, lat = 37.089902)
 
-  VBMap <- get_googlemap(center = c(lon = -8.101284, lat = 39.486585),
-                         zoom = 7,
-                         scale = 2,
-                         maptype = "roadmap")
+  western_algarve <- c(left = -9.3, bottom = 36.8, right = -7.5, top = 38)
+  myMap <- get_stamenmap(western_algarve, zoom = 10, maptype = "terrain")
 
-  VBMap <-
-    ggmap(VBMap) +
+  close_up_map <- ggmap(myMap) +
     geom_point(data = data.frame(t(VBLocation)),
                aes(lon,
                    lat),
-               size = 5,
-               colour = "black") +
+               size = 10,
+               colour = "red") +
     geom_text(data = data.frame(t(VBLocation)), aes(x = lon, y = lat, label = "Vale Boi"),
-              size = 4, colour = "black", vjust = -1, hjust = 0.5)
+              size = 5, colour = "black", vjust = -1.5, hjust = 0.5)
 
-
-  VBMap <- VBMap +
-    legendMap::scale_bar(lon = -11.3,
-                         lat = 37,
-                         distance_lon = 50,
-                         distance_lat = 8,
-                         distance_legend = 20,
-                         legend_colour = "white",
+  close_up_map <- close_up_map +
+    legendMap::scale_bar(lon = -9.2,
+                         lat = 36.85,
+                         distance_lon = 10,
+                         distance_lat = 3,
+                         distance_legend = 6,
                          dist_unit = "km",
                          orientation = TRUE,
-                         arrow_length = 50,
-                         arrow_distance = 50,
-                         arrow_north_size = 3)
+                         arrow_length = 10,
+                         arrow_distance = 110,
+                         arrow_north_size = 5)
 
-  ggsave("../figures/VBMap.png")
+  iberia <- c(left = -12, bottom = 35, right = 2, top = 44)
+  myMap <- get_stamenmap(iberia, zoom = 7, maptype = "terrain")
+
+  general_map <- ggmap(myMap) +
+    geom_point(data = data.frame(t(VBLocation)),
+               aes(lon,
+                   lat),
+               size = 6,
+               colour = "red") +
+    geom_text(data = data.frame(t(VBLocation)), aes(x = lon, y = lat, label = "Vale Boi"),
+              size = 5, colour = "black", vjust = -1, hjust = 0.8)
+
+  general_map <- general_map +
+    legendMap::scale_bar(lon = -11.4,
+                         lat = 35.4,
+                         distance_lon = 100,
+                         distance_lat = 20,
+                         distance_legend = 40,
+                         dist_unit = "km",
+                         orientation = TRUE,
+                         arrow_length = 80,
+                         arrow_distance = 800,
+                         arrow_north_size = 5)
+
+
+  png("../figures/location_map.png", height = 600, width = 1200)
+  grid.arrange(general_map,
+               close_up_map,
+               ncol = 2)
+  dev.off()
 
 }
+
 
 
 ###########################################################################

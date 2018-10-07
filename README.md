@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![Last-changedate](https://img.shields.io/badge/last%20change-2018--10--04-brightgreen.svg)](https://github.com/jmcascalheira/ScaledPiecesVB/commits/master)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2018--10--07-brightgreen.svg)](https://github.com/jmcascalheira/ScaledPiecesVB/commits/master)
 [![minimal R
 version](https://img.shields.io/badge/R%3E%3D-3.2.4-brightgreen.svg)](https://cran.r-project.org/)
 [![Build
@@ -22,7 +22,7 @@ Our pre-print is online here:
 
 > Horta, P., Cascalheira, J., Bicho, N. (2018). *The role of lithic
 > bipolar technology in Western Iberia’s Upper Paleolithic: the case of
-> Vale Boi (southern Portugal)*. Name of journal/book, Accessed 04 Oct
+> Vale Boi (southern Portugal)*. Name of journal/book, Accessed 07 Oct
 > 2018. Online at <https://doi.org/xxx/xxx>
 
 ### How to cite
@@ -32,8 +32,8 @@ Please cite this compendium as:
 > Cascalheira, J., Horta, P., Bicho, N. (2018). *Compendium of R code
 > and data for ‘The role of lithic bipolar technology in Western
 > Iberia’s Upper Paleolithic: the case of Vale Boi (southern
-> Portugal)’*. Accessed 04 Oct 2018. Online at
-> <https://doi.org/xxx/xxx>
+> Portugal)’*. Accessed 07 Oct 2018. Online at
+> <https://doi.org/10.17605/OSF.IO/WPXGH>
 
 ### How to download or install
 
