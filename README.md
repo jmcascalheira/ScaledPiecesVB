@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![Last-changedate](https://img.shields.io/badge/last%20change-2018--10--07-brightgreen.svg)](https://github.com/jmcascalheira/ScaledPiecesVB/commits/master)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2018--12--02-brightgreen.svg)](https://github.com/jmcascalheira/ScaledPiecesVB/commits/master)
 [![minimal R
 version](https://img.shields.io/badge/R%3E%3D-3.2.4-brightgreen.svg)](https://cran.r-project.org/)
 [![Build
@@ -15,15 +15,15 @@ This repository contains the data and code for our paper:
 
 > Horta, P., Cascalheira, J., Bicho, N. (2018). *The role of lithic
 > bipolar technology in Western Iberia’s Upper Paleolithic: the case of
-> Vale Boi (southern Portugal)*. Name of journal/book
+> Vale Boi (southern Portugal)*. Journal of Paleolithic Archaeology
 > <https://doi.org/xxx/xxx>
 
 Our pre-print is online here:
 
 > Horta, P., Cascalheira, J., Bicho, N. (2018). *The role of lithic
 > bipolar technology in Western Iberia’s Upper Paleolithic: the case of
-> Vale Boi (southern Portugal)*. Name of journal/book, Accessed 07 Oct
-> 2018. Online at <https://doi.org/xxx/xxx>
+> Vale Boi (southern Portugal)*. SocArXiv , Accessed 02 Dec 2018. Online
+> at <https://doi.org/xxx/xxx>
 
 ### How to cite
 
@@ -32,7 +32,7 @@ Please cite this compendium as:
 > Cascalheira, J., Horta, P., Bicho, N. (2018). *Compendium of R code
 > and data for ‘The role of lithic bipolar technology in Western
 > Iberia’s Upper Paleolithic: the case of Vale Boi (southern
-> Portugal)’*. Accessed 07 Oct 2018. Online at
+> Portugal)’*. Accessed 02 Dec 2018. Online at
 > <https://doi.org/10.17605/OSF.IO/WPXGH>
 
 ### How to download or install
@@ -41,8 +41,20 @@ You can download the compendium as a zip from from this URL:
 
 <https://github.com/jmcascalheira/ScaledPiecesVB/archive/master.zip>
 
-This repository is organized as an R package using rrtools by Ben
-Marwick which can be installed from github with:
+This repository is organized as an R package using rrtools by [Ben
+Marwick](https://github.com/benmarwick) which can be installed from
+github with:
+
+``` r
+
+git clone https://github.com/benmarwick/rrtools.git
+```
+
+The functions are provided as a package because this makes it simpler to
+reuse the functions many times in the paper. It also makes it easier for
+others to use and adapt these functions on their own data. Nevertheless,
+this package has been written explicitly for this project and may not
+yet be suitable for more general purpose use.
 
 To download the package source as you see it on GitHub, for offline
 browsing, use this line at the shell prompt (assuming you have Git
@@ -55,6 +67,14 @@ git clone https://github.com/jmcascalheira/ScaledPiecesVB.git
 
 Once the download is complete, open the ScaledPieces.Rproj in RStudio to
 begin working with the package and compendium files.
+
+If you want to re-run all the analyses in R, you can start by installing
+the compendium package with this line at the R prompt:
+
+``` r
+
+devtools::install_github("jmcascalheira/ScaledPiecesVB")
+```
 
 The package has a number of dependencies on other R packages, and
 programs outside of R. Installing these can be time-consuming and

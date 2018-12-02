@@ -2,9 +2,9 @@
 FROM rocker/verse:3.4.4
 
 # required
-MAINTAINER João Cascalheira <jmcascalheira@ualg.pt>
+MAINTAINER João Cascalheira <jmcasca@gmail.com>
 
-COPY . /ScaledPiecesVB
+COPY . /scaledpiecesvb
 
 # go into the repo directory
 RUN . /etc/environment \
@@ -17,6 +17,5 @@ RUN . /etc/environment \
   # build this compendium package
   && R -e "devtools::install('/ScaledPiecesVB', dep=TRUE)" \
 
- # render the manuscript into a docx, you'll need to edit this if you've
- # customised the location and name of your main Rmd file
+ # render the manuscript into a docx
   && R -e "rmarkdown::render('/ScaledPiecesVB/analysis/paper/paper.Rmd')"

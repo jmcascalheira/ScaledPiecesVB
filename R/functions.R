@@ -2,6 +2,13 @@
 ###########################################################################
 # READ DATA ----------------------------------------------------------------
 
+
+#' read.data
+#' @importFrom readr read_csv
+#' @export
+#'
+
+
 read.data <- function(){
   #tech_attributes <- readcsv("../data/raw_data/technology_attributes.csv")
   #morpho_attributes <- read.csv("../data/raw_data/morpho_attributes.csv")
@@ -15,6 +22,17 @@ read.data <- function(){
 
 ###########################################################################
 # MAPS --------------------------------------------------------------------
+
+#' Map
+#'
+#' @importFrom ggmap    ggmap    get_stamenmap
+#' @import legendMap
+#' @import maptools
+#' @importFrom gridExtra    grid.arrange
+#' @importFrom grDevices    dev.off    png
+#' @importFrom stats    aggregate    coef    lm    na.omit    quantile    reshape
+#' @importFrom utils    read.csv    read.table
+#'@export
 
 Map <- function(){
 
@@ -88,6 +106,15 @@ Map <- function(){
 ###########################################################################
 # CROSS TABLES ------------------------------------------------------------
 
+#' cross.tb
+#'
+#' @importFrom tab    tabmulti
+#' @importFrom dplyr    mutate_if
+#'@export
+
+
+
+
 cross.tb <- function(dataset,x,y) {
 
 require(tab)
@@ -112,6 +139,13 @@ dataset <- as.data.frame(dataset)
 ###########################################################################
 # MEAN PLOTS --------------------------------------------------------------
 
+
+#' mean.plot
+#'
+#' @importFrom ggpubr ggbarplot
+#'@export
+
+
 mean.plot <- function(dataset, x, y, z){
 
   ggbarplot(dataset, x = x, y = y,
@@ -128,6 +162,13 @@ mean.plot <- function(dataset, x, y, z){
 
 ###########################################################################
 # BOXPLOT WITH JITTER -----------------------------------------------------
+
+
+#' box.plot
+#'
+#' @importFrom ggplot2    ggplot    geom_boxplot
+#'@export
+
 
 box.plot <- function(df, x_var, y_var, x_label, y_label){
   b_plot<-ggplot(df,aes_string(x= x_var, y=y_var)) +
@@ -149,6 +190,12 @@ box.plot <- function(df, x_var, y_var, x_label, y_label){
 # INLINE PERCENTAGE -------------------------------------------------------
 
 
+#' inline.percent
+#'
+#' @importFrom dplyr    group_by    mutate    filter
+#'@export
+
+
 inline.perc <- function(dataset, x, y){
 
   x <- enquo(x)
@@ -168,6 +215,11 @@ inline.perc <- function(dataset, x, y){
 ########################################################################################
 # RECODE TO OTHER BASED ON 10% FREQUENCY -----------------------------------------------
 
+#' condense.to.other
+#'
+#' @importFrom dplyr    count    mutate    filter
+#'@export
+
 condense.to.other <- function(df, x){
 
   m <- df %>%
@@ -186,6 +238,12 @@ condense.to.other <- function(df, x){
 }
 
 ####### Alternative to all columns:
+
+#' condense.to.other.all
+#'
+#' @importFrom dplyr    count_    mutate    filter
+#'@export
+
 
 condense.to.other.all <- function(df){
 
@@ -212,6 +270,11 @@ condense.to.other.all <- function(df){
 ########################################################################################
 # RECODE TO NA BASED ON 10% FREQUENCY -----------------------------------------------
 
+#' condense.to.NA
+#'
+#' @importFrom dplyr    count_    mutate    filter
+#'@export
+
 condense.to.NA <- function(df, x){
 
   m <- df %>%
@@ -231,6 +294,11 @@ condense.to.NA <- function(df, x){
 
 
 ####### Alternative to all columns:
+
+#' condense.to.NA.all
+#'
+#' @importFrom dplyr    count_    mutate    filter
+#'@export
 
 condense.to.NA.all <- function(df){
 
@@ -257,6 +325,11 @@ condense.to.NA.all <- function(df){
 ###########################################################################
 # CHI_SQUARE, EFFECT SIZE AND RATIO----------------------------------------
 
+#' CHI
+#'
+#'@importFrom powerAnalysis ES.chisq.assoc
+#'@export
+#'
 
 CHI <- function(x, y) {
 
@@ -272,6 +345,11 @@ CHI <- function(x, y) {
 ###########################################################################
 # ANOVA AND COHENS TESTS --------------------------------------------------------
 
+
+#' run.anova
+#'
+#'@export
+
 # ANOVA test
 
 run.Anova<-function(df, y_var){
@@ -281,13 +359,22 @@ run.Anova<-function(df, y_var){
 }
 
 
+#' anova.test
+#'
+#'@export
+
 anova.test <- function(df, y_var){
   compare_aov = run.Anova(df, y_var)
   return(compare_aov)
 }
 
 
-# COHENS test
+# Cohens test
+
+#' cohens.test
+#'
+#' @importFrom sjstats cohens_f
+#'@export
 
 cohens.test <- function(df){
   compare_cohens <- cohens_f(df)
@@ -297,6 +384,12 @@ cohens.test <- function(df){
 
 ###########################################################################
 # JOIN AND RECODE OPPOSED PLATFORMS ---------------------------------------
+
+#' opposed.plat.morpho
+#'
+#' @importFrom dplyr filter %>% mutate select recode
+#'@export
+
 
 opposed.plat.morpho <- function(){
 
@@ -335,7 +428,13 @@ opposed.plat.morpho <- function(){
     mutate(ScarDistribution = dplyr::recode(ScarDistribution, "Lateral_Central/Central" = "Central/Lateral_Central",
                                             "Lateral_Central/Total" = "Total/Lateral_Central",
                                             "Total/Central" = "Central/Total")) %>%
-    mutate(ScarArrangement = dplyr::recode(ScarArrangement, "Overlapped/Isolated" = "Isolated/Overlapped", "Aligned_Overalapped/Overlapped" = "Overlapped/Aligned_Overlapped", "Overlapped/Aligned" = "Aligned/Overlapped", "Aligned_Overlapped/Aligned" = "Aligned/Aligned_Overlapped", "Aligned_Overlapped/Overlapped" = "Overlapped/Aligned_Overlapped", "Isolated/Aligned" = "Aligned/Isolated", "Aligned_Overlapped/Isolated" = "Isolated/Aligned_Overlapped")) %>%
+    mutate(ScarArrangement = dplyr::recode(ScarArrangement, "Overlapped/Isolated" = "Isolated/Overlapped",
+                                           "Aligned_Overalapped/Overlapped" = "Overlapped/Aligned_Overlapped",
+                                           "Overlapped/Aligned" = "Aligned/Overlapped",
+                                           "Aligned_Overlapped/Aligned" = "Aligned/Aligned_Overlapped",
+                                           "Aligned_Overlapped/Overlapped" = "Overlapped/Aligned_Overlapped",
+                                           "Isolated/Aligned" = "Aligned/Isolated",
+                                           "Aligned_Overlapped/Isolated" = "Isolated/Aligned_Overlapped")) %>%
     mutate(ScarExtension = dplyr::recode(ScarExtension, "Invasive/Marginal" = "Marginal/Invasive",
                                          "Mixed_Invasive/Marginal" = "Marginal/Mixed_Invasive",
                                          "Marginal/Mixed_Marginal" = "Mixed_Marginal/Marginal",
@@ -373,7 +472,14 @@ opposed.plat.morpho <- function(){
 
 }
 
- # Plot all variables
+###########################################################################
+# PLOT ALL VARIABLES ---------------------------------------
+
+#' plot.morpho.var
+#'
+#' @importFrom dplyr group_by %>% mutate
+#' @importFrom ggpubr ggbarplot ggarrange
+#'@export
 
 plot.morpho.var <- function(x){
 
@@ -479,6 +585,12 @@ plot.morpho.var <- function(x){
 ###########################################################################
 # MCA ---------------------------------------------------------------------
 
+#' mca.scaled.pieces
+#'
+#' @importFrom FactoMineR MCA
+#' @export
+
+
 mca.scaled.pieces <- function(){
 
 
@@ -487,5 +599,3 @@ mca.scaled.pieces <- function(){
   return(morpho_data_mca)
 
 }
-
-

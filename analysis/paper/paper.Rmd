@@ -7,7 +7,7 @@ author:
   - "*corresponding author | email: pedroehorta@gmail.com | phone: +351 911 005 506"
 
 output: 
-    bookdown::word_document2: #subsistute by pdf_document2 or hmtl_document2 as necessary
+    bookdown::word_document2: #substitute by pdf_document2 or hmtl_document2 as necessary
       fig_caption: yes
       reference_docx: "../templates/template2.docx" 
 bibliography: ScaledPiecesVB.bib
@@ -41,8 +41,6 @@ knitr::opts_chunk$set(
   fig.path = "../figures/")
   cache = TRUE
 
-source('~/R_DATA/compendiums/ScaledPiecesVB/R/functions.R')
-
 ```
 
 
@@ -68,8 +66,7 @@ library(sjstats)
 library(powerAnalysis)
 library(epitools)
 library(wesanderson)
-
-#library(ScaledPiecesVB)
+library(ScaledPiecesVB)
 
 all_data <- read.data()
 techno_data <- all_data$techno_data

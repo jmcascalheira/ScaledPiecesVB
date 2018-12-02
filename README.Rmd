@@ -22,11 +22,11 @@ knitr::opts_chunk$set(
 
 This repository contains the data and code for our paper:
 
-> Horta, P., Cascalheira, J., Bicho, N. (2018). _The role of lithic bipolar technology in Western Iberia’s Upper Paleolithic: the case of Vale Boi (southern Portugal)_. Name of journal/book <https://doi.org/xxx/xxx>
+> Horta, P., Cascalheira, J., Bicho, N. (2018). _The role of lithic bipolar technology in Western Iberia’s Upper Paleolithic: the case of Vale Boi (southern Portugal)_. Journal of Paleolithic Archaeology <https://doi.org/xxx/xxx>
 
 Our pre-print is online here:
 
-> Horta, P., Cascalheira, J., Bicho, N. (2018). _The role of lithic bipolar technology in Western Iberia’s Upper Paleolithic: the case of Vale Boi (southern Portugal)_. Name of journal/book, Accessed `r format(Sys.Date(), "%d %b %Y")`. Online at <https://doi.org/xxx/xxx>
+> Horta, P., Cascalheira, J., Bicho, N. (2018). _The role of lithic bipolar technology in Western Iberia’s Upper Paleolithic: the case of Vale Boi (southern Portugal)_. SocArXiv , Accessed `r format(Sys.Date(), "%d %b %Y")`. Online at <https://doi.org/xxx/xxx>
 
 
 ### How to cite
@@ -41,10 +41,17 @@ You can download the compendium as a zip from from this URL:
 
 <https://github.com/jmcascalheira/ScaledPiecesVB/archive/master.zip>
 
-This repository is organized as an R package using rrtools by Ben Marwick which can be installed from github with:
+This repository is organized as an R package using rrtools by [Ben Marwick](https://github.com/benmarwick) which can be installed from github with:
+
+```{r eval=FALSE}
+
+git clone https://github.com/benmarwick/rrtools.git
+
+```
+
+The functions are provided as a package because this makes it simpler to reuse the functions many times in the paper. It also makes it easier for others to use and adapt these functions on their own data. Nevertheless, this package has been written explicitly for this project and may not yet be suitable for more general purpose use.
 
 To download the package source as you see it on GitHub, for offline browsing, use this line at the shell prompt (assuming you have Git installed on your computer):
-
 
 ```{r eval=FALSE}
 
@@ -54,6 +61,14 @@ git clone https://github.com/jmcascalheira/ScaledPiecesVB.git
 
 
 Once the download is complete, open the ScaledPieces.Rproj in RStudio to begin working with the package and compendium files.
+
+If you want to re-run all the analyses in R, you can start by installing the compendium package with this line at the R prompt:
+
+```{r eval = FALSE}
+
+devtools::install_github("jmcascalheira/ScaledPiecesVB")
+
+```
 
 The package has a number of dependencies on other R packages, and programs outside of R. Installing these can be time-consuming and complicated, so we've included a packrat directory, which contains the source code for all the packages we depend on. If all works well, these will be installed on your computer when you open ScaledPiecesVB.Rproj in RStudio.
 
