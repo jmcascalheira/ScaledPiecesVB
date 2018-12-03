@@ -2,7 +2,7 @@
 ###########################################################################
 # LOAD PACKAGES ----------------------------------------------------------
 
-load.packages <- function {
+load.packages <- function() {
   library(knitr)
   library(citr)
   library(dplyr)
