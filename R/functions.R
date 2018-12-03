@@ -400,6 +400,13 @@ run.Anova<-function(df, y_var){
   return(compare_aov)
 }
 
+
+#' anova.test
+#'
+#' ANOVA test
+#'
+#'@export
+
 anova.test <- function(df, y_var){
   compare_aov = run.Anova(df, y_var)
   return(compare_aov)
