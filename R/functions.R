@@ -527,13 +527,13 @@ opposed.plat.morpho <- function(){
 ###########################################################################
 # PLOT ALL VARIABLES ---------------------------------------
 
-#' plot.morpho.var
+#' morpho.var.plot
 #'
 #' Horizontal bar plots for frequency of each variable
 #'
 #'@export
 
-plot.morpho.var <- function(x){
+morpho.var.plot <- function(x){
 
   dist_perc <- x %>%
     group_by(RawMaterial, ScarDistribution) %>%

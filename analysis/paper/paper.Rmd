@@ -346,7 +346,7 @@ For quartz artifacts the most common patterns are the combination of central/tot
 
 #PLot categorical morpho-function variables
 
-plot.morpho.var(morpho_data_opposed_platforms)
+morpho.var.plot(morpho_data_opposed_platforms)
 
 ```
 
