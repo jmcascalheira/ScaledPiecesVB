@@ -46,27 +46,9 @@ knitr::opts_chunk$set(
 
 ```{r load_libraries, echo = FALSE}
 
-#Please see the functions.R file in /R directory for other libraries used for this compendium
-
-library(knitr)
-library(citr)
-library(tidyverse)
-library(broom)
-library(FactoMineR)
-library(factoextra)
-library(ggpubr)
-library(ggplot2)
-library(ggrepel)
-library(maptools)
-library(ggmap)
-library(devtools)
-library(legendMap)
-library(tab)
-library(sjstats)
-library(powerAnalysis)
-library(epitools)
-library(wesanderson)
 library(ScaledPiecesVB)
+
+load.packages()
 
 all_data <- read.data()
 techno_data <- all_data$techno_data

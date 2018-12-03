@@ -1,5 +1,31 @@
 
 ###########################################################################
+# LOAD PACKAGES ----------------------------------------------------------
+
+load.packages <- function {
+  library(knitr)
+  library(citr)
+  library(dplyr)
+  library(readr)
+  library(tibble)
+  library(broom)
+  library(FactoMineR)
+  library(factoextra)
+  library(ggpubr)
+  library(ggplot2)
+  library(ggrepel)
+  library(maptools)
+  library(ggmap)
+  library(devtools)
+  library(legendMap)
+  library(tab)
+  library(sjstats)
+  library(powerAnalysis)
+  library(epitools)
+  library(wesanderson)
+}
+
+###########################################################################
 # READ DATA ----------------------------------------------------------------
 
 
