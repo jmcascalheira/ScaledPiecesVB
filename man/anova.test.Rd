@@ -7,5 +7,5 @@
 \method{anova}{test}(df, y_var)
 }
 \description{
-ANOVA test
+ANOVA test (cont.)
 }

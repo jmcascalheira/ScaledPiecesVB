@@ -401,9 +401,14 @@ run.Anova<-function(df, y_var){
 }
 
 
+# ANOVA test (cont.)
+
 #' anova.test
 #'
-#' ANOVA test
+#' ANOVA test (cont.)
+#'
+#' @example
+#' anova.test()
 #'
 #'@export
 
