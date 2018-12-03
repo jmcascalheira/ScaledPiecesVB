@@ -244,11 +244,11 @@ knitr::kable(Magdalenian, caption= "Technological attributes frequencies by raw 
 techno_data <- techno_data %>% 
   mutate(Area = AxisWidth*AxisLength)
 
-aov_area <- anova.test(techno_data, "Area")
+aov_area <- aov.test(techno_data, "Area")
 cohens_area <- cohens.test(aov_area)
 aov_area <- tidy(aov_area)
 
-aov_thickness <- anova.test(techno_data, "Thickness")
+aov_thickness <- aoa.test(techno_data, "Thickness")
 cohens_thickness <- cohens.test(aov_thickness)
 aov_thickness <-  tidy(aov_thickness)
 
