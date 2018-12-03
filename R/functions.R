@@ -396,7 +396,7 @@ CHI <- function(x, y) {
 # ANOVA test
 
 run.Anova<-function(df, y_var){
-  frm<-as.formula(sprintf("%s~%s", y_var, "RawMaterial"))
+  frm<-as.formula(sprintf("%s~%s", y_var, "Chronology"))
   compare_aov<-aov(frm, data=df)
   return(compare_aov)
 }
