@@ -263,8 +263,8 @@ As in other classes of stone tools, scaled pieces' metric attributes are impacte
 ```{r meanplots, echo = FALSE, fig.cap="Barplots of means for Area (Length x Width) and Thickness of scaled pieces, by raw material and across the four chronological phases. Error bars represent standard deviations."}
 
 
-area <- mean..bar.plot(techno_data, "Chronology", "Area", "RawMaterial")
-thickness <- mean..bar.plot(techno_data, "Chronology", "Thickness", "RawMaterial")
+area <- bar.plot.mean(techno_data, "Chronology", "Area", "RawMaterial")
+thickness <- bar.plot.mean(techno_data, "Chronology", "Thickness", "RawMaterial")
 
 meanplots <- ggarrange(area, thickness, ncol = 1, nrow = 2, common.legend = TRUE, legend = "right")
 
