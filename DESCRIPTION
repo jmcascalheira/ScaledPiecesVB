@@ -9,4 +9,4 @@ LazyData: true
 ByteCompile: true
 URL: https://github.com/jmcascalheira/ScaledPiecesVB
 BugReports: https://github.com/jmcascalheira/ScaledPiecesVB/issues
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1

@@ -2,6 +2,17 @@
 ###########################################################################
 # LOAD PACKAGES ----------------------------------------------------------
 
+
+#' load.packages
+#'
+#' Load all necessary libraries
+#'
+#' @example
+#' load.packages()
+#'
+#' @export
+
+
 load.packages <- function() {
   library(knitr)
   library(citr)
@@ -30,9 +41,13 @@ load.packages <- function() {
 
 
 #' read.data
-#' @importFrom readr read_csv
-#' @export
 #'
+#' Read in csv files
+#'
+#' @example
+#' read.data()
+#'
+#' @export
 
 
 read.data <- function(){
@@ -51,22 +66,14 @@ read.data <- function(){
 
 #' Map
 #'
-#' @importFrom ggmap    ggmap    get_stamenmap
-#' @import legendMap
-#' @import maptools
-#' @importFrom gridExtra    grid.arrange
-#' @importFrom grDevices    dev.off    png
-#' @importFrom stats    aggregate    coef    lm    na.omit    quantile    reshape
-#' @importFrom utils    read.csv    read.table
-#'@export
+#' Saves a PNG image of a close-up and a general map of Vale Boi
+#'
+#' @example
+#' Map()
+#'
+#' @export
 
 Map <- function(){
-
-  require(maptools)
-  require(ggplot2)
-  require(ggmap)
-  require(legendMap)
-  require(gridExtra)
 
   VBLocation <-  c(lon = -8.808621, lat = 37.089902)
 
@@ -134,17 +141,13 @@ Map <- function(){
 
 #' cross.tb
 #'
-#' @importFrom tab    tabmulti
-#' @importFrom dplyr    mutate_if
+#' Create cross-tables with counts and percentages inside parentheses
+#'
+#'
 #'@export
 
 
-
-
 cross.tb <- function(dataset,x,y) {
-
-require(tab)
-require(tidyverse)
 
 dataset <- dataset %>% mutate_if(is.character,as.factor)
 dataset <- as.data.frame(dataset)
@@ -168,7 +171,8 @@ dataset <- as.data.frame(dataset)
 
 #' mean.plot
 #'
-#' @importFrom ggpubr ggbarplot
+#' Creates a barplot representing the mean, standard deviations and jitter points
+#'
 #'@export
 
 
@@ -192,7 +196,9 @@ mean.plot <- function(dataset, x, y, z){
 
 #' box.plot
 #'
-#' @importFrom ggplot2    ggplot    geom_boxplot
+#' Creates boxplot with jitter points with different wes_pallete colors for
+#' categories
+#'
 #'@export
 
 
@@ -218,7 +224,8 @@ box.plot <- function(df, x_var, y_var, x_label, y_label){
 
 #' inline.percent
 #'
-#' @importFrom dplyr    group_by    mutate    filter
+#' Calculates percentages to use inline
+#'
 #'@export
 
 
@@ -243,7 +250,8 @@ inline.perc <- function(dataset, x, y){
 
 #' condense.to.other
 #'
-#' @importFrom dplyr    count    mutate    filter
+#' Condense specific category with less than 10% of frequency into an 'Others' category
+#'
 #'@export
 
 condense.to.other <- function(df, x){
@@ -266,6 +274,9 @@ condense.to.other <- function(df, x){
 ####### Alternative to all columns:
 
 #' condense.to.other.all
+#'
+#' Condense all categories with less than 10% of frequency into an 'Others' category
+#'
 #'
 #' @importFrom dplyr    count_    mutate    filter
 #'@export
@@ -298,7 +309,8 @@ condense.to.other.all <- function(df){
 
 #' condense.to.NA
 #'
-#' @importFrom dplyr    count_    mutate    filter
+#' Condense specific category with less than 10% of frequency into NA
+#'
 #'@export
 
 condense.to.NA <- function(df, x){
@@ -323,7 +335,8 @@ condense.to.NA <- function(df, x){
 
 #' condense.to.NA.all
 #'
-#' @importFrom dplyr    count_    mutate    filter
+#' Condense all variables categories with less than 10% of frequency into NA
+#'
 #'@export
 
 condense.to.NA.all <- function(df){
@@ -353,9 +366,10 @@ condense.to.NA.all <- function(df){
 
 #' CHI
 #'
-#'@importFrom powerAnalysis ES.chisq.assoc
-#'@export
+#' Chi-square test with effect size calculation
 #'
+#'@export
+
 
 CHI <- function(x, y) {
 
@@ -374,6 +388,8 @@ CHI <- function(x, y) {
 
 #' run.anova
 #'
+#' ANOVA test
+#'
 #'@export
 
 # ANOVA test
@@ -383,11 +399,6 @@ run.Anova<-function(df, y_var){
   compare_aov<-aov(frm, data=df)
   return(compare_aov)
 }
-
-
-#' anova.test
-#'
-#'@export
 
 anova.test <- function(df, y_var){
   compare_aov = run.Anova(df, y_var)
@@ -399,7 +410,8 @@ anova.test <- function(df, y_var){
 
 #' cohens.test
 #'
-#' @importFrom sjstats cohens_f
+#' Calculates Cohens test for ANOVA
+#'
 #'@export
 
 cohens.test <- function(df){
@@ -413,7 +425,8 @@ cohens.test <- function(df){
 
 #' opposed.plat.morpho
 #'
-#' @importFrom dplyr filter %>% mutate select recode
+#' Function to join records from different platforms into a sigle variable
+#'
 #'@export
 
 
@@ -503,8 +516,8 @@ opposed.plat.morpho <- function(){
 
 #' plot.morpho.var
 #'
-#' @importFrom dplyr group_by %>% mutate
-#' @importFrom ggpubr ggbarplot ggarrange
+#' Horizontal bar plots for frequency of each variable
+#'
 #'@export
 
 plot.morpho.var <- function(x){
@@ -613,7 +626,8 @@ plot.morpho.var <- function(x){
 
 #' mca.scaled.pieces
 #'
-#' @importFrom FactoMineR MCA
+#' Performs Multiple Correspondence Analysis
+#'
 #' @export
 
 
