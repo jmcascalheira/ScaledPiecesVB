@@ -166,17 +166,18 @@ dataset <- as.data.frame(dataset)
 }
 
 ###########################################################################
-# MEAN PLOTS --------------------------------------------------------------
+# MEAN PLOT --------------------------------------------------------------
 
 
-#' mean.plot
+#' mean.bar.plot
 #'
-#' Creates a barplot representing the mean, standard deviations and jitter points
+#' Creates a barplot representing the mean, standard deviations
+#' and jitter points
 #'
-#'@export
+#' @export
 
 
-mean.plot <- function(dataset, x, y, z){
+mean.bar.plot <- function(dataset, x, y, z){
 
   ggbarplot(dataset, x = x, y = y,
             add = c("mean_sd", "jitter"), size = 1,
