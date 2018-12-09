@@ -1,4 +1,4 @@
-Variable,Variable name in database,Values,Observations
+﻿Variable,Variable name in database,Values,Observations
 Raw Material,RawMaterial,Quartz,
 ,,Chert,
 ,,Greywacke,
@@ -14,7 +14,7 @@ Type of blank,Blank,Blade,
 ,,Nodule,
 ,,Non_Identifiable,
 Length of the typological axis,TypologicalAxisLength,mm,"Typological axis is defined as a vector that proceeds perpendicular to the two opposed damaged platforms, bisecting them"
-Length of the technological axis,TechnologicalAxisLength,mm,Same as axis of flaking in Deb�nath and Dibble (1994)
+Length of the technological axis,TechnologicalAxisLength,mm,Same as axis of flaking in Debénath and Dibble (1994)
 Width of the typological axis,TypologicalAxisWidth,mm,"Distance at a mid-point between two edges of the artifact, as measured perpendicularly to the typological length"
 Width of the technological axis,TechnologicalAxisWidth,mm,"Distance at a mid-point between two edges of the artifact, as measured perpendicularly to the technological length"
 Thickness,Thickness,mm,Measured at the intersection of the typological length and width
