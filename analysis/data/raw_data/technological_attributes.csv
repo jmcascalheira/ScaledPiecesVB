@@ -1,75 +1,69 @@
-Variables,Attributes
-Raw Material,Quartz
-,Chert
-,Greywacke
-,Chalcedony
-,Others
-Blank,Blade
-,Blade Fragment
-,Bladelet 
-,Bladelet Fragment
-,Core
-,Flake
-,Fragment
-,Nodule
-Coinciding Axis,Coinciding
-,Non-Coinciding
-,Unidentifiable
-Retouch,Absent
-,Present
-Cortex % ,No Cortex
-,>25%
-,25-50%
-,50-95%
-,>95%
-Cortex Location,Distal
-,Lateral
-,Lateral Distal
-,Lateral Mesial
-,Lateral Proximal
-,Mesial
-,Proximal
-Butt,Absent
-,Cortical
-,Dihedral
-,Faceted
-,Pointed
-,Flat
-Profile,Straight
-,Curved
-,Irregular
-,Twisted
-Transversal Section Shape,Other 
-,Irregular
-,Rectangular 
-,Trapezoidal
-,Triangular
-Longitudinal Section Shape,Elliptical
-,Irregular
-,Other
-,Rectangular
-,Semicircular
-,Trapezoidal
-,Triangular
-Edge Shape,Biconvex
-,Circular
-,Converging
-,Diverging
-,Irregular
-,Others
-,Parallel
-Dorsal Pattern,Bidirectional Alternating
-,Bidirectional Parallel
-,Bidirectional Perpendicular
-,Unidentifiable
-,Parallel Distal
-,Parallel Proximal
-,Parallel one side
-,Radial
-Termination,Stepped
-,Natural
-,Hinged
-,Transversal
-Fire Traces,Burnt 
-,No traces
-,Thermal Treatment
+Variable,Variable name in database,Values,Observations
+Raw Material,RawMaterial,Quartz,
+,,Chert,
+,,Greywacke,
+,,Chalcedony,
+,,Others,
+Type of blank,Blank,Blade,
+,,BladeFragment,
+,,Bladelet ,
+,,BladeletFragment,
+,,Core,
+,,Flake,
+,,FlakeFragment,
+,,Nodule,
+,,Non_Identifiable,
+Length of the typological axis,TypologicalAxisLength,mm,"Typological axis is defined as a vector that proceeds perpendicular to the two opposed damaged platforms, bisecting them"
+Length of the technological axis,TechnologicalAxisLength,mm,Same as axis of flaking in Debénath and Dibble (1994)
+Width of the typological axis,TypologicalAxisWidth,mm,"Distance at a mid-point between two edges of the artifact, as measured perpendicularly to the typological length"
+Width of the technological axis,TechnologicalAxisWidth,mm,"Distance at a mid-point between two edges of the artifact, as measured perpendicularly to the technological length"
+Thickness,Thickness,mm,Measured at the intersection of the typological length and width
+Axes coincidence,AxisCoincident,Yes,Coincidence between the  and the typological and technological axes
+Retouch presence,Retouch,Absent,Presence of retouch in artifact's edges
+,,Present,
+Percentage of cortex,Cortex,No_Cortex,
+,,>25%,
+,,25-50%,
+,,50-95%,
+,,>95%,
+Platform type,Butt,Absent,See Inizan et al (1999) for description of each value
+,,Cortical,
+,,Dihedral,
+,,Faceted,
+,,Pointed,
+,,Flat,
+Profile,Profile,Straight,
+,,Curved,
+,,Irregular,
+,,Twisted,
+Cross-section morphology,CrossSection,Other ,
+,,Irregular,
+,,Rectangular ,
+,,Trapezoidal,
+,,Triangular,
+Longitudinal section morphology,SideSection,Elliptical,
+,,Irregular,
+,,Other,
+,,Rectangular,
+,,Semicircular,
+,,Trapezoidal,
+,,Triangular,
+Blank edge morphology,BlankShape,Biconvex,
+,,Circular,
+,,Converging,
+,,Diverging,
+,,Irregular,
+,,Others,
+,,Parallel,
+Scar dorsal pattern,DorsalScars,Bidirectional-Alternating,
+,,Bidirectional-Parallel,
+,,Bidirectional-Perpendicular,
+,,Non_Identifiable,
+,,Parallel-Distal,
+,,Parallel-Proximal,
+,,Parallel-One-Side,
+,,Radial,
+,,Other,
+Fire traces,Fire,Burnt ,
+,,No_traces,
+,,Thermal-Treatment,

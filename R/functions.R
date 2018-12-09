@@ -34,6 +34,7 @@ load.packages <- function() {
   library(powerAnalysis)
   library(epitools)
   library(wesanderson)
+  library(dataMeta)
 }
 
 ###########################################################################
