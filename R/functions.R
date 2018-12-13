@@ -32,13 +32,11 @@ load.packages <- function() {
   library(tab)
   library(sjstats)
   library(powerAnalysis)
-  library(epitools)
   library(wesanderson)
 }
 
 ###########################################################################
 # READ DATA ----------------------------------------------------------------
-
 
 #' read.data
 #'

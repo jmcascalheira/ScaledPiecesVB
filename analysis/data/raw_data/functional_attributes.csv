@@ -1,5 +1,5 @@
 ﻿Variable,Variable name in database,Values,Observations
-Number of damage platforms,DamagePlatforms,1,
+Number of damaged platforms,DamagePlatforms,1,
 ,,2,
 ,,3,
 ,,4_or_more,
@@ -17,21 +17,21 @@ Platform Delineation*,ScarEdgeDelineation,Concave,
 Degree of damage**,DamageDegree,High,No traces of the original platform are visible
 ,,Medium,Some traces of the original platform are visible
 ,,Low,Original platform is visible
-Scars Shape**,ScarShape,Half-Moon ,
+Scar Shape**,ScarShape,Half-Moon ,
 ,,Irregular,
 ,,Mixed,
 ,,Quadrangular,
 ,,Semicircular,
 ,,Trapezoidal,
 ,,Triangular,
-Scars Distribution*,ScarDistribution,Central,Scars are limited to the central area of the platform
+Scar Distribution*,ScarDistribution,Central,Scars are limited to the central area of the platform
 ,,Lateral,Scars are limited to one of the sides of the platform
 ,,Total,Scars completely cover the platform
-Scars Disposition*,ScarArrangement,Aligned,Scars are parallel and next to each other without overlapping
+Scar Disposition*,ScarArrangement,Aligned,Scars are parallel and next to each other without overlapping
 ,,Isolated,Scars are isolated
 ,,Overlapped,Scars overlap
-Scars Extension**,ScarExtension,Invasive,Scars extent to a maximum of 49% of the typological axis length
-,,Marginal,Scars extent to a maximum of 20% of the typological axis lenght 
+Scar Extension**,ScarExtension,Invasive,Scars extent to a maximum of 49% of the typological axis length
+,,Marginal,Scars extent to a maximum of 20% of the typological axis length 
 ,,Mixed,Scar extension is both invasive and marginal
-Scars Facial Distribution**,ScarFacialDistribution,Bifacial,Scars are present in both faces of the platform
+Scar Facial Distribution**,ScarFacialDistribution,Bifacial,Scars are present in both faces of the platform
 ,,Unifacial,Scars are present in only one face of the platform

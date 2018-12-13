@@ -18,7 +18,7 @@ Length of the technological axis,TechnologicalAxisLength,mm,Same as axis of flak
 Width of the typological axis,TypologicalAxisWidth,mm,"Distance at a mid-point between two edges of the artifact, as measured perpendicularly to the typological length"
 Width of the technological axis,TechnologicalAxisWidth,mm,"Distance at a mid-point between two edges of the artifact, as measured perpendicularly to the technological length"
 Thickness,Thickness,mm,Measured at the intersection of the typological length and width
-Axes coincidence,AxisCoincident,Yes,Coincidence between the  and the typological and technological axes
+Axes coincidence,AxisCoincident,Yes,Coincidence between the typological and technological axes
 Retouch presence,Retouch,Absent,Presence of retouch in artifact's edges
 ,,Present,
 Percentage of cortex,Cortex,No_Cortex,
